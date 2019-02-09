@@ -127,16 +127,8 @@ void lcd_init(uint8_t dispAttr){
     lcd_clrscr();
 }
 void lcd_gotoxy(uint8_t x, uint8_t y){
-    if( x > (DISPLAY_WIDTH/sizeof(FONT[0])) || y > (DISPLAY_HEIGHT/8-1)) return;// out of display
     x = x * sizeof(FONT[0]);
-    cursorPosition.x=x;
-    cursorPosition.y=y;
-#if defined SSD1306
-    uint8_t commandSequence[] = {0xb0+y, 0x21, x, 0x7f};
-#elif defined SH1106
-    uint8_t commandSequence[] = {0xb0+y, 0x21, 0x00+((2+x) & (0x0f)), 0x10+( ((2+x) & (0xf0)) >> 4 ), 0x7f};
-#endif
-    lcd_command(commandSequence, sizeof(commandSequence));
+    lcd_goto_xpix_y(x, y);
 }
 
 void lcd_goto_xpix_y(uint8_t x, uint8_t y){
