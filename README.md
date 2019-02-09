@@ -12,5 +12,5 @@ Components:
 - [JS5208 5 way switch](https://octopart.com/js5208-e-switch-7055822?r=sp&s=BNJOYOgrTFqksTVikSivoQ)
 - [WS2812B LED](https://www.aliexpress.com/item/100pcs-DC5V-WS2812B-4Pins-5050-SMD-with-Built-in-WS2811-IC-Individually-Addressable-Digital-RGB-LED/32542036874.html)
 - [2mm PMMA optic fiber](https://www.aliexpress.com/item/5mX-Transparent-side-glow-plastic-PMMA-fiber-optic-cable-solid-core-optic-cable-diameter-2mm-3mm/32807597828.html)
-- micro usb breakout (I used part of a custom PCB for an earlier project)
+- micro usb breakout (I used part of a custom PCB from [an earlier project](https://github.com/PaulKlinger/satellite_tracker))
 - power switch ([this one looks similar to mine](https://www.aliexpress.com/item/Promotion-50-Pcs-SS12D00G3-2-Position-SPDT-1P2T-3-Pin-PCB-Panel-Mini-Vertical-Slide-Switch/32649542037.html))
