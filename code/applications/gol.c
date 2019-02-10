@@ -77,12 +77,15 @@ void run_gol() {
             board[y][x] = rand();
         };
     };
-    
+    bool wait_for_release = button_pressed;
     while (1){
+        if (!button_pressed){
+            wait_for_release = false;
+        }
         display_board(board);
         update_board(board);
         //_delay_ms(50);
-        if (button_pressed) {
+        if (button_pressed && ! wait_for_release) {
             return;
         }
     }
