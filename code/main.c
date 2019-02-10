@@ -29,29 +29,33 @@ typedef enum Direction {UP, RIGHT, DOWN, LEFT} Direction;
 
 static volatile Direction last_joystick_direction;
 
-static uint8_t snake_direction_circ_buffer[128];
-static uint16_t snake_head_buffer_index;
-static uint8_t snake_head_x;
-static uint8_t snake_head_y;
-static uint8_t snake_tail_x;
-static uint8_t snake_tail_y;
-static uint16_t snake_length;
-static uint8_t food_x;
-static uint8_t food_y;
-static Direction snake_dir;
+typedef struct {
+    uint8_t direction_circ_buffer[128];
+    uint16_t head_buffer_index;
+    uint8_t head_x;
+    uint8_t head_y;
+    uint8_t tail_x;
+    uint8_t tail_y;
+    uint16_t length;
+    uint8_t food_x;
+    uint8_t food_y;
+    Direction snake_dir;
+} SnakeGamestate;
 
-void draw_food(){
-    lcd_fillRect(food_x*4+1, food_y*4+1, food_x*4+2, food_y*4+2,1);
+
+void draw_food(SnakeGamestate *gs){
+    lcd_fillRect(gs->food_x*4+1, gs->food_y*4+1,
+                 gs->food_x*4+2, gs->food_y*4+2,1);
 }
 
 
-Direction get_snake_direction(uint16_t i) {
-    return (snake_direction_circ_buffer[i/4] >> (i%4)*2) & 0b00000011;
+Direction get_snake_direction(SnakeGamestate *gs, uint16_t i) {
+    return (gs->direction_circ_buffer[i/4] >> (i%4)*2) & 0b00000011;
 }
 
-void set_snake_direction(uint16_t i, Direction direction) {
-  snake_direction_circ_buffer[i/4] &= ~(0b00000011 << (i%4)*2); // set to zero
-  snake_direction_circ_buffer[i/4] |= direction << (i%4)*2; // set to direction
+void set_snake_direction(SnakeGamestate *gs, uint16_t i, Direction direction) {
+  gs->direction_circ_buffer[i/4] &= ~(0b00000011 << (i%4)*2); // set to zero
+  gs->direction_circ_buffer[i/4] |= direction << (i%4)*2; // set to direction
 }
 
 uint16_t modulo(uint16_t x,uint16_t N){
@@ -59,19 +63,19 @@ uint16_t modulo(uint16_t x,uint16_t N){
     return (x % N + N) %N;
 }
 
-void draw_snake() {
-    uint16_t i = snake_head_buffer_index;
-    uint16_t rem_length = snake_length;
-    uint8_t x = snake_head_x;
-    uint8_t y = snake_head_y;
+void draw_snake(SnakeGamestate *gs) {
+    uint16_t i = gs->head_buffer_index;
+    uint16_t rem_length = gs->length;
+    uint8_t x = gs->head_x;
+    uint8_t y = gs->head_y;
     while (rem_length > 0) {
         if (rem_length == 1) {
-            snake_tail_x = x;
-            snake_tail_y = y;
+            gs->tail_x = x;
+            gs->tail_y = y;
         }
         i = modulo(i,512);
         draw_block(x, y);
-        switch (get_snake_direction(i)) {
+        switch (get_snake_direction(gs, i)) {
             // opposite directions because we are going backwards
             case UP: {y++;break;};
             case DOWN: {y--;break;};
@@ -85,32 +89,32 @@ void draw_snake() {
     }
 }
 
-void move_snake(Direction dir) {
-    snake_head_buffer_index = modulo(snake_head_buffer_index + 1, 512);
-    set_snake_direction(snake_head_buffer_index, dir);
-    switch (dir) {
+void move_snake(SnakeGamestate *gs) {
+    gs->head_buffer_index = modulo(gs->head_buffer_index + 1, 512);
+    set_snake_direction(gs, gs->head_buffer_index, gs->snake_dir);
+    switch (gs->snake_dir) {
         case DOWN:
-            snake_head_y++;
+            gs->head_y++;
             break;
         case UP:
-            snake_head_y--;
+            gs->head_y--;
             break;
         case LEFT:
-            snake_head_x--;
+            gs->head_x--;
             break;
         case RIGHT:
-            snake_head_x++;
+            gs->head_x++;
             break;
     }
-    snake_head_x = modulo(snake_head_x, 32);
-    snake_head_y = modulo(snake_head_y, 16);
+    gs->head_x = modulo(gs->head_x, 32);
+    gs->head_y = modulo(gs->head_y, 16);
 }
 
-void roll_food_position() {
+void roll_food_position(SnakeGamestate *gs) {
     do {
-        food_x = rand() % 32;
-        food_y = rand() % 16;
-    } while (lcd_check_buffer(food_x*4 + 2, food_y*4 + 2));
+        gs->food_x = rand() % 32;
+        gs->food_y = rand() % 16;
+    } while (lcd_check_buffer(gs->food_x*4 + 2, gs->food_y*4 + 2));
 }
 
 void set_led(uint8_t r, uint8_t g, uint8_t b) {
@@ -122,8 +126,8 @@ void set_led(uint8_t r, uint8_t g, uint8_t b) {
 }
 
 void set_led_from_length(uint16_t length) {
-    uint8_t r = fdim(200, (100.0-snake_length)/200);
-    uint8_t g = fmin(255, snake_length*3);
+    uint8_t r = fdim(200, (100.0-length)/200);
+    uint8_t g = fmin(255, length*3);
     set_led(r, g, 0);
 }
 
@@ -131,19 +135,19 @@ void display_4x4_block(uint8_t x, uint8_t y) {
     lcd_display_block(x*4, y/2, 4);
 }
 
-void reset_snake() {
+void reset_snake(SnakeGamestate *gs) {
     last_joystick_direction = RIGHT;
-    set_led(200,0,0);
-    snake_length = 1;
-    snake_head_x = 0;
-    snake_head_y = 0;
-    snake_head_buffer_index = 0;
-    set_snake_direction(0, RIGHT);
-    snake_dir = RIGHT;
-    roll_food_position();
+    gs->length = 1;
+    gs->head_x = 0;
+    gs->head_y = 0;
+    gs->head_buffer_index = 0;
+    set_snake_direction(gs, 0, RIGHT);
+    gs->snake_dir = RIGHT;
+    set_led_from_length(1);
+    roll_food_position(gs);
     lcd_clear_buffer();
-    draw_snake();
-    draw_food();
+    draw_snake(gs);
+    draw_food(gs);
     lcd_display();
 }
 
@@ -190,32 +194,34 @@ int main(void) {
     uint8_t snake_prev_tail_x;
     uint8_t snake_prev_tail_y;
     
-    reset_snake();
+    SnakeGamestate snake_state;
+    reset_snake(&snake_state);
     
     while (1) {
-        snake_prev_tail_x = snake_tail_x;
-        snake_prev_tail_y = snake_tail_y;
-        if (last_joystick_direction == RIGHT && snake_dir != LEFT){
-            snake_dir = RIGHT;
-        } else if (last_joystick_direction == LEFT && snake_dir != RIGHT){
-            snake_dir = LEFT;
-        } else if (last_joystick_direction == UP && snake_dir != DOWN) {
-            snake_dir = UP;
-        } else if (last_joystick_direction == DOWN && snake_dir != UP) {
-            snake_dir = DOWN;
+        snake_prev_tail_x = snake_state.tail_x;
+        snake_prev_tail_y = snake_state.tail_y;
+        if (last_joystick_direction == RIGHT && snake_state.snake_dir != LEFT){
+            snake_state.snake_dir = RIGHT;
+        } else if (last_joystick_direction == LEFT && snake_state.snake_dir != RIGHT){
+            snake_state.snake_dir = LEFT;
+        } else if (last_joystick_direction == UP && snake_state.snake_dir != DOWN) {
+            snake_state.snake_dir = UP;
+        } else if (last_joystick_direction == DOWN && snake_state.snake_dir != UP) {
+            snake_state.snake_dir = DOWN;
         }
-        move_snake(snake_dir);
-        if (snake_head_x == food_x && snake_head_y == food_y){
-            snake_length++;
-            set_led_from_length(snake_length);
-            roll_food_position();
-        } else if (lcd_check_buffer(snake_head_x * 4, snake_head_y*4)) {
+        move_snake(&snake_state);
+        if (snake_state.head_x == snake_state.food_x 
+                && snake_state.head_y == snake_state.food_y){
+            snake_state.length++;
+            set_led_from_length(snake_state.length);
+            roll_food_position(&snake_state);
+        } else if (lcd_check_buffer(snake_state.head_x * 4, snake_state.head_y*4)) {
             // food is only 2x2 pixel, so if the top left pix is set we've crashed
             lcd_clear_buffer();
             lcd_gotoxy(6,2);
             lcd_puts("GAME OVER!\r\n");
             char points_str[3];
-            itoa(snake_length, points_str, 10);
+            itoa(snake_state.length, points_str, 10);
             lcd_gotoxy(6,3);
             lcd_puts(points_str);
             lcd_puts(" points\r\n\r\n");
@@ -223,16 +229,16 @@ int main(void) {
             lcd_puts("(press to restart)");
             lcd_display();
             wait_for_button();
-            reset_snake();
+            reset_snake(&snake_state);
         }
         lcd_clear_buffer();
-        draw_snake();
-        draw_food();
+        draw_snake(&snake_state);
+        draw_food(&snake_state);
         //lcd_display();
-        display_4x4_block(snake_head_x, snake_head_y);
+        display_4x4_block(snake_state.head_x, snake_state.head_y);
         display_4x4_block(snake_prev_tail_x, snake_prev_tail_y);
         // drawing the food every turn is slightly inefficient but still fast enough
-        display_4x4_block(food_x, food_y); 
+        display_4x4_block(snake_state.food_x, snake_state.food_y); 
         _delay_ms(100);
     }
 }
