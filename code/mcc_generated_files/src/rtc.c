@@ -38,38 +38,28 @@ int8_t RTC_0_init()
     // RTC.PER = 65535;
 
     // 	RTC.DBGCTRL = 0 << RTC_DBGRUN_bp; /* Run in debug: disabled */
-    	RTC.INTCTRL = 0 << RTC_CMP_bp /* Compare Match Interrupt enable: disabled */
-    				| 1 << RTC_OVF_bp; /* Overflow Interrupt enable: enabled */
+    // 	RTC.INTCTRL = 0 << RTC_CMP_bp /* Compare Match Interrupt enable: disabled */
+    // 				| 0 << RTC_OVF_bp; /* Overflow Interrupt enable: disabled */
 
     // 	RTC.INTFLAGS = 0 << RTC_CMP_bp /* Compare Match Interrupt: disabled */
     // 				| 0 << RTC_OVF_bp; /* Overflow Interrupt Flag: disabled */
 	       
-    // while (RTC.PITSTATUS > 0) { /* Wait for all register to be synchronized */
-    // }
-    // 	RTC.PITCTRLA = RTC_PERIOD_OFF_gc /* Period: Off */
-    // 				| 0 << RTC_PITEN_bp; /* Enable: disabled */
+    while (RTC.PITSTATUS > 0) { /* Wait for all register to be synchronized */
+    }
+    	RTC.PITCTRLA = RTC_PERIOD_CYC256_gc /* Period: RTC Clock Cycles 256 */
+    				| 1 << RTC_PITEN_bp; /* Enable: enabled */
 
     // 	RTC.PITDBGCTRL = 0 << RTC_DBGRUN_bp; /* Run in debug: disabled */
 
-    // 	RTC.PITINTCTRL = 0 << RTC_PI_bp; /* Periodic Interrupt: disabled */
+    	RTC.PITINTCTRL = 1 << RTC_PI_bp; /* Periodic Interrupt: enabled */
 
     // 	RTC.PITINTFLAGS = 0 << RTC_PI_bp; /* Periodic Interrupt: disabled */
     
     // 	RTC.TEMP = 0; /* Temporary */
 
-    	RTC.CTRLA = RTC_PRESCALER_DIV32_gc /* Prescaling Factor: RTC Clock / 32 */
+    	RTC.CTRLA = RTC_PRESCALER_DIV1_gc /* Prescaling Factor: RTC Clock / 1 */
     				| 1 << RTC_RTCEN_bp /* Enable: enabled */
     				| 0 << RTC_RUNSTDBY_bp; /* Run In Standby: disabled */
 	
     return 0;
-}
-
-
-ISR(RTC_PIT_vect)
-{
-
-    /* Insert your RTC PIT interrupt handling code here */
-
-    /* TRIGB interrupt flag has to be cleared manually */
-    RTC.PITINTFLAGS = RTC_PI_bm;
 }

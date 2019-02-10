@@ -15,47 +15,49 @@ void display_4x4_block(uint8_t x, uint8_t y) {
     lcd_display_block(x*4, y/2, 4);
 }
 
-volatile static uint16_t last_input_event;
+// All of this debouncing stuff is horribly inefficient but at least it seems to work...
+// Could save a lot of ram too...
+volatile static uint8_t joystick_debounce_counter; 
+volatile static uint8_t button_debounce_counter;
 
-ISR(RTC_CNT_vect)
+
+# define DEBOUNCE_THRESHOLD 4 /* x 8ms */
+ISR(RTC_PIT_vect)
 {
-    /* Insert your RTC CMPI/OVF handling code here */
-    last_input_event = 0;
-    /* The interrupt flag has to be cleared manually */
-    RTC.INTFLAGS = RTC_CMP_bm;;
-}
-
-ISR(PORTA_PORT_vect)
-{  
-    if (RTC.CNT - last_input_event > 50 /*ms*/) {
-        if (!IO_PA4_get_level()){
-            last_joystick_direction = RIGHT;
-            joystick_flag = true;
-        } else if (!IO_PA5_get_level()){
-            last_joystick_direction = LEFT;
-            joystick_flag = true;
-        } else if (!IO_PA2_get_level()) {
-            last_joystick_direction = UP;
-            joystick_flag = true;
-        } else if (!IO_PA3_get_level()) {
-            last_joystick_direction = DOWN;
-            joystick_flag = true;
-        }
-
-        if (!IO_PA1_get_level()) {
-            button_flag = true;
-        }
+    if (!IO_PA4_get_level()){
+        last_joystick_direction = RIGHT;
+    } else if (!IO_PA5_get_level()){
+        last_joystick_direction = LEFT;
+    } else if (!IO_PA2_get_level()) {
+        last_joystick_direction = UP;
+    } else if (!IO_PA3_get_level()) {
+        last_joystick_direction = DOWN;
     }
-    last_input_event = RTC.CNT;
+    bool joystick_currently_pressed = (!IO_PA4_get_level()||!IO_PA5_get_level()
+            ||!IO_PA2_get_level()||!IO_PA3_get_level());
+    if (joystick_currently_pressed != joystick_pressed){
+        joystick_debounce_counter++;
+        if (joystick_debounce_counter >= DEBOUNCE_THRESHOLD){
+            joystick_pressed = joystick_currently_pressed;
+            joystick_debounce_counter = 0;
+        }
+    } else {
+        joystick_debounce_counter = 0;
+    }
     
-    /* Clear interrupt flags */
-    VPORTA.INTFLAGS = 0xff;
+    bool button_currently_pressed = !IO_PA1_get_level();
+    if (button_currently_pressed != button_pressed) {
+        button_debounce_counter++;
+        if (button_debounce_counter >= DEBOUNCE_THRESHOLD) {
+            button_pressed = button_currently_pressed;
+            button_debounce_counter = 0;
+        }
+    } 
+    /* TRIGB interrupt flag has to be cleared manually */
+    RTC.PITINTFLAGS = RTC_PI_bm;
 }
 
-static inline bool button_pressed(){
-    return !IO_PA1_get_level();
-}
 
 void wait_for_button() {
-    while (!button_pressed());
+    while (!button_pressed);
 }

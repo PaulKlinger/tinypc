@@ -18,8 +18,8 @@ extern "C" {
     typedef enum Direction {UP, RIGHT, DOWN, LEFT} Direction;
 
     volatile Direction last_joystick_direction;
-    volatile bool joystick_flag;
-    volatile bool button_flag;
+    volatile bool joystick_pressed;
+    volatile bool button_pressed;
 
     void set_led(uint8_t r, uint8_t g, uint8_t b);
     void display_4x4_block(uint8_t x, uint8_t y);

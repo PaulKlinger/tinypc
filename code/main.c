@@ -68,20 +68,25 @@ void show_menu() {
             {"gol", &run_gol}
         }
     };
-    joystick_flag = false;
     display_menu(&menu);
+    bool wait_for_release = true;
     while (1) {
-        if (joystick_flag) {
+        if (!joystick_pressed && !button_pressed) {
+            wait_for_release = false;
+        }
+        if (joystick_pressed && !wait_for_release) {
+            wait_for_release = true;
             if (last_joystick_direction == UP){
                 menu.selected_index = (menu.selected_index + menu.length - 1) % menu.length;
             } else if (last_joystick_direction == DOWN) {
                 menu.selected_index++;
                 menu.selected_index %= menu.length;
-            } else if (last_joystick_direction == RIGHT) {
-                menu.entries[menu.selected_index].start_function();
             }
             display_menu(&menu);
-            joystick_flag = false;
+        } else if (button_pressed && !wait_for_release){
+            menu.entries[menu.selected_index].start_function();
+            wait_for_release = true;
+            display_menu(&menu);
         }
     };
     
