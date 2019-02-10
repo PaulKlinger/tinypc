@@ -184,7 +184,7 @@
         <property key="make-warnings-into-errors" value="false"/>
         <property key="no-interrupts" value="false"/>
         <property key="no-system-directories" value="false"/>
-        <property key="optimization-level" value="-O1"/>
+        <property key="optimization-level" value="-O2"/>
         <property key="pack-struct" value="true"/>
         <property key="preprocessor-macros" value=""/>
         <property key="preprocessor-macros-undefined" value=""/>
