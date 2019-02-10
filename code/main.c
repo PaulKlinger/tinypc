@@ -132,6 +132,7 @@ void display_4x4_block(uint8_t x, uint8_t y) {
 }
 
 void reset_snake() {
+    last_joystick_direction = RIGHT;
     set_led(200,0,0);
     snake_length = 1;
     snake_head_x = 0;
@@ -174,7 +175,6 @@ void wait_for_button() {
 
 int main(void) {
     SYSTEM_Initialize();
-    last_joystick_direction = RIGHT; // a bit hacky...
     set_led(0,255,0);
     lcd_init(LCD_DISP_ON);
     lcd_gotoxy(7,0);
