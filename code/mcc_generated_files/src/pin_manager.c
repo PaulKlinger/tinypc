@@ -63,7 +63,7 @@ void PIN_MANAGER_Initialize()
 	    // <PORT_ISC_FALLING_gc"> Sense Falling Edge
 	    // <PORT_ISC_INPUT_DISABLE_gc"> Digital Input Buffer disabled
 	    // <PORT_ISC_LEVEL_gc"> Sense low Level
-	    PORT_ISC_FALLING_gc);
+	    PORT_ISC_BOTHEDGES_gc);
 
 	IO_PB2_set_dir(
 	    // <y> Pin direction
@@ -143,7 +143,7 @@ void PIN_MANAGER_Initialize()
 	    // <PORT_ISC_FALLING_gc"> Sense Falling Edge
 	    // <PORT_ISC_INPUT_DISABLE_gc"> Digital Input Buffer disabled
 	    // <PORT_ISC_LEVEL_gc"> Sense low Level
-	    PORT_ISC_FALLING_gc);
+	    PORT_ISC_BOTHEDGES_gc);
 
 	IO_PA4_set_dir(
 	    // <y> Pin direction
@@ -183,7 +183,7 @@ void PIN_MANAGER_Initialize()
 	    // <PORT_ISC_FALLING_gc"> Sense Falling Edge
 	    // <PORT_ISC_INPUT_DISABLE_gc"> Digital Input Buffer disabled
 	    // <PORT_ISC_LEVEL_gc"> Sense low Level
-	    PORT_ISC_FALLING_gc);
+	    PORT_ISC_BOTHEDGES_gc);
 
 	IO_PA3_set_dir(
 	    // <y> Pin direction
@@ -223,7 +223,7 @@ void PIN_MANAGER_Initialize()
 	    // <PORT_ISC_FALLING_gc"> Sense Falling Edge
 	    // <PORT_ISC_INPUT_DISABLE_gc"> Digital Input Buffer disabled
 	    // <PORT_ISC_LEVEL_gc"> Sense low Level
-	    PORT_ISC_FALLING_gc);
+	    PORT_ISC_BOTHEDGES_gc);
 
 	IO_PA5_set_dir(
 	    // <y> Pin direction
@@ -263,7 +263,7 @@ void PIN_MANAGER_Initialize()
 	    // <PORT_ISC_FALLING_gc"> Sense Falling Edge
 	    // <PORT_ISC_INPUT_DISABLE_gc"> Digital Input Buffer disabled
 	    // <PORT_ISC_LEVEL_gc"> Sense low Level
-	    PORT_ISC_FALLING_gc);
+	    PORT_ISC_BOTHEDGES_gc);
 
 	IO_PB1_set_dir(
 	    // <y> Pin direction

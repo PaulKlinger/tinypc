@@ -22,6 +22,7 @@
           <itemPath>mcc_generated_files/include/rstctrl.h</itemPath>
           <itemPath>mcc_generated_files/include/slpctrl.h</itemPath>
           <itemPath>mcc_generated_files/include/protected_io.h</itemPath>
+          <itemPath>mcc_generated_files/include/rtc.h</itemPath>
         </logicalFolder>
         <logicalFolder name="utils" displayName="utils" projectFiles="true">
           <logicalFolder name="assembler" displayName="assembler" projectFiles="true">
@@ -63,6 +64,7 @@
           <itemPath>mcc_generated_files/src/system.c</itemPath>
           <itemPath>mcc_generated_files/src/slpctrl.c</itemPath>
           <itemPath>mcc_generated_files/src/bod.c</itemPath>
+          <itemPath>mcc_generated_files/src/rtc.c</itemPath>
         </logicalFolder>
         <itemPath>mcc_generated_files/mcc.c</itemPath>
         <itemPath>mcc_generated_files/driver_isr.c</itemPath>

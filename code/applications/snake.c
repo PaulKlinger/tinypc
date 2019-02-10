@@ -152,7 +152,7 @@ void run_snake() {
             lcd_puts(points_str);
             lcd_puts(" points\r\n\r\n");
             lcd_gotoxy(3,5);
-            lcd_puts("(press to continue)");
+            lcd_puts("(press to return)");
             lcd_display();
             wait_for_button();
             return;

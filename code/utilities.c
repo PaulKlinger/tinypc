@@ -15,26 +15,38 @@ void display_4x4_block(uint8_t x, uint8_t y) {
     lcd_display_block(x*4, y/2, 4);
 }
 
+volatile static uint16_t last_input_event;
+
+ISR(RTC_CNT_vect)
+{
+    /* Insert your RTC CMPI/OVF handling code here */
+    last_input_event = 0;
+    /* The interrupt flag has to be cleared manually */
+    RTC.INTFLAGS = RTC_CMP_bm;;
+}
+
 ISR(PORTA_PORT_vect)
 {  
-    /* Insert your PORTA interrupt handling code here */
-    if (!IO_PA4_get_level()){
-        last_joystick_direction = RIGHT;
-        joystick_flag = true;
-    } else if (!IO_PA5_get_level()){
-        last_joystick_direction = LEFT;
-        joystick_flag = true;
-    } else if (!IO_PA2_get_level()) {
-        last_joystick_direction = UP;
-        joystick_flag = true;
-    } else if (!IO_PA3_get_level()) {
-        last_joystick_direction = DOWN;
-        joystick_flag = true;
+    if (RTC.CNT - last_input_event > 50 /*ms*/) {
+        if (!IO_PA4_get_level()){
+            last_joystick_direction = RIGHT;
+            joystick_flag = true;
+        } else if (!IO_PA5_get_level()){
+            last_joystick_direction = LEFT;
+            joystick_flag = true;
+        } else if (!IO_PA2_get_level()) {
+            last_joystick_direction = UP;
+            joystick_flag = true;
+        } else if (!IO_PA3_get_level()) {
+            last_joystick_direction = DOWN;
+            joystick_flag = true;
+        }
+
+        if (!IO_PA1_get_level()) {
+            button_flag = true;
+        }
     }
-    
-    if (!IO_PA1_get_level()) {
-        button_flag = true;
-    }
+    last_input_event = RTC.CNT;
     
     /* Clear interrupt flags */
     VPORTA.INTFLAGS = 0xff;

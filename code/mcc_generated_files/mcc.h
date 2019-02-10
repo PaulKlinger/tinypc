@@ -34,8 +34,9 @@ extern "C" {
 #include "include/clkctrl.h"
 #include "include/slpctrl.h"
 #include "include/wdt.h"
-#include "include/cpuint.h"
 #include "include/bod.h"
+#include "include/cpuint.h"
+#include "include/rtc.h"
 
 /**
  * Initializes MCU, drivers and middleware in the project

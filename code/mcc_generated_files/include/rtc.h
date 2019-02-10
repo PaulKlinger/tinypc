@@ -21,19 +21,24 @@
     SOFTWARE.
 */
 
-#include "mcc.h"
+#ifndef RTC_H_INCLUDED
+#define RTC_H_INCLUDED
+
+#include "../utils/compiler.h"
+#include "../utils/utils_assert.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
- * Initializes MCU, drivers and middleware in the project
-**/
-void SYSTEM_Initialize(void)
-{
-    mcu_init();
-    PIN_MANAGER_Initialize();
-    SLPCTRL_init();
-    BOD_init();
-    WDT_init();
-    CLKCTRL_init();
-    RTC_0_init();
-    CPUINT_init();
+ * \brief Initialize rtc interface
+ * \return Initialization status.
+ */
+int8_t RTC_0_init();
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif /* RTC_H_INCLUDED */
