@@ -37,6 +37,7 @@ int8_t CPUINT_init()
     // CPUINT.LVL0PRI = 0 << CPUINT_LVL0PRI_gp; /* Interrupt Level Priority: 0 */
     // CPUINT.LVL1VEC = 0 << CPUINT_LVL1VEC_gp; /* Interrupt Vector with High Priority: 0 */
            
+    ENABLE_INTERRUPTS(); 
         
     return 0;
 }

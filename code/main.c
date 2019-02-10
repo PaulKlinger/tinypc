@@ -27,6 +27,8 @@ void draw_block(uint8_t x, uint8_t y) {
 
 typedef enum Direction {UP, RIGHT, DOWN, LEFT} Direction;
 
+static volatile Direction last_joystick_direction;
+
 static uint8_t snake_direction_circ_buffer[128];
 static uint16_t snake_head_buffer_index;
 static uint8_t snake_head_x;
@@ -144,8 +146,35 @@ void reset_snake() {
     lcd_display();
 }
 
+
+ISR(PORTA_PORT_vect)
+{  
+    /* Insert your PORTA interrupt handling code here */
+    if (!IO_PA4_get_level()){
+        last_joystick_direction = RIGHT;
+    } else if (!IO_PA5_get_level()){
+        last_joystick_direction = LEFT;
+    } else if (!IO_PA2_get_level()) {
+        last_joystick_direction = UP;
+    } else if (!IO_PA3_get_level()) {
+        last_joystick_direction = DOWN;
+    }
+    
+    /* Clear interrupt flags */
+    VPORTA.INTFLAGS = 0xff;
+}
+
+static inline bool button_pressed(){
+    return !IO_PA1_get_level();
+}
+
+void wait_for_button() {
+    while (!button_pressed());
+}
+
 int main(void) {
     SYSTEM_Initialize();
+    last_joystick_direction = RIGHT; // a bit hacky...
     set_led(0,255,0);
     lcd_init(LCD_DISP_ON);
     lcd_gotoxy(7,0);
@@ -156,7 +185,7 @@ int main(void) {
     lcd_puts("by Paul Klinger");
     
     lcd_display();
-    while(IO_PA1_get_level()); // wait for center button press
+    wait_for_button();
     
     uint8_t snake_prev_tail_x;
     uint8_t snake_prev_tail_y;
@@ -166,13 +195,13 @@ int main(void) {
     while (1) {
         snake_prev_tail_x = snake_tail_x;
         snake_prev_tail_y = snake_tail_y;
-        if (!IO_PA4_get_level() && snake_dir != LEFT){
+        if (last_joystick_direction == RIGHT && snake_dir != LEFT){
             snake_dir = RIGHT;
-        } else if (!IO_PA5_get_level() && snake_dir != RIGHT){
+        } else if (last_joystick_direction == LEFT && snake_dir != RIGHT){
             snake_dir = LEFT;
-        } else if (!IO_PA2_get_level() && snake_dir != DOWN) {
+        } else if (last_joystick_direction == UP && snake_dir != DOWN) {
             snake_dir = UP;
-        } else if (!IO_PA3_get_level() && snake_dir != UP) {
+        } else if (last_joystick_direction == DOWN && snake_dir != UP) {
             snake_dir = DOWN;
         }
         move_snake(snake_dir);
@@ -193,7 +222,7 @@ int main(void) {
             lcd_gotoxy(3,5);
             lcd_puts("(press to restart)");
             lcd_display();
-            while(IO_PA1_get_level()); // wait for center button press
+            wait_for_button();
             reset_snake();
         }
         lcd_clear_buffer();
