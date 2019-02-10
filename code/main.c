@@ -64,8 +64,8 @@ void show_menu() {
     Menu menu = {
         .length=2, .selected_index=0,
         .entries={
-            {"snake", &run_snake},
-            {"gol", &run_gol}
+            {"Snake", &run_snake},
+            {"Game of Life", &run_gol}
         }
     };
     display_menu(&menu);

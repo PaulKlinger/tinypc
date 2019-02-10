@@ -59,5 +59,6 @@ ISR(RTC_PIT_vect)
 
 
 void wait_for_button() {
+    while (button_pressed);
     while (!button_pressed);
 }
