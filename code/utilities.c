@@ -20,12 +20,20 @@ ISR(PORTA_PORT_vect)
     /* Insert your PORTA interrupt handling code here */
     if (!IO_PA4_get_level()){
         last_joystick_direction = RIGHT;
+        joystick_flag = true;
     } else if (!IO_PA5_get_level()){
         last_joystick_direction = LEFT;
+        joystick_flag = true;
     } else if (!IO_PA2_get_level()) {
         last_joystick_direction = UP;
+        joystick_flag = true;
     } else if (!IO_PA3_get_level()) {
         last_joystick_direction = DOWN;
+        joystick_flag = true;
+    }
+    
+    if (!IO_PA1_get_level()) {
+        button_flag = true;
     }
     
     /* Clear interrupt flags */

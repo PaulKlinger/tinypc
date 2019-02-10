@@ -40,11 +40,6 @@ void set_snake_direction(SnakeGamestate *gs, uint16_t i, Direction direction) {
   gs->direction_circ_buffer[i/4] |= direction << (i%4)*2; // set to direction
 }
 
-uint16_t modulo(uint16_t x,uint16_t N){
-    // correct behavior for negative x: modulo(-1, 8)=7
-    return (x % N + N) %N;
-}
-
 void draw_snake(SnakeGamestate *gs) {
     uint16_t i = gs->head_buffer_index;
     uint16_t rem_length = gs->length;
@@ -55,7 +50,7 @@ void draw_snake(SnakeGamestate *gs) {
             gs->tail_x = x;
             gs->tail_y = y;
         }
-        i = modulo(i,512);
+        i = i % 512;
         draw_block(x, y);
         switch (get_snake_direction(gs, i)) {
             // opposite directions because we are going backwards
@@ -64,15 +59,15 @@ void draw_snake(SnakeGamestate *gs) {
             case LEFT: {x++;break;};
             case RIGHT: {x--;break;};
         }
-        y = modulo(y,16);
-        x = modulo(x,32);
+        y = y % 16;
+        x = x % 32;
         i--;
         rem_length--;
     }
 }
 
 void move_snake(SnakeGamestate *gs) {
-    gs->head_buffer_index = modulo(gs->head_buffer_index + 1, 512);
+    gs->head_buffer_index = (gs->head_buffer_index + 1) % 512;
     set_snake_direction(gs, gs->head_buffer_index, gs->snake_dir);
     switch (gs->snake_dir) {
         case DOWN:
@@ -88,8 +83,8 @@ void move_snake(SnakeGamestate *gs) {
             gs->head_x++;
             break;
     }
-    gs->head_x = modulo(gs->head_x, 32);
-    gs->head_y = modulo(gs->head_y, 16);
+    gs->head_x = gs->head_x % 32;
+    gs->head_y = gs->head_y % 16;
 }
 
 void roll_food_position(SnakeGamestate *gs) {
@@ -157,10 +152,10 @@ void run_snake() {
             lcd_puts(points_str);
             lcd_puts(" points\r\n\r\n");
             lcd_gotoxy(3,5);
-            lcd_puts("(press to restart)");
+            lcd_puts("(press to continue)");
             lcd_display();
             wait_for_button();
-            reset_snake(&snake_state);
+            return;
         }
         lcd_clear_buffer();
         draw_snake(&snake_state);
