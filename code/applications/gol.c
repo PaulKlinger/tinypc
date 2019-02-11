@@ -9,27 +9,27 @@
 #define width 64
 #define byte_width 8
 
-bool get_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
+static bool get_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
     return board[y][x / 8] & (1 << (x % 8));
 }
 
-bool set_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
+static bool set_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
     return board[y][x / 8] |= (1 << (x % 8));
 }
 
-bool unset_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
+static bool unset_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
     return board[y][x / 8] &= ~(1 << (x % 8));
 }
 
-bool get_cell_from_buffer(uint8_t x, uint8_t y) {
+static bool get_cell_from_buffer(uint8_t x, uint8_t y) {
     return lcd_check_buffer(x*2, y*2);
 }
 
-void draw_cell(uint8_t x, uint8_t y) {
+static void draw_cell(uint8_t x, uint8_t y) {
     lcd_fillRect(x*2, y*2, x*2+1, y*2+1, 1);
 }
 
-void display_board(uint8_t board[height][byte_width]) {
+static void display_board(uint8_t board[height][byte_width]) {
     lcd_clear_buffer();
     for (uint8_t y=0; y<height;y++){
         for (uint8_t x=0; x<width;x++){
@@ -39,10 +39,6 @@ void display_board(uint8_t board[height][byte_width]) {
         };
     };
     lcd_display();
-}
-
-int8_t modulo(int8_t a, int8_t b){
-    return (a%b+b)%b;
 }
 
 void update_board(uint8_t board[height][byte_width]) {
@@ -84,7 +80,6 @@ void run_gol() {
         }
         display_board(board);
         update_board(board);
-        //_delay_ms(50);
         if (button_pressed && ! wait_for_release) {
             return;
         }

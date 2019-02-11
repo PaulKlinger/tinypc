@@ -21,26 +21,26 @@ typedef struct {
     Direction snake_dir;
 } SnakeGamestate;
 
-void draw_block(uint8_t x, uint8_t y) {
+static void draw_block(uint8_t x, uint8_t y) {
     lcd_fillRect(x*4, y*4, x*4+3, y*4+3, 1);
 }
 
-void draw_food(SnakeGamestate *gs){
+static void draw_food(SnakeGamestate *gs){
     lcd_fillRect(gs->food_x*4+1, gs->food_y*4+1,
                  gs->food_x*4+2, gs->food_y*4+2, 1);
 }
 
 
-Direction get_snake_direction(SnakeGamestate *gs, uint16_t i) {
+static Direction get_snake_direction(SnakeGamestate *gs, uint16_t i) {
     return (gs->direction_circ_buffer[i/4] >> (i%4)*2) & 0b00000011;
 }
 
-void set_snake_direction(SnakeGamestate *gs, uint16_t i, Direction direction) {
+static void set_snake_direction(SnakeGamestate *gs, uint16_t i, Direction direction) {
   gs->direction_circ_buffer[i/4] &= ~(0b00000011 << (i%4)*2); // set to zero
   gs->direction_circ_buffer[i/4] |= direction << (i%4)*2; // set to direction
 }
 
-void draw_snake(SnakeGamestate *gs) {
+static void draw_snake(SnakeGamestate *gs) {
     uint16_t i = gs->head_buffer_index;
     uint16_t rem_length = gs->length;
     uint8_t x = gs->head_x;
@@ -66,7 +66,7 @@ void draw_snake(SnakeGamestate *gs) {
     }
 }
 
-void move_snake(SnakeGamestate *gs) {
+static void move_snake(SnakeGamestate *gs) {
     gs->head_buffer_index = (gs->head_buffer_index + 1) % 512;
     set_snake_direction(gs, gs->head_buffer_index, gs->snake_dir);
     switch (gs->snake_dir) {
@@ -87,20 +87,20 @@ void move_snake(SnakeGamestate *gs) {
     gs->head_y = gs->head_y % 16;
 }
 
-void roll_food_position(SnakeGamestate *gs) {
+static void roll_food_position(SnakeGamestate *gs) {
     do {
         gs->food_x = rand() % 32;
         gs->food_y = rand() % 16;
     } while (lcd_check_buffer(gs->food_x*4 + 2, gs->food_y*4 + 2));
 }
 
-void set_led_from_length(uint16_t length) {
+static void set_led_from_length(uint16_t length) {
     uint8_t r = fdim(200, (100.0-length)/200);
     uint8_t g = fmin(255, length*3);
     set_led(r, g, 0);
 }
 
-void reset_snake(SnakeGamestate *gs) {
+static void reset_snake(SnakeGamestate *gs) {
     last_joystick_direction = RIGHT;
     gs->length = 1;
     gs->head_x = 0;
