@@ -44,6 +44,14 @@ static void draw_blocks(uint8_t *block_status) {
     }
 }
 
+static void display_block(uint8_t block_id) {
+    struct BlockCoords coords = calc_block_coords(block_id);
+    lcd_display_block(coords.x1, coords.y1/8, 20);
+    if (coords.y2/8 != coords.y1/8) {
+        lcd_display_block(coords.x1, coords.y2/8, 20);
+    }
+};
+
 typedef struct {
     float x, y, vx, vy;
     // for partial display updates
@@ -103,12 +111,39 @@ static void wall_collision(Ball *ball) {
     }
 }
 
+static inline bool ball_intersects_block(Ball *ball, struct BlockCoords coords) {
+    return ball->x + ball_radius > coords.x1
+            && ball->x - ball_radius < coords.x2 
+            && ball->y + ball_radius > coords.y1
+            && ball->y - ball_radius < coords.y2;
+}
+
 static void block_collision(Ball *ball, uint8_t *block_status) {
     struct BlockCoords coords;
     for (uint8_t i=0; i < num_blocks; i++) {
         if (get_block_status(i, block_status)) {
             coords = calc_block_coords(i);
-            //TODO: actually handle collision
+            if (ball_intersects_block(ball, coords)) {
+                destroy_block(i, block_status);
+                
+                // move backwards slowly until we don't intersect anymore
+                do {
+                    ball->x -= ball->vx / 10;
+                    ball->y -= ball->vy / 10;
+                } while (ball_intersects_block(ball, coords));
+                
+                // if we are right or left the block we hit the sides
+                if (ball->x - ball_radius > coords.x2 
+                        || ball->x + ball_radius < coords.x1) {
+                    ball->vx *= -1;
+                }
+                // if we are below or above the block we hit the bottom/top
+                // both happen if we exactly hit the corner
+                if (ball->y - ball_radius > coords.y2 
+                        || ball->y + ball_radius < coords.y1) {
+                    ball->vy *= -1;
+                }
+            }
         }
     }
 }
@@ -127,7 +162,9 @@ static void move_ball(Ball *ball) {
 
 void run_breakout() {
     uint8_t block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
+    uint8_t prev_block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
     memset(&block_status, 0xFF, num_blocks / 8 + (num_blocks % 8 ? 1 : 0));
+    memset(&prev_block_status, 0x00, num_blocks / 8 + (num_blocks % 8 ? 1 : 0));
     
     Ball ball = {.x = DISPLAY_WIDTH/2, .y = (DISPLAY_HEIGHT - 4), .vx = 3, .vy = -10};
     normalize_ball_v(&ball);
@@ -140,13 +177,20 @@ void run_breakout() {
     while (button_pressed);
     lcd_clear_buffer();
     lcd_display();
-    while (!button_pressed) { 
+    while (!button_pressed) {
         lcd_clear_buffer();
         move_ball(&ball);
         handle_collisions(&ball, block_status);
-        //draw_blocks(block_status);
+        draw_blocks(block_status);
         draw_ball(&ball);
         display_ball(&ball);
+        for (uint8_t i=0; i < num_blocks; i++) {
+            if (get_block_status(i, block_status) != 
+                    get_block_status(i, prev_block_status)) {
+                display_block(i);
+            }
+        }
         _delay_ms(16);
+        memcpy(prev_block_status, block_status, sizeof(prev_block_status));
     }
 }
