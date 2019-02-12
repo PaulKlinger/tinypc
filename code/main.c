@@ -19,6 +19,7 @@
 #include "utilities.h"
 #include "applications/snake.h"
 #include "applications/gol.h"
+#include "applications/breakout.h"
 
 
 void show_launch_screen() {
@@ -62,10 +63,11 @@ void display_menu(Menu *menu) {
 
 void show_menu() {
     Menu menu = {
-        .length=2, .selected_index=0,
+        .length=3, .selected_index=0,
         .entries={
             {"Snake", &run_snake},
-            {"Game of Life", &run_gol}
+            {"Game of Life", &run_gol},
+            {"Breakout", &run_breakout}
         }
     };
     display_menu(&menu);

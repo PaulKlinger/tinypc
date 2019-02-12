@@ -4,6 +4,11 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="applications" projectFiles="true">
+        <itemPath>applications/breakout.h</itemPath>
+        <itemPath>applications/gol.h</itemPath>
+        <itemPath>applications/snake.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
@@ -42,9 +47,6 @@
       <itemPath>lcd.h</itemPath>
       <itemPath>light_ws2812.h</itemPath>
       <itemPath>ws2812_config.h</itemPath>
-      <itemPath>applications/snake.h</itemPath>
-      <itemPath>applications/gol.h</itemPath>
-      <itemPath>applications/breakout.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -53,6 +55,11 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="applications" projectFiles="true">
+        <itemPath>applications/gol.c</itemPath>
+        <itemPath>applications/breakout.c</itemPath>
+        <itemPath>applications/snake.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
@@ -74,9 +81,6 @@
       <itemPath>font.c</itemPath>
       <itemPath>lcd.c</itemPath>
       <itemPath>light_ws2812.c</itemPath>
-      <itemPath>applications/snake.c</itemPath>
-      <itemPath>applications/gol.c</itemPath>
-      <itemPath>applications/breakout.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
