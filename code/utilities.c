@@ -63,7 +63,3 @@ void wait_for_button() {
     while (!button_pressed);
 }
 
-int8_t modulo(int8_t a, int8_t b){
-    // correctly handle negative values
-    return (a%b+b)%b;
-}

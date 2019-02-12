@@ -41,7 +41,7 @@ static void display_board(uint8_t board[height][byte_width]) {
     lcd_display();
 }
 
-void update_board(uint8_t board[height][byte_width]) {
+static void update_board(uint8_t board[height][byte_width]) {
     uint8_t neighbors;
     for (int8_t y=0; y<height;y++){
         for (int8_t x=0; x<width;x++){

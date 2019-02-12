@@ -25,7 +25,10 @@ extern "C" {
     void display_4x4_block(uint8_t x, uint8_t y);
     void wait_for_button(void);
     
-    int8_t modulo(int8_t a, int8_t b);
+    static inline int8_t modulo(int8_t a, int8_t b){
+        // correctly handle negative values
+        return (a%b+b)%b;
+    }
 
 
 #ifdef	__cplusplus
