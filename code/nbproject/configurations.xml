@@ -44,6 +44,7 @@
       <itemPath>ws2812_config.h</itemPath>
       <itemPath>applications/snake.h</itemPath>
       <itemPath>applications/gol.h</itemPath>
+      <itemPath>applications/breakout.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -75,6 +76,7 @@
       <itemPath>light_ws2812.c</itemPath>
       <itemPath>applications/snake.c</itemPath>
       <itemPath>applications/gol.c</itemPath>
+      <itemPath>applications/breakout.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
