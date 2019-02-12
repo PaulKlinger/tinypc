@@ -43,6 +43,12 @@ static void display_board(uint8_t board[height][byte_width]) {
 
 static void update_board(uint8_t board[height][byte_width]) {
     uint8_t neighbors;
+    
+    // TODO: This section is actually performance critical
+    // (updates become seriously slow if modulo isn't inlined).
+    // Should optimize at some point to directly use board without
+    // get_cell_from_buffer.
+    
     for (int8_t y=0; y<height;y++){
         for (int8_t x=0; x<width;x++){
             neighbors = 0;
