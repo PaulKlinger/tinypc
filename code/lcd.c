@@ -483,7 +483,10 @@ uint8_t lcd_check_buffer(uint8_t x, uint8_t y) {
 }
 
 void lcd_display_block(uint8_t x, uint8_t line, uint8_t width) {
-    if ( x+width > (DISPLAY_WIDTH) || line > (DISPLAY_HEIGHT/8-1)) return;
+    if (line > (DISPLAY_HEIGHT/8-1) || x > DISPLAY_WIDTH - 1){return;}
+    if (x + width > DISPLAY_WIDTH - 1) {
+        width = DISPLAY_WIDTH - x - 1;
+    }
     lcd_goto_xpix_y(x,line);
     lcd_data(&displayBuffer[line][x], width);
 }
