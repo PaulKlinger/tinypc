@@ -229,15 +229,14 @@ static BreakoutGamestate init_gamestate() {
 
 void run_breakout() {
     BreakoutGamestate state = init_gamestate();
+    uint8_t points = 0; //state is reset across stages, but points carry over
     
     lcd_clear_buffer();
     draw_blocks(state.block_status);
     draw_ball(&state.ball);
     draw_paddle(state.paddle_x);
     lcd_display();
-    wait_for_button();
-    while (button_pressed);
-    uint8_t points = 0;
+    set_led_from_points(points, 3 * num_blocks);
     
     while (1) {
         lcd_clear_buffer();
@@ -268,8 +267,9 @@ void run_breakout() {
                 state.ball.speed *= ball_speed_increase_factor;
                 normalize_ball_v(&state.ball);
                 points++;
+                set_led_from_points(points, 3 * num_blocks);
                 if (points % num_blocks == 0) {
-                    lcd_gotoxy(2, DISPLAY_HEIGHT/8 - 3);
+                    lcd_gotoxy(6, DISPLAY_HEIGHT/8 - 3);
                     lcd_puts("next stage");
                     lcd_display();
                     wait_for_button();

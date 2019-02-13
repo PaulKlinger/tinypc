@@ -95,9 +95,7 @@ static void roll_food_position(SnakeGamestate *gs) {
 }
 
 static void set_led_from_length(uint16_t length) {
-    uint8_t r = fdim(200, (100.0-length)/200);
-    uint8_t g = fmin(255, length*3);
-    set_led(r, g, 0);
+    set_led_from_points(length, 100);
 }
 
 static void reset_snake(SnakeGamestate *gs) {

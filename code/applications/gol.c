@@ -31,14 +31,17 @@ static void draw_cell(uint8_t x, uint8_t y) {
 
 static void display_board(uint8_t board[height][byte_width]) {
     lcd_clear_buffer();
+    uint16_t live_cells = 0;
     for (uint8_t y=0; y<height;y++){
         for (uint8_t x=0; x<width;x++){
             if (get_cell(board, x, y)){
                 draw_cell(x,y);
+                live_cells++;
             }
         };
     };
     lcd_display();
+    set_led_from_points(live_cells, height * width / 2);
 }
 
 static void update_board(uint8_t board[height][byte_width]) {
