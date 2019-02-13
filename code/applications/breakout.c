@@ -5,14 +5,14 @@
 #include "../lcd.h"
 #include "../utilities.h"
 
-#define num_blocks 18
+#define num_blocks 24
 #define initial_ball_speed 1 // speed of ball / frame
-#define ball_speed_increase_factor 1.075 // factor speed increases by each block
+#define ball_speed_increase_factor 1.04 // factor speed increases by each block
 #define ball_radius 2.5
 #define ball_int_radius 2
 #define paddle_width 25
 #define paddle_height 3
-#define paddle_speed 4
+#define paddle_speed 3.5
 
 static bool get_block_status(uint8_t block_id, uint8_t *block_status) {
     return block_status[block_id / 8] & (1 << (block_id % 8));
@@ -199,8 +199,8 @@ static void draw_display_paddle(float paddle_x){
     uint8_t xmin = round(paddle_x) - (paddle_width - 1) / 2;
     lcd_fillRect(xmin, DISPLAY_HEIGHT - 1 - paddle_height,
                  xmin + paddle_width, DISPLAY_HEIGHT - 1, 1);
-    lcd_display_block(xmin < round(paddle_speed) ? 0 : xmin - round(paddle_speed),
-                      DISPLAY_HEIGHT / 8 - 1, paddle_width + 1 + 2 * round(paddle_speed));
+    lcd_display_block(xmin < ceil(paddle_speed) ? 0 : xmin - ceil(paddle_speed),
+                      DISPLAY_HEIGHT / 8 - 1, paddle_width + 1 + 2 * ceil(paddle_speed));
 }
 
 void run_breakout() {
