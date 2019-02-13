@@ -9,6 +9,8 @@
 #define ball_speed 1 // speed of ball / frame
 #define ball_radius 2.5
 #define ball_int_radius 2
+#define paddle_width 25
+#define paddle_speed 2
 
 static bool get_block_status(uint8_t block_id, uint8_t *block_status) {
     return block_status[block_id / 8] & (1 << (block_id % 8));
@@ -160,6 +162,14 @@ static void move_ball(Ball *ball) {
     ball->y += ball->vy;
 }
 
+static void draw_display_paddle(float paddle_x){
+    uint8_t xmin = round(paddle_x) - (paddle_width - 1) / 2;
+    lcd_fillRect(xmin, DISPLAY_HEIGHT - 4,
+                 xmin + paddle_width, DISPLAY_HEIGHT - 1, 1);
+    lcd_display_block(xmin < paddle_speed ? 0 : xmin - paddle_speed,
+                      DISPLAY_HEIGHT / 8 - 1, paddle_width + 1 + 2 * paddle_speed);
+}
+
 void run_breakout() {
     uint8_t block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
     uint8_t prev_block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
@@ -168,6 +178,8 @@ void run_breakout() {
     
     Ball ball = {.x = DISPLAY_WIDTH/2, .y = (DISPLAY_HEIGHT - 4), .vx = 3, .vy = -10};
     normalize_ball_v(&ball);
+    
+    float paddle_x = DISPLAY_WIDTH / 2;
     
     lcd_clear_buffer();
     draw_blocks(block_status);
@@ -179,6 +191,13 @@ void run_breakout() {
     lcd_display();
     while (!button_pressed) {
         lcd_clear_buffer();
+        if (joystick_pressed && last_joystick_direction == LEFT 
+            && round(paddle_x) > (paddle_width - 1)/2 + paddle_speed) {
+            paddle_x -= paddle_speed;
+        } else if (joystick_pressed && last_joystick_direction == RIGHT 
+            && round(paddle_x) < DISPLAY_WIDTH - 1 - (paddle_width - 1)/2 - paddle_speed) {
+            paddle_x += paddle_speed;
+        }
         move_ball(&ball);
         handle_collisions(&ball, block_status);
         draw_blocks(block_status);
@@ -190,6 +209,7 @@ void run_breakout() {
                 display_block(i);
             }
         }
+        draw_display_paddle(paddle_x);
         _delay_ms(16);
         memcpy(prev_block_status, block_status, sizeof(prev_block_status));
     }
