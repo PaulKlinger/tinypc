@@ -195,10 +195,13 @@ static void move_ball(Ball *ball) {
     ball->y += ball->vy;
 }
 
-static void draw_display_paddle(float paddle_x){
+static void draw_paddle(float paddle_x){
     uint8_t xmin = round(paddle_x) - (paddle_width - 1) / 2;
     lcd_fillRect(xmin, DISPLAY_HEIGHT - 1 - paddle_height,
                  xmin + paddle_width, DISPLAY_HEIGHT - 1, 1);
+}
+static void display_paddle(float paddle_x) {
+    uint8_t xmin = round(paddle_x) - (paddle_width - 1) / 2;
     lcd_display_block(xmin < ceil(paddle_speed) ? 0 : xmin - ceil(paddle_speed),
                       DISPLAY_HEIGHT / 8 - 1, paddle_width + 1 + 2 * ceil(paddle_speed));
 }
@@ -218,8 +221,8 @@ void run_breakout() {
     lcd_clear_buffer();
     draw_blocks(block_status);
     draw_ball(&ball);
+    draw_paddle(paddle_x);
     lcd_display();
-    draw_display_paddle(paddle_x);
     wait_for_button();
     while (button_pressed);
     uint8_t points = 0;
@@ -242,6 +245,7 @@ void run_breakout() {
         
         draw_blocks(block_status);
         draw_ball(&ball);
+        draw_paddle(paddle_x);
         display_ball(&ball);
         for (uint8_t i=0; i < num_blocks; i++) {
             if (get_block_status(i, block_status) != 
@@ -253,7 +257,7 @@ void run_breakout() {
                 points++;
             }
         }
-        draw_display_paddle(paddle_x);
+        display_paddle(paddle_x);
         _delay_ms(16);
         memcpy(prev_block_status, block_status, sizeof(prev_block_status));
     }
