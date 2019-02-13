@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=mcc_generated_files/src/pin_manager.c mcc_generated_files/src/cpuint.c mcc_generated_files/src/wdt.c mcc_generated_files/src/protected_io.S mcc_generated_files/src/clkctrl.c mcc_generated_files/src/system.c mcc_generated_files/src/slpctrl.c mcc_generated_files/src/bod.c mcc_generated_files/src/rtc.c mcc_generated_files/mcc.c mcc_generated_files/driver_isr.c mcc_generated_files/device_config.c font.c lcd.c light_ws2812.c applications/snake.c applications/gol.c main.c utilities.c applications/breakout.c
+SOURCEFILES_QUOTED_IF_SPACED=applications/gol.c applications/breakout.c applications/snake.c mcc_generated_files/src/pin_manager.c mcc_generated_files/src/cpuint.c mcc_generated_files/src/wdt.c mcc_generated_files/src/protected_io.S mcc_generated_files/src/clkctrl.c mcc_generated_files/src/system.c mcc_generated_files/src/slpctrl.c mcc_generated_files/src/bod.c mcc_generated_files/src/rtc.c mcc_generated_files/mcc.c mcc_generated_files/driver_isr.c mcc_generated_files/device_config.c font.c lcd.c light_ws2812.c main.c utilities.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/mcc_generated_files/src/pin_manager.o ${OBJECTDIR}/mcc_generated_files/src/cpuint.o ${OBJECTDIR}/mcc_generated_files/src/wdt.o ${OBJECTDIR}/mcc_generated_files/src/protected_io.o ${OBJECTDIR}/mcc_generated_files/src/clkctrl.o ${OBJECTDIR}/mcc_generated_files/src/system.o ${OBJECTDIR}/mcc_generated_files/src/slpctrl.o ${OBJECTDIR}/mcc_generated_files/src/bod.o ${OBJECTDIR}/mcc_generated_files/src/rtc.o ${OBJECTDIR}/mcc_generated_files/mcc.o ${OBJECTDIR}/mcc_generated_files/driver_isr.o ${OBJECTDIR}/mcc_generated_files/device_config.o ${OBJECTDIR}/font.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/light_ws2812.o ${OBJECTDIR}/applications/snake.o ${OBJECTDIR}/applications/gol.o ${OBJECTDIR}/main.o ${OBJECTDIR}/utilities.o ${OBJECTDIR}/applications/breakout.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/mcc_generated_files/src/pin_manager.o.d ${OBJECTDIR}/mcc_generated_files/src/cpuint.o.d ${OBJECTDIR}/mcc_generated_files/src/wdt.o.d ${OBJECTDIR}/mcc_generated_files/src/protected_io.o.d ${OBJECTDIR}/mcc_generated_files/src/clkctrl.o.d ${OBJECTDIR}/mcc_generated_files/src/system.o.d ${OBJECTDIR}/mcc_generated_files/src/slpctrl.o.d ${OBJECTDIR}/mcc_generated_files/src/bod.o.d ${OBJECTDIR}/mcc_generated_files/src/rtc.o.d ${OBJECTDIR}/mcc_generated_files/mcc.o.d ${OBJECTDIR}/mcc_generated_files/driver_isr.o.d ${OBJECTDIR}/mcc_generated_files/device_config.o.d ${OBJECTDIR}/font.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/light_ws2812.o.d ${OBJECTDIR}/applications/snake.o.d ${OBJECTDIR}/applications/gol.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/utilities.o.d ${OBJECTDIR}/applications/breakout.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/applications/gol.o ${OBJECTDIR}/applications/breakout.o ${OBJECTDIR}/applications/snake.o ${OBJECTDIR}/mcc_generated_files/src/pin_manager.o ${OBJECTDIR}/mcc_generated_files/src/cpuint.o ${OBJECTDIR}/mcc_generated_files/src/wdt.o ${OBJECTDIR}/mcc_generated_files/src/protected_io.o ${OBJECTDIR}/mcc_generated_files/src/clkctrl.o ${OBJECTDIR}/mcc_generated_files/src/system.o ${OBJECTDIR}/mcc_generated_files/src/slpctrl.o ${OBJECTDIR}/mcc_generated_files/src/bod.o ${OBJECTDIR}/mcc_generated_files/src/rtc.o ${OBJECTDIR}/mcc_generated_files/mcc.o ${OBJECTDIR}/mcc_generated_files/driver_isr.o ${OBJECTDIR}/mcc_generated_files/device_config.o ${OBJECTDIR}/font.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/light_ws2812.o ${OBJECTDIR}/main.o ${OBJECTDIR}/utilities.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/applications/gol.o.d ${OBJECTDIR}/applications/breakout.o.d ${OBJECTDIR}/applications/snake.o.d ${OBJECTDIR}/mcc_generated_files/src/pin_manager.o.d ${OBJECTDIR}/mcc_generated_files/src/cpuint.o.d ${OBJECTDIR}/mcc_generated_files/src/wdt.o.d ${OBJECTDIR}/mcc_generated_files/src/protected_io.o.d ${OBJECTDIR}/mcc_generated_files/src/clkctrl.o.d ${OBJECTDIR}/mcc_generated_files/src/system.o.d ${OBJECTDIR}/mcc_generated_files/src/slpctrl.o.d ${OBJECTDIR}/mcc_generated_files/src/bod.o.d ${OBJECTDIR}/mcc_generated_files/src/rtc.o.d ${OBJECTDIR}/mcc_generated_files/mcc.o.d ${OBJECTDIR}/mcc_generated_files/driver_isr.o.d ${OBJECTDIR}/mcc_generated_files/device_config.o.d ${OBJECTDIR}/font.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/light_ws2812.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/utilities.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/mcc_generated_files/src/pin_manager.o ${OBJECTDIR}/mcc_generated_files/src/cpuint.o ${OBJECTDIR}/mcc_generated_files/src/wdt.o ${OBJECTDIR}/mcc_generated_files/src/protected_io.o ${OBJECTDIR}/mcc_generated_files/src/clkctrl.o ${OBJECTDIR}/mcc_generated_files/src/system.o ${OBJECTDIR}/mcc_generated_files/src/slpctrl.o ${OBJECTDIR}/mcc_generated_files/src/bod.o ${OBJECTDIR}/mcc_generated_files/src/rtc.o ${OBJECTDIR}/mcc_generated_files/mcc.o ${OBJECTDIR}/mcc_generated_files/driver_isr.o ${OBJECTDIR}/mcc_generated_files/device_config.o ${OBJECTDIR}/font.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/light_ws2812.o ${OBJECTDIR}/applications/snake.o ${OBJECTDIR}/applications/gol.o ${OBJECTDIR}/main.o ${OBJECTDIR}/utilities.o ${OBJECTDIR}/applications/breakout.o
+OBJECTFILES=${OBJECTDIR}/applications/gol.o ${OBJECTDIR}/applications/breakout.o ${OBJECTDIR}/applications/snake.o ${OBJECTDIR}/mcc_generated_files/src/pin_manager.o ${OBJECTDIR}/mcc_generated_files/src/cpuint.o ${OBJECTDIR}/mcc_generated_files/src/wdt.o ${OBJECTDIR}/mcc_generated_files/src/protected_io.o ${OBJECTDIR}/mcc_generated_files/src/clkctrl.o ${OBJECTDIR}/mcc_generated_files/src/system.o ${OBJECTDIR}/mcc_generated_files/src/slpctrl.o ${OBJECTDIR}/mcc_generated_files/src/bod.o ${OBJECTDIR}/mcc_generated_files/src/rtc.o ${OBJECTDIR}/mcc_generated_files/mcc.o ${OBJECTDIR}/mcc_generated_files/driver_isr.o ${OBJECTDIR}/mcc_generated_files/device_config.o ${OBJECTDIR}/font.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/light_ws2812.o ${OBJECTDIR}/main.o ${OBJECTDIR}/utilities.o
 
 # Source Files
-SOURCEFILES=mcc_generated_files/src/pin_manager.c mcc_generated_files/src/cpuint.c mcc_generated_files/src/wdt.c mcc_generated_files/src/protected_io.S mcc_generated_files/src/clkctrl.c mcc_generated_files/src/system.c mcc_generated_files/src/slpctrl.c mcc_generated_files/src/bod.c mcc_generated_files/src/rtc.c mcc_generated_files/mcc.c mcc_generated_files/driver_isr.c mcc_generated_files/device_config.c font.c lcd.c light_ws2812.c applications/snake.c applications/gol.c main.c utilities.c applications/breakout.c
+SOURCEFILES=applications/gol.c applications/breakout.c applications/snake.c mcc_generated_files/src/pin_manager.c mcc_generated_files/src/cpuint.c mcc_generated_files/src/wdt.c mcc_generated_files/src/protected_io.S mcc_generated_files/src/clkctrl.c mcc_generated_files/src/system.c mcc_generated_files/src/slpctrl.c mcc_generated_files/src/bod.c mcc_generated_files/src/rtc.c mcc_generated_files/mcc.c mcc_generated_files/driver_isr.c mcc_generated_files/device_config.c font.c lcd.c light_ws2812.c main.c utilities.c
 
 
 CFLAGS=
@@ -119,6 +119,24 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/applications/gol.o: applications/gol.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/applications" 
+	@${RM} ${OBJECTDIR}/applications/gol.o.d 
+	@${RM} ${OBJECTDIR}/applications/gol.o 
+	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614" -g -DDEBUG  -gdwarf-2  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/gol.o.d" -MT "${OBJECTDIR}/applications/gol.o.d" -MT ${OBJECTDIR}/applications/gol.o  -o ${OBJECTDIR}/applications/gol.o applications/gol.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/applications/breakout.o: applications/breakout.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/applications" 
+	@${RM} ${OBJECTDIR}/applications/breakout.o.d 
+	@${RM} ${OBJECTDIR}/applications/breakout.o 
+	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614" -g -DDEBUG  -gdwarf-2  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/breakout.o.d" -MT "${OBJECTDIR}/applications/breakout.o.d" -MT ${OBJECTDIR}/applications/breakout.o  -o ${OBJECTDIR}/applications/breakout.o applications/breakout.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/applications/snake.o: applications/snake.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/applications" 
+	@${RM} ${OBJECTDIR}/applications/snake.o.d 
+	@${RM} ${OBJECTDIR}/applications/snake.o 
+	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614" -g -DDEBUG  -gdwarf-2  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/snake.o.d" -MT "${OBJECTDIR}/applications/snake.o.d" -MT ${OBJECTDIR}/applications/snake.o  -o ${OBJECTDIR}/applications/snake.o applications/snake.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/mcc_generated_files/src/pin_manager.o: mcc_generated_files/src/pin_manager.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files/src" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/src/pin_manager.o.d 
@@ -203,18 +221,6 @@ ${OBJECTDIR}/light_ws2812.o: light_ws2812.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/light_ws2812.o 
 	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614" -g -DDEBUG  -gdwarf-2  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/light_ws2812.o.d" -MT "${OBJECTDIR}/light_ws2812.o.d" -MT ${OBJECTDIR}/light_ws2812.o  -o ${OBJECTDIR}/light_ws2812.o light_ws2812.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
-${OBJECTDIR}/applications/snake.o: applications/snake.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/applications" 
-	@${RM} ${OBJECTDIR}/applications/snake.o.d 
-	@${RM} ${OBJECTDIR}/applications/snake.o 
-	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614" -g -DDEBUG  -gdwarf-2  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/snake.o.d" -MT "${OBJECTDIR}/applications/snake.o.d" -MT ${OBJECTDIR}/applications/snake.o  -o ${OBJECTDIR}/applications/snake.o applications/snake.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/applications/gol.o: applications/gol.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/applications" 
-	@${RM} ${OBJECTDIR}/applications/gol.o.d 
-	@${RM} ${OBJECTDIR}/applications/gol.o 
-	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614" -g -DDEBUG  -gdwarf-2  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/gol.o.d" -MT "${OBJECTDIR}/applications/gol.o.d" -MT ${OBJECTDIR}/applications/gol.o  -o ${OBJECTDIR}/applications/gol.o applications/gol.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
-	
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
@@ -227,13 +233,25 @@ ${OBJECTDIR}/utilities.o: utilities.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/utilities.o 
 	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614" -g -DDEBUG  -gdwarf-2  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/utilities.o.d" -MT "${OBJECTDIR}/utilities.o.d" -MT ${OBJECTDIR}/utilities.o  -o ${OBJECTDIR}/utilities.o utilities.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
+else
+${OBJECTDIR}/applications/gol.o: applications/gol.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/applications" 
+	@${RM} ${OBJECTDIR}/applications/gol.o.d 
+	@${RM} ${OBJECTDIR}/applications/gol.o 
+	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614"  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/gol.o.d" -MT "${OBJECTDIR}/applications/gol.o.d" -MT ${OBJECTDIR}/applications/gol.o  -o ${OBJECTDIR}/applications/gol.o applications/gol.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/applications/breakout.o: applications/breakout.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/applications" 
 	@${RM} ${OBJECTDIR}/applications/breakout.o.d 
 	@${RM} ${OBJECTDIR}/applications/breakout.o 
-	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614" -g -DDEBUG  -gdwarf-2  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/breakout.o.d" -MT "${OBJECTDIR}/applications/breakout.o.d" -MT ${OBJECTDIR}/applications/breakout.o  -o ${OBJECTDIR}/applications/breakout.o applications/breakout.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614"  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/breakout.o.d" -MT "${OBJECTDIR}/applications/breakout.o.d" -MT ${OBJECTDIR}/applications/breakout.o  -o ${OBJECTDIR}/applications/breakout.o applications/breakout.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
-else
+${OBJECTDIR}/applications/snake.o: applications/snake.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/applications" 
+	@${RM} ${OBJECTDIR}/applications/snake.o.d 
+	@${RM} ${OBJECTDIR}/applications/snake.o 
+	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614"  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/snake.o.d" -MT "${OBJECTDIR}/applications/snake.o.d" -MT ${OBJECTDIR}/applications/snake.o  -o ${OBJECTDIR}/applications/snake.o applications/snake.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/mcc_generated_files/src/pin_manager.o: mcc_generated_files/src/pin_manager.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files/src" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/src/pin_manager.o.d 
@@ -318,18 +336,6 @@ ${OBJECTDIR}/light_ws2812.o: light_ws2812.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/light_ws2812.o 
 	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614"  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/light_ws2812.o.d" -MT "${OBJECTDIR}/light_ws2812.o.d" -MT ${OBJECTDIR}/light_ws2812.o  -o ${OBJECTDIR}/light_ws2812.o light_ws2812.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
-${OBJECTDIR}/applications/snake.o: applications/snake.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/applications" 
-	@${RM} ${OBJECTDIR}/applications/snake.o.d 
-	@${RM} ${OBJECTDIR}/applications/snake.o 
-	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614"  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/snake.o.d" -MT "${OBJECTDIR}/applications/snake.o.d" -MT ${OBJECTDIR}/applications/snake.o  -o ${OBJECTDIR}/applications/snake.o applications/snake.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/applications/gol.o: applications/gol.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/applications" 
-	@${RM} ${OBJECTDIR}/applications/gol.o.d 
-	@${RM} ${OBJECTDIR}/applications/gol.o 
-	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614"  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/gol.o.d" -MT "${OBJECTDIR}/applications/gol.o.d" -MT ${OBJECTDIR}/applications/gol.o  -o ${OBJECTDIR}/applications/gol.o applications/gol.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
-	
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
@@ -341,12 +347,6 @@ ${OBJECTDIR}/utilities.o: utilities.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/utilities.o.d 
 	@${RM} ${OBJECTDIR}/utilities.o 
 	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614"  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/utilities.o.d" -MT "${OBJECTDIR}/utilities.o.d" -MT ${OBJECTDIR}/utilities.o  -o ${OBJECTDIR}/utilities.o utilities.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/applications/breakout.o: applications/breakout.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/applications" 
-	@${RM} ${OBJECTDIR}/applications/breakout.o.d 
-	@${RM} ${OBJECTDIR}/applications/breakout.o 
-	 ${MP_CC}  $(MP_EXTRA_CC_PRE) -mmcu=attiny1614  -I "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\include"  -B "E:\Program Files (x86)\Microchip\MPLABX\v5.10\packs\Atmel\ATtiny_DFP\1.3.238\gcc\dev\attiny1614"  -x c -c -D__$(MP_PROCESSOR_OPTION)__  -funsigned-char -funsigned-bitfields -O2 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -MD -MP -MF "${OBJECTDIR}/applications/breakout.o.d" -MT "${OBJECTDIR}/applications/breakout.o.d" -MT ${OBJECTDIR}/applications/breakout.o  -o ${OBJECTDIR}/applications/breakout.o applications/breakout.c  -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
 endif
 

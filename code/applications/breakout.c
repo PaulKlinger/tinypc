@@ -6,13 +6,29 @@
 #include "../utilities.h"
 
 #define num_blocks 24
-#define initial_ball_speed 1 // speed of ball / frame
-#define ball_speed_increase_factor 1.04 // factor speed increases by each block
+#define initial_ball_speed 1.5 // speed of ball / frame
+#define ball_speed_increase_factor 1.025 // factor speed increases by each block
 #define ball_radius 2.5
 #define ball_int_radius 2
 #define paddle_width 25
 #define paddle_height 3
 #define paddle_speed 3.5
+
+
+typedef struct {
+    float x, y, vx, vy;
+    float speed;
+    // for partial display updates
+    // tline means topmost display line intersecting the ball
+    uint8_t prev_x, prev_tline; 
+} Ball;
+
+typedef struct {
+    Ball ball;
+    float paddle_x;
+    uint8_t block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
+    uint8_t prev_block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
+} BreakoutGamestate;
 
 static bool get_block_status(uint8_t block_id, uint8_t *block_status) {
     return block_status[block_id / 8] & (1 << (block_id % 8));
@@ -55,14 +71,6 @@ static void display_block(uint8_t block_id) {
         lcd_display_block(coords.x1, coords.y2/8, 20);
     }
 };
-
-typedef struct {
-    float x, y, vx, vy;
-    float speed;
-    // for partial display updates
-    // tline means topmost display line intersecting the ball
-    uint8_t prev_x, prev_tline; 
-} Ball;
 
 static void display_ball(Ball *ball) {
     // updating only one line when the ball lies completely on one 
@@ -206,60 +214,78 @@ static void display_paddle(float paddle_x) {
                       DISPLAY_HEIGHT / 8 - 1, paddle_width + 1 + 2 * ceil(paddle_speed));
 }
 
-void run_breakout() {
-    uint8_t block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
-    uint8_t prev_block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
-    memset(&block_status, 0xFF, num_blocks / 8 + (num_blocks % 8 ? 1 : 0));
-    memset(&prev_block_status, 0xFF, num_blocks / 8 + (num_blocks % 8 ? 1 : 0));
-    
+static BreakoutGamestate init_gamestate() {
     Ball ball = {.x = DISPLAY_WIDTH/2, .y = (DISPLAY_HEIGHT - 6),
                  .vx = 3, .vy = -10, .speed=1};
     normalize_ball_v(&ball);
+    BreakoutGamestate state;
+    state.ball = ball;
+    state.paddle_x = DISPLAY_WIDTH/2;
+    memset(&state.block_status, 0xFF, num_blocks / 8 + (num_blocks % 8 ? 1 : 0));
+    memset(&state.prev_block_status, 0xFF, num_blocks / 8 + (num_blocks % 8 ? 1 : 0));
     
-    float paddle_x = DISPLAY_WIDTH / 2;
+    return state;
+}
+
+void run_breakout() {
+    BreakoutGamestate state = init_gamestate();
     
     lcd_clear_buffer();
-    draw_blocks(block_status);
-    draw_ball(&ball);
-    draw_paddle(paddle_x);
+    draw_blocks(state.block_status);
+    draw_ball(&state.ball);
+    draw_paddle(state.paddle_x);
     lcd_display();
     wait_for_button();
     while (button_pressed);
     uint8_t points = 0;
     
-    while (!button_pressed) {
+    while (1) {
         lcd_clear_buffer();
         if (joystick_pressed && last_joystick_direction == LEFT 
-            && round(paddle_x) > (paddle_width - 1)/2 + paddle_speed) {
-            paddle_x -= paddle_speed;
+            && round(state.paddle_x) > (paddle_width - 1)/2 + paddle_speed) {
+            state.paddle_x -= paddle_speed;
         } else if (joystick_pressed && last_joystick_direction == RIGHT 
-            && round(paddle_x) < DISPLAY_WIDTH - 1 - (paddle_width - 1)/2 - paddle_speed) {
-            paddle_x += paddle_speed;
+            && round(state.paddle_x) < DISPLAY_WIDTH - 1 - (paddle_width - 1)/2 - paddle_speed) {
+            state.paddle_x += paddle_speed;
         }
-        move_ball(&ball);
-        handle_collisions(&ball, block_status, paddle_x);
+        move_ball(&state.ball);
+        handle_collisions(&state.ball, state.block_status, state.paddle_x);
         
-        if (bottom_collision(&ball)) {
+        if (bottom_collision(&state.ball)) {
             break;
         }
         
-        draw_blocks(block_status);
-        draw_ball(&ball);
-        draw_paddle(paddle_x);
-        display_ball(&ball);
+        draw_blocks(state.block_status);
+        draw_ball(&state.ball);
+        draw_paddle(state.paddle_x);
+        display_ball(&state.ball);
+        display_paddle(state.paddle_x);
         for (uint8_t i=0; i < num_blocks; i++) {
-            if (get_block_status(i, block_status) != 
-                    get_block_status(i, prev_block_status)) {
+            if (get_block_status(i, state.block_status) != 
+                    get_block_status(i, state.prev_block_status)) {
                 display_block(i);
                 // increase ball speed for each block hit
-                ball.speed *= ball_speed_increase_factor;
-                normalize_ball_v(&ball);
+                state.ball.speed *= ball_speed_increase_factor;
+                normalize_ball_v(&state.ball);
                 points++;
+                if (points % num_blocks == 0) {
+                    lcd_gotoxy(2, DISPLAY_HEIGHT/8 - 3);
+                    lcd_puts("next stage");
+                    lcd_display();
+                    wait_for_button();
+                    float old_speed = state.ball.speed;
+                    state = init_gamestate();
+                    state.ball.speed = old_speed;
+                    normalize_ball_v(&state.ball);
+                    lcd_clrscr();
+                    draw_blocks(state.block_status);
+                    lcd_display();
+                }
             }
         }
-        display_paddle(paddle_x);
         _delay_ms(16);
-        memcpy(prev_block_status, block_status, sizeof(prev_block_status));
+        memcpy(state.prev_block_status, state.block_status,
+                sizeof(state.prev_block_status));
     }
     show_game_over_screen(points);
 }
