@@ -1,4 +1,4 @@
-# TinyPC — A miniature gaming PC that plays snake
+# TinyPC — A miniature gaming PC
 
 
 [![](video_link_image.jpg)](https://youtu.be/5YFlxoUL-iw "Project video")
