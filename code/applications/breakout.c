@@ -257,14 +257,5 @@ void run_breakout() {
         _delay_ms(16);
         memcpy(prev_block_status, block_status, sizeof(prev_block_status));
     }
-    lcd_clear_buffer();
-    lcd_gotoxy(4, 3);
-    lcd_puts("Game Over!");
-    lcd_gotoxy(3, 5);
-    char points_str[3];
-    itoa(points, points_str, 10);
-    lcd_puts(points_str);
-    lcd_puts(" points");
-    lcd_display();
-    wait_for_button();
+    show_game_over_screen(points);
 }

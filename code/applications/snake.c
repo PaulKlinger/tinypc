@@ -143,18 +143,7 @@ void run_snake() {
             roll_food_position(&snake_state);
         } else if (lcd_check_buffer(snake_state.head_x * 4, snake_state.head_y*4)) {
             // food is only 2x2 pixel, so if the top left pix is set we've crashed
-            lcd_clear_buffer();
-            lcd_gotoxy(6,2);
-            lcd_puts("GAME OVER!\r\n");
-            char points_str[3];
-            itoa(snake_state.length, points_str, 10);
-            lcd_gotoxy(6,3);
-            lcd_puts(points_str);
-            lcd_puts(" points\r\n\r\n");
-            lcd_gotoxy(3,5);
-            lcd_puts("(press to return)");
-            lcd_display();
-            wait_for_button();
+            show_game_over_screen(snake_state.length);
             return;
         }
         lcd_clear_buffer();
