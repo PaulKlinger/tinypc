@@ -20,11 +20,11 @@
 #include "applications/snake.h"
 #include "applications/gol.h"
 #include "applications/breakout.h"
+#include "applications/mandelbrot.h"
 
 
 void show_launch_screen() {
     set_led(0,255,0);
-    lcd_init(LCD_DISP_ON);
     lcd_gotoxy(7,0);
     lcd_puts("~TinyPC~");
     lcd_gotoxy(3,3);
@@ -63,10 +63,11 @@ void display_menu(Menu *menu) {
 
 void show_menu() {
     Menu menu = {
-        .length=3, .selected_index=0,
+        .length=4, .selected_index=0,
         .entries={
             {"Snake", &run_snake},
             {"Game of Life", &run_gol},
+            {"Mandelbrot", &run_mandelbrot},
             {"Breakout", &run_breakout}
         }
     };
@@ -96,7 +97,7 @@ void show_menu() {
 
 int main(void) {
     SYSTEM_Initialize();
+    lcd_init(LCD_DISP_ON);
     show_launch_screen();
-    //run_snake();
     show_menu();
 }
