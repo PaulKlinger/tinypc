@@ -25,20 +25,20 @@
          <string>class com.microchip.mcc.mcu8.pinManager.PinManager</string>
       </entry>
       <entry>
-         <string>RSTCTRL</string>
-         <string>class com.microchip.mcc.mcu8.systemManager.rstctrl.RSTCTRL</string>
-      </entry>
-      <entry>
          <string>SLPCTRL</string>
          <string>class com.microchip.mcc.mcu8.systemManager.slpctrl.SLPCTRL</string>
       </entry>
       <entry>
-         <string>CLKCTRL</string>
-         <string>class com.microchip.mcc.mcu8.systemManager.clkctrl.CLKCTRL</string>
+         <string>RSTCTRL</string>
+         <string>class com.microchip.mcc.mcu8.systemManager.rstctrl.RSTCTRL</string>
       </entry>
       <entry>
          <string>Interrupt Manager</string>
          <string>class com.microchip.mcc.mcu8.interruptManager.InterruptManager</string>
+      </entry>
+      <entry>
+         <string>CLKCTRL</string>
+         <string>class com.microchip.mcc.mcu8.systemManager.clkctrl.CLKCTRL</string>
       </entry>
    </usedClasses>
    <usedLibraries class="java.util.ArrayList">
@@ -826,12 +826,12 @@
          <value>5</value>
       </entry>
       <entry>
-         <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="CLKCTRL" registerAlias="MCLKCTRLB" settingAlias="PDIV" alias="16X"/>
-         <value>3</value>
-      </entry>
-      <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="CPUINT" registerAlias="SREG" settingAlias="I" alias="enabled"/>
          <value>1</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="CLKCTRL" registerAlias="MCLKCTRLB" settingAlias="PDIV" alias="16X"/>
+         <value>3</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="CLKCTRL" registerAlias="MCLKLOCK"/>
@@ -1342,11 +1342,11 @@
          <value>1</value>
       </entry>
       <entry>
-         <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="System Module" registerAlias="BODCFG" settingAlias="ACTIVE" alias="DIS"/>
+         <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="CPUINT" registerAlias="CTRLA"/>
          <value>0</value>
       </entry>
       <entry>
-         <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="CPUINT" registerAlias="CTRLA"/>
+         <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="System Module" registerAlias="BODCFG" settingAlias="ACTIVE" alias="DIS"/>
          <value>0</value>
       </entry>
       <entry>
@@ -1738,12 +1738,12 @@
          <value>2</value>
       </entry>
       <entry>
-         <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="System Module" registerAlias="SYSCFG0" settingAlias="RSTPINCFG"/>
-         <value>UPDI</value>
-      </entry>
-      <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="CPUINT" registerAlias="CTRLA" settingAlias="IVSEL" alias="disabled"/>
          <value>0</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="System Module" registerAlias="SYSCFG0" settingAlias="RSTPINCFG"/>
+         <value>UPDI</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="VPORTA.INTFLAGS" settingAlias="INT"/>
@@ -3505,7 +3505,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\mcc.h</file>
-         <hash>6d16ebd3b62353eba3a765e2d9d1b3c16ccadc9beee4b3a95f22e2821e5f41d9</hash>
+         <hash>8db47d7c697e309298edafc06d464f9d1c1c50fe615fd86192aa6a02d703bd99</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\include\port.h</file>
@@ -3548,16 +3548,16 @@
          <hash>e21dad028cc8452f49f0377ea9155f429be8ee06c9bdf3b9c42f0dc7c4e2dbc7</hash>
       </entry>
       <entry>
+         <file>mcc_generated_files\include\slpctrl.h</file>
+         <hash>d0e4ec93f087c951ad77864b4e4e3d9fb0ac4081d005591fa551e669d90262d3</hash>
+      </entry>
+      <entry>
          <file>mcc_generated_files\include\rstctrl.h</file>
          <hash>a683d191f49cd21f445cd9cf76206d0e1808c5f2bd18cb77c8c5978573eedec0</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\include\cpuint.h</file>
          <hash>24cc3756c75c672b54559a90338782c1ac62b620869fa4d48046a551d3990fe1</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\include\slpctrl.h</file>
-         <hash>d0e4ec93f087c951ad77864b4e4e3d9fb0ac4081d005591fa551e669d90262d3</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\src\wdt.c</file>

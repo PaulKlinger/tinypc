@@ -8,6 +8,8 @@
         <itemPath>applications/breakout.h</itemPath>
         <itemPath>applications/gol.h</itemPath>
         <itemPath>applications/snake.h</itemPath>
+        <itemPath>applications/lander.h</itemPath>
+        <itemPath>applications/mandelbrot.h</itemPath>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
@@ -59,6 +61,8 @@
         <itemPath>applications/gol.c</itemPath>
         <itemPath>applications/breakout.c</itemPath>
         <itemPath>applications/snake.c</itemPath>
+        <itemPath>applications/lander.c</itemPath>
+        <itemPath>applications/mandelbrot.c</itemPath>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
