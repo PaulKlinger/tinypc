@@ -4,15 +4,17 @@
 #include "../lcd.h"
 #include "../utilities.h"
 
+#include <stdfix.h>
+
 #define init_scale 32 // pixels per unit
 
 typedef struct {
-    float re, im;
+     accum re, im;
 } Complexf;
 
 struct ScreenLoc {
     Complexf center;
-    float scale;
+    accum scale;
 };
 
 static inline Complexf csquare(Complexf z) {
@@ -35,8 +37,8 @@ static bool point_in_set(Complexf point) {
 }
 
 Complexf screen_to_coord(uint8_t x, uint8_t y, struct ScreenLoc *screen){
-    return (Complexf) {(x - (DISPLAY_WIDTH / 2.0)) / screen->scale + screen->center.re,
-                       (y - (DISPLAY_HEIGHT / 2.0)) / screen->scale + screen->center.im};
+    return (Complexf) {(x - (DISPLAY_WIDTH / 2.0K)) / screen->scale + screen->center.re,
+                       (y - (DISPLAY_HEIGHT / 2.0K)) / screen->scale + screen->center.im};
 }
 
 static void display_mandelbrot(struct ScreenLoc *screen) {
@@ -79,13 +81,13 @@ void run_mandelbrot(void) {
                 break;
             } else if (joystick_pressed) {
                 if (last_joystick_direction == LEFT) {
-                    screen.center.re -= 50.0 / screen.scale;
+                    screen.center.re -= 50.0K / screen.scale;
                 } else if (last_joystick_direction == RIGHT) {
-                    screen.center.re += 50.0 / screen.scale;
+                    screen.center.re += 50.0K / screen.scale;
                 } else if (last_joystick_direction == UP) {
-                    screen.center.im -= 25.0 / screen.scale;
+                    screen.center.im -= 25.0K / screen.scale;
                 } else if (last_joystick_direction == DOWN) {
-                    screen.center.im += 25.0 / screen.scale;
+                    screen.center.im += 25.0K / screen.scale;
                 }
                 break;
             }

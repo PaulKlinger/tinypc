@@ -4,20 +4,21 @@
 #include <string.h>
 #include "../lcd.h"
 #include "../utilities.h"
+#include <stdfix.h>
 
 #define num_blocks 24
-#define initial_ball_speed 1.5 // speed of ball / frame
-#define ball_speed_increase_factor 1.025 // factor speed increases by each block
-#define ball_radius 2.5
+#define initial_ball_speed 1.5K // speed of ball / frame
+#define ball_speed_increase_factor 1.025K // factor speed increases by each block
+#define ball_radius 2.5K
 #define ball_int_radius 2
 #define paddle_width 25
 #define paddle_height 3
-#define paddle_speed 3.5
+#define paddle_speed 3.5K
 
 
 typedef struct {
-    float x, y, vx, vy;
-    float speed;
+    accum x, y, vx, vy;
+    accum speed;
     // for partial display updates
     // tline means topmost display line intersecting the ball
     uint8_t prev_x, prev_tline; 
@@ -25,7 +26,7 @@ typedef struct {
 
 typedef struct {
     Ball ball;
-    float paddle_x;
+    accum paddle_x;
     uint8_t block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
     uint8_t prev_block_status[num_blocks / 8 + (num_blocks % 8 ? 1 : 0)];
 } BreakoutGamestate;
@@ -99,7 +100,7 @@ static void draw_ball(Ball *ball) {
 }
 
 static void normalize_ball_v(Ball *ball) {
-    float current_speed = sqrt(ball->vx * ball->vx + ball->vy * ball->vy);
+    accum current_speed = sqrt(ball->vx * ball->vx + ball->vy * ball->vy);
     ball->vx *= ball->speed / current_speed;
     ball->vy *= ball->speed / current_speed;
 }
@@ -164,7 +165,7 @@ static void block_collision(Ball *ball, uint8_t *block_status) {
     }
 }
 
-static struct BlockCoords calc_paddle_coords(float paddle_x) {
+static struct BlockCoords calc_paddle_coords(accum paddle_x) {
     struct BlockCoords ret;
     ret.x1 = round(paddle_x) - (paddle_width - 1) / 2;
     ret.y1 = DISPLAY_HEIGHT - 1 - paddle_height;
@@ -173,7 +174,7 @@ static struct BlockCoords calc_paddle_coords(float paddle_x) {
     return ret;
 }
 
-static void paddle_collision(Ball *ball, float paddle_x) {
+static void paddle_collision(Ball *ball, accum paddle_x) {
     struct BlockCoords paddle_coords = calc_paddle_coords(paddle_x);
     if (ball_intersects_block(ball, paddle_coords)) {
         do {
@@ -190,7 +191,7 @@ static void paddle_collision(Ball *ball, float paddle_x) {
     }
 }
 
-static void handle_collisions(Ball *ball, uint8_t *block_status, float paddle_x) {
+static void handle_collisions(Ball *ball, uint8_t *block_status, accum paddle_x) {
     wall_collision(ball);
     block_collision(ball, block_status);
     paddle_collision(ball, paddle_x);
@@ -203,12 +204,12 @@ static void move_ball(Ball *ball) {
     ball->y += ball->vy;
 }
 
-static void draw_paddle(float paddle_x){
+static void draw_paddle(accum paddle_x){
     uint8_t xmin = round(paddle_x) - (paddle_width - 1) / 2;
     lcd_fillRect(xmin, DISPLAY_HEIGHT - 1 - paddle_height,
                  xmin + paddle_width, DISPLAY_HEIGHT - 1, 1);
 }
-static void display_paddle(float paddle_x) {
+static void display_paddle(accum paddle_x) {
     uint8_t xmin = round(paddle_x) - (paddle_width - 1) / 2;
     lcd_display_block(xmin < ceil(paddle_speed) ? 0 : xmin - ceil(paddle_speed),
                       DISPLAY_HEIGHT / 8 - 1, paddle_width + 1 + 2 * ceil(paddle_speed));
@@ -273,7 +274,7 @@ void run_breakout() {
                     lcd_puts("next stage");
                     lcd_display();
                     wait_for_button();
-                    float old_speed = state.ball.speed;
+                    accum old_speed = state.ball.speed;
                     state = init_gamestate();
                     state.ball.speed = old_speed;
                     normalize_ball_v(&state.ball);
