@@ -449,6 +449,23 @@ void lcd_fillCircle(uint8_t center_x, uint8_t center_y, uint8_t radius, uint8_t 
         lcd_drawCircle(center_x, center_y, i, color);
     }
 }
+void lcd_fillTriangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
+                      uint8_t x3, uint8_t y3, uint8_t color) {
+    if(x1 > DISPLAY_WIDTH-1 || x2 > DISPLAY_WIDTH-1 || x3 > DISPLAY_WIDTH-1 ||
+       y1 > DISPLAY_HEIGHT-1 || y2 > DISPLAY_HEIGHT-1 || y3 > DISPLAY_HEIGHT-1)
+    {return;}
+    int dx =  abs(x2-x1), sx = x1<x2 ? 1 : -1;
+    int dy = -abs(y2-y1), sy = y1<y2 ? 1 : -1;
+    int err = dx+dy, e2; /* error value e_xy */
+    
+    while(1){
+        lcd_drawLine(x1, y1, x3, y3, color);
+        if (x1==x2 && y1==y2) break;
+        e2 = 2*err;
+        if (e2 > dy) { err += dy; x1 += sx; } /* e_xy+e_x > 0 */
+        if (e2 < dx) { err += dx; y1 += sy; } /* e_xy+e_y < 0 */
+    }
+}
 void lcd_drawBitmap(uint8_t x, uint8_t y, const uint8_t *picture, uint8_t width, uint8_t height, uint8_t color){
     uint8_t i,j, byteWidth = (width+7)/8;
     for (j = 0; j < height; j++) {
