@@ -449,21 +449,31 @@ void lcd_fillCircle(uint8_t center_x, uint8_t center_y, uint8_t radius, uint8_t 
         lcd_drawCircle(center_x, center_y, i, color);
     }
 }
-void lcd_fillTriangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
-                      uint8_t x3, uint8_t y3, uint8_t color) {
-    if(x1 > DISPLAY_WIDTH-1 || x2 > DISPLAY_WIDTH-1 || x3 > DISPLAY_WIDTH-1 ||
-       y1 > DISPLAY_HEIGHT-1 || y2 > DISPLAY_HEIGHT-1 || y3 > DISPLAY_HEIGHT-1)
-    {return;}
-    int dx =  abs(x2-x1), sx = x1<x2 ? 1 : -1;
-    int dy = -abs(y2-y1), sy = y1<y2 ? 1 : -1;
-    int err = dx+dy, e2; /* error value e_xy */
+void lcd_fillTriangle(int16_t x1, int8_t y1, int16_t x2, int8_t y2,
+                      int16_t x3, int8_t y3, uint8_t color) {
+    // Negative and too large coords are allowed, only the visible part will
+    // be drawn
+    int16_t xmin = (x1 < x2 ? (x1 < x3 ? x1 : x3) : (x2 < x3 ? x2 : x3 ));
+    if (xmin < 0) xmin=0;
+    int16_t xmax = (x1 > x2 ? (x1 > x3 ? x1 : x3) : (x2 > x3 ? x2 : x3 ));
+    if (xmax > DISPLAY_WIDTH-1) xmax = DISPLAY_WIDTH - 1;
     
-    while(1){
-        lcd_drawLine(x1, y1, x3, y3, color);
-        if (x1==x2 && y1==y2) break;
-        e2 = 2*err;
-        if (e2 > dy) { err += dy; x1 += sx; } /* e_xy+e_x > 0 */
-        if (e2 < dx) { err += dx; y1 += sy; } /* e_xy+e_y < 0 */
+    int8_t ymin = (y1 < y2 ? (y1 < y3 ? y1 : y3) : (y2 < y3 ? y2 : y3 ));
+    if (ymin < 0) ymin=0;
+    int8_t ymax = (y1 > y2 ? (y1 > y3 ? y1 : y3) : (y2 > y3 ? y2 : y3 ));
+    if (ymax > DISPLAY_HEIGHT-1) ymax = DISPLAY_HEIGHT - 1;
+    
+    for (uint8_t x = xmin; x<=xmax; x++) {
+        for (uint8_t y = ymin; y <= ymax; y++) {
+            // point in triangle code from John Bananas on stackoverflow
+            // https://stackoverflow.com/a/9755252/7089433
+            int8_t p1x = x - x1;
+            int8_t p1y = y - y1;
+            uint8_t s12 = (x2 - x1) * p1y - (y2 - y1) * p1x > 0;
+            if (((x3 - x1) * p1y - (y3 - y1) * p1x > 0) == s12) continue;
+            if (((x3 - x2) * (y - y2) - (y3 - y2) * (x - x2) > 0) != s12) continue;
+            lcd_drawPixel(x, y, color);
+        }
     }
 }
 void lcd_drawBitmap(uint8_t x, uint8_t y, const uint8_t *picture, uint8_t width, uint8_t height, uint8_t color){
