@@ -12,7 +12,6 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include <math.h>
 
 #include "lcd.h"
 
@@ -20,6 +19,7 @@
 #include "applications/snake.h"
 #include "applications/gol.h"
 #include "applications/breakout.h"
+#include "applications/lander.h"
 #include "applications/mandelbrot.h"
 
 
@@ -63,12 +63,13 @@ void display_menu(Menu *menu) {
 
 void show_menu() {
     Menu menu = {
-        .length=4, .selected_index=0,
+        .length=5, .selected_index=0,
         .entries={
             {"Snake", &run_snake},
             {"Game of Life", &run_gol},
             {"Mandelbrot", &run_mandelbrot},
-            {"Breakout", &run_breakout}
+            {"Breakout", &run_breakout},
+            {"Lander", &run_lander}
         }
     };
     display_menu(&menu);
