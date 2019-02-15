@@ -58,7 +58,7 @@ static struct {
 static uint8_t charMode = NORMALSIZE;
 #if defined GRAPHICMODE
 #include <stdlib.h>
-static uint8_t displayBuffer[DISPLAY_HEIGHT/8][DISPLAY_WIDTH];
+uint8_t displayBuffer[DISPLAY_HEIGHT/8][DISPLAY_WIDTH];
 #elif defined TEXTMODE
 #else
 #error "No valid displaymode! Refer lcd.h"
