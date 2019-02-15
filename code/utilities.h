@@ -14,6 +14,7 @@ extern "C" {
 
     #include <avr/io.h>
     #include "mcc_generated_files/include/pin_manager.h"
+    #include <stdfix.h>
     
     typedef enum Direction {UP, RIGHT, DOWN, LEFT} Direction;
 
@@ -31,6 +32,9 @@ extern "C" {
         // correctly handle negative values
         return (a%b+b)%b;
     }
+    
+    accum roundacc0(accum x);
+    uint8_t ceilacc8(accum x);
 
 
 #ifdef	__cplusplus

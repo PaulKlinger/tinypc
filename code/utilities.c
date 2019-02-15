@@ -3,8 +3,6 @@
 #include "light_ws2812.h"
 #include "lcd.h"
 
-#include <stdfix.h>
-
 void set_led(uint8_t r, uint8_t g, uint8_t b) {
     struct cRGB led[1];
     led[0].r=r;
@@ -84,7 +82,16 @@ void set_led_from_points(uint16_t points, uint16_t max_points) {
     if (points > max_points) {
         points = max_points;
     }
-    uint8_t r = roundfx((1 - ((accum) points) / max_points) * 255, 0);
-    uint8_t g = roundfx(((accum) points) / max_points * 255, 0);
+    uint8_t r = roundacc0((1 - ((accum) points) / max_points) * 255);
+    uint8_t g = roundacc0(((accum) points) / max_points * 255);
     set_led(r, g, 0);
+}
+
+accum roundacc0(accum x) {
+    return roundfx(x,0);
+}
+
+uint8_t ceilacc8(accum x) {
+    uint8_t f = x; // floor
+    return  x > f ? f + 1 : f;
 }

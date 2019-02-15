@@ -78,18 +78,18 @@ static void display_ball(Ball *ball) {
     // would be faster, but unless updates are changed to use timer interrupts
     // need to do same every frame to keep frametimes consistent
     
-    uint8_t current_tline = (round(ball->y) - ball_int_radius) / 8;
+    uint8_t current_tline = (roundacc0(ball->y) - ball_int_radius) / 8;
     
-    lcd_display_block(round(ball->x) - ball_int_radius, current_tline, 5);
-    lcd_display_block(round(ball->x) - ball_int_radius, current_tline + 1, 5);
+    lcd_display_block(roundacc0(ball->x) - ball_int_radius, current_tline, 5);
+    lcd_display_block(roundacc0(ball->x) - ball_int_radius, current_tline + 1, 5);
     lcd_display_block(ball->prev_x - ball_int_radius, ball->prev_tline, 5);
     lcd_display_block(ball->prev_x - ball_int_radius, ball->prev_tline + 1, 5);
 }
 
 static void draw_ball(Ball *ball) {
     //lcd_fillCircle(round(ball->x), round(ball->y), 2, 1);
-    uint8_t x = round(ball->x);
-    uint8_t y = round(ball->y);
+    uint8_t x = roundacc0(ball->x);
+    uint8_t y = roundacc0(ball->y);
     for (int8_t dx=-ball_int_radius; dx <= ball_int_radius; dx++) {
         for (int8_t dy=-ball_int_radius; dy <= ball_int_radius; dy++){
             if (!(abs(dy) == ball_int_radius && abs(dx) == ball_int_radius)){
@@ -100,9 +100,24 @@ static void draw_ball(Ball *ball) {
 }
 
 static void normalize_ball_v(Ball *ball) {
-    accum current_speed = sqrt(ball->vx * ball->vx + ball->vy * ball->vy);
-    ball->vx *= ball->speed / current_speed;
-    ball->vy *= ball->speed / current_speed;
+    //    // the sqrt here pulls in some float functions totalling 412 bytes
+    //    accum current_speed = sqrt(ball->vx * ball->vx + ball->vy * ball->vy);
+    //    ball->vx *= ball->speed / current_speed;
+    //    ball->vy *= ball->speed / current_speed;
+    
+    // this is a ridiculous workaround that saves 313 bytes
+    // by not using floats.
+    // Hopefully the error here is not noticable...
+    
+    accum sqspeed = ball->speed * ball->speed;
+    while (ball->vx * ball->vx + ball->vy * ball->vy < sqspeed) {
+        ball->vx *= 1.01K;
+        ball->vy *= 1.01K;
+    }
+    while (ball->vx * ball->vx + ball->vy * ball->vy > sqspeed) {
+        ball->vx *= 0.99K;
+        ball->vy *= 0.99K;
+    }
 }
 
 static void wall_collision(Ball *ball) {
@@ -167,9 +182,9 @@ static void block_collision(Ball *ball, uint8_t *block_status) {
 
 static struct BlockCoords calc_paddle_coords(accum paddle_x) {
     struct BlockCoords ret;
-    ret.x1 = round(paddle_x) - (paddle_width - 1) / 2;
+    ret.x1 = roundacc0(paddle_x) - (paddle_width - 1) / 2;
     ret.y1 = DISPLAY_HEIGHT - 1 - paddle_height;
-    ret.x2 = round(paddle_x) + (paddle_width - 1) / 2;
+    ret.x2 = roundacc0(paddle_x) + (paddle_width - 1) / 2;
     ret.y2 = DISPLAY_HEIGHT - 1;
     return ret;
 }
@@ -198,21 +213,21 @@ static void handle_collisions(Ball *ball, uint8_t *block_status, accum paddle_x)
 }
 
 static void move_ball(Ball *ball) {
-    ball->prev_x = round(ball->x);
-    ball->prev_tline = (round(ball->y) - ball_int_radius) / 8;
+    ball->prev_x = roundacc0(ball->x);
+    ball->prev_tline = (roundacc0(ball->y) - ball_int_radius) / 8;
     ball->x += ball->vx;
     ball->y += ball->vy;
 }
 
 static void draw_paddle(accum paddle_x){
-    uint8_t xmin = round(paddle_x) - (paddle_width - 1) / 2;
+    uint8_t xmin = roundacc0(paddle_x) - (paddle_width - 1) / 2;
     lcd_fillRect(xmin, DISPLAY_HEIGHT - 1 - paddle_height,
                  xmin + paddle_width, DISPLAY_HEIGHT - 1, 1);
 }
 static void display_paddle(accum paddle_x) {
-    uint8_t xmin = round(paddle_x) - (paddle_width - 1) / 2;
-    lcd_display_block(xmin < ceil(paddle_speed) ? 0 : xmin - ceil(paddle_speed),
-                      DISPLAY_HEIGHT / 8 - 1, paddle_width + 1 + 2 * ceil(paddle_speed));
+    uint8_t xmin = roundacc0(paddle_x) - (paddle_width - 1) / 2;
+    lcd_display_block(xmin < ceilacc8(paddle_speed) ? 0 : xmin - ceilacc8(paddle_speed),
+                      DISPLAY_HEIGHT / 8 - 1, paddle_width + 1 + 2 * ceilacc8(paddle_speed));
 }
 
 static BreakoutGamestate init_gamestate() {
@@ -242,10 +257,10 @@ void run_breakout() {
     while (1) {
         lcd_clear_buffer();
         if (joystick_pressed && last_joystick_direction == LEFT 
-            && round(state.paddle_x) > (paddle_width - 1)/2 + paddle_speed) {
+            && roundacc0(state.paddle_x) > (paddle_width - 1)/2 + paddle_speed) {
             state.paddle_x -= paddle_speed;
         } else if (joystick_pressed && last_joystick_direction == RIGHT 
-            && round(state.paddle_x) < DISPLAY_WIDTH - 1 - (paddle_width - 1)/2 - paddle_speed) {
+            && roundacc0(state.paddle_x) < DISPLAY_WIDTH - 1 - (paddle_width - 1)/2 - paddle_speed) {
             state.paddle_x += paddle_speed;
         }
         move_ball(&state.ball);
