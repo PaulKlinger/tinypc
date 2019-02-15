@@ -17,6 +17,8 @@ extern "C" {
     #include <stdfix.h>
     
     typedef enum Direction {UP, RIGHT, DOWN, LEFT} Direction;
+    
+    typedef struct {accum x, y;} AccVec;
 
     volatile Direction last_joystick_direction;
     volatile bool joystick_pressed;
@@ -35,6 +37,8 @@ extern "C" {
     
     accum roundacc0(accum x);
     uint8_t ceilacc8(accum x);
+    
+    void rotate_vec(AccVec *vec, int8_t angle);
 
 
 #ifdef	__cplusplus

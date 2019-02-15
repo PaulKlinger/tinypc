@@ -8,6 +8,11 @@
 
 #define num_blocks 24
 #define initial_ball_speed 1.5K // speed of ball / frame
+#define initial_ball_vx_unscaled 3K 
+#define initial_ball_vy_unscaled -10K
+#define norm sqrt(initial_ball_vx_unscaled * initial_ball_vx_unscaled + initial_ball_vy_unscaled * initial_ball_vy_unscaled)
+#define initial_ball_vx (initial_ball_speed * (initial_ball_vx_unscaled / norm))
+#define initial_ball_vy (initial_ball_speed * (initial_ball_vy_unscaled / norm))
 #define ball_speed_increase_factor 1.025K // factor speed increases by each block
 #define ball_radius 2.5K
 #define ball_int_radius 2
@@ -17,8 +22,7 @@
 
 
 typedef struct {
-    accum x, y, vx, vy;
-    accum speed;
+    AccVec pos, v;
     // for partial display updates
     // tline means topmost display line intersecting the ball
     uint8_t prev_x, prev_tline; 
@@ -78,18 +82,18 @@ static void display_ball(Ball *ball) {
     // would be faster, but unless updates are changed to use timer interrupts
     // need to do same every frame to keep frametimes consistent
     
-    uint8_t current_tline = (roundacc0(ball->y) - ball_int_radius) / 8;
+    uint8_t current_tline = (roundacc0(ball->pos.y) - ball_int_radius) / 8;
     
-    lcd_display_block(roundacc0(ball->x) - ball_int_radius, current_tline, 5);
-    lcd_display_block(roundacc0(ball->x) - ball_int_radius, current_tline + 1, 5);
+    lcd_display_block(roundacc0(ball->pos.x) - ball_int_radius, current_tline, 5);
+    lcd_display_block(roundacc0(ball->pos.x) - ball_int_radius, current_tline + 1, 5);
     lcd_display_block(ball->prev_x - ball_int_radius, ball->prev_tline, 5);
     lcd_display_block(ball->prev_x - ball_int_radius, ball->prev_tline + 1, 5);
 }
 
 static void draw_ball(Ball *ball) {
-    //lcd_fillCircle(round(ball->x), round(ball->y), 2, 1);
-    uint8_t x = roundacc0(ball->x);
-    uint8_t y = roundacc0(ball->y);
+    //lcd_fillCircle(round(ball->pos.x), round(ball->pos.y), 2, 1);
+    uint8_t x = roundacc0(ball->pos.x);
+    uint8_t y = roundacc0(ball->pos.y);
     for (int8_t dx=-ball_int_radius; dx <= ball_int_radius; dx++) {
         for (int8_t dy=-ball_int_radius; dy <= ball_int_radius; dy++){
             if (!(abs(dy) == ball_int_radius && abs(dx) == ball_int_radius)){
@@ -99,55 +103,34 @@ static void draw_ball(Ball *ball) {
     }
 }
 
-static void normalize_ball_v(Ball *ball) {
-    //    // the sqrt here pulls in some float functions totalling 412 bytes
-    //    accum current_speed = sqrt(ball->vx * ball->vx + ball->vy * ball->vy);
-    //    ball->vx *= ball->speed / current_speed;
-    //    ball->vy *= ball->speed / current_speed;
-    
-    // this is a ridiculous workaround that saves 313 bytes
-    // by not using floats.
-    // Hopefully the error here is not noticable...
-    
-    accum sqspeed = ball->speed * ball->speed;
-    while (ball->vx * ball->vx + ball->vy * ball->vy < sqspeed) {
-        ball->vx *= 1.01K;
-        ball->vy *= 1.01K;
-    }
-    while (ball->vx * ball->vx + ball->vy * ball->vy > sqspeed) {
-        ball->vx *= 0.99K;
-        ball->vy *= 0.99K;
-    }
-}
-
 static void wall_collision(Ball *ball) {
-    if (ball->x < ball_radius) {
-        ball->y = ball->y - (ball->x - ball_radius) / ball->vx * ball->vy;
-        ball->x = ball_radius;
-        ball->vx *= -1;
-    } else if (ball->x > DISPLAY_WIDTH - ball_radius) {
-        ball->y = ball->y - (ball->x - DISPLAY_WIDTH + ball_radius) / ball->vx * ball->vy;
-        ball->x = DISPLAY_WIDTH - ball_radius;
-        ball->vx *= -1;
-    } else if (ball->y < ball_radius) {
-        ball->x = ball->x - (ball->y - ball_radius) / ball->vy * ball->vx;
-        ball->y = ball_radius;
-        ball->vy *= -1;
+    if (ball->pos.x < ball_radius) {
+        ball->pos.y = ball->pos.y - (ball->pos.x - ball_radius) / ball->v.x * ball->v.y;
+        ball->pos.x = ball_radius;
+        ball->v.x *= -1;
+    } else if (ball->pos.x > DISPLAY_WIDTH - ball_radius) {
+        ball->pos.y = ball->pos.y - (ball->pos.x - DISPLAY_WIDTH + ball_radius) / ball->v.x * ball->v.y;
+        ball->pos.x = DISPLAY_WIDTH - ball_radius;
+        ball->v.x *= -1;
+    } else if (ball->pos.y < ball_radius) {
+        ball->pos.x = ball->pos.x - (ball->pos.y - ball_radius) / ball->v.y * ball->v.x;
+        ball->pos.y = ball_radius;
+        ball->v.y *= -1;
     } 
 }
 
 static bool bottom_collision(Ball *ball) {
-    if (ball->y > DISPLAY_HEIGHT - ball_radius) {
+    if (ball->pos.y > DISPLAY_HEIGHT - ball_radius) {
         return true;
     }
     return false;
 }
 
-static inline bool ball_intersects_block(Ball *ball, struct BlockCoords coords) {
-    return ball->x + ball_radius > coords.x1
-            && ball->x - ball_radius < coords.x2 
-            && ball->y + ball_radius > coords.y1
-            && ball->y - ball_radius < coords.y2;
+static bool ball_intersects_block(Ball *ball, struct BlockCoords coords) {
+    return ball->pos.x + ball_radius > coords.x1
+            && ball->pos.x - ball_radius < coords.x2 
+            && ball->pos.y + ball_radius > coords.y1
+            && ball->pos.y - ball_radius < coords.y2;
 }
 
 static void block_collision(Ball *ball, uint8_t *block_status) {
@@ -160,20 +143,20 @@ static void block_collision(Ball *ball, uint8_t *block_status) {
                 
                 // move backwards slowly until we don't intersect anymore
                 do {
-                    ball->x -= ball->vx / 10;
-                    ball->y -= ball->vy / 10;
+                    ball->pos.x -= ball->v.x / 10;
+                    ball->pos.y -= ball->v.y / 10;
                 } while (ball_intersects_block(ball, coords));
                 
                 // if we are right or left the block we hit the sides
-                if (ball->x - ball_radius > coords.x2 
-                        || ball->x + ball_radius < coords.x1) {
-                    ball->vx *= -1;
+                if (ball->pos.x - ball_radius > coords.x2 
+                        || ball->pos.x + ball_radius < coords.x1) {
+                    ball->v.x *= -1;
                 }
                 // if we are below or above the block we hit the bottom/top
                 // both happen if we exactly hit the corner
-                if (ball->y - ball_radius > coords.y2 
-                        || ball->y + ball_radius < coords.y1) {
-                    ball->vy *= -1;
+                if (ball->pos.y - ball_radius > coords.y2 
+                        || ball->pos.y + ball_radius < coords.y1) {
+                    ball->v.y *= -1;
                 }
             }
         }
@@ -193,16 +176,14 @@ static void paddle_collision(Ball *ball, accum paddle_x) {
     struct BlockCoords paddle_coords = calc_paddle_coords(paddle_x);
     if (ball_intersects_block(ball, paddle_coords)) {
         do {
-            ball->x -= ball->vx / 10;
-            ball->y -= ball->vy / 10;
+            ball->pos.x -= ball->v.x / 10;
+            ball->pos.y -= ball->v.y / 10;
         } while (ball_intersects_block(ball, paddle_coords));
-        ball->vy *= -1;
+        ball->v.y *= -1;
         // The direction of the outgoing ball depends on the impact point
         // on the paddle. This makes the game more interesting and prevents
         // getting stuck in a loop.
-        ball->vx += (ball->x - paddle_x) / (paddle_width);
-        // make sure the ball speed stays the same
-        normalize_ball_v(ball);
+        rotate_vec(&(ball->v), (ball->pos.x - paddle_x));
     }
 }
 
@@ -213,10 +194,10 @@ static void handle_collisions(Ball *ball, uint8_t *block_status, accum paddle_x)
 }
 
 static void move_ball(Ball *ball) {
-    ball->prev_x = roundacc0(ball->x);
-    ball->prev_tline = (roundacc0(ball->y) - ball_int_radius) / 8;
-    ball->x += ball->vx;
-    ball->y += ball->vy;
+    ball->prev_x = roundacc0(ball->pos.x);
+    ball->prev_tline = (roundacc0(ball->pos.y) - ball_int_radius) / 8;
+    ball->pos.x += ball->v.x;
+    ball->pos.y += ball->v.y;
 }
 
 static void draw_paddle(accum paddle_x){
@@ -231,9 +212,8 @@ static void display_paddle(accum paddle_x) {
 }
 
 static BreakoutGamestate init_gamestate() {
-    Ball ball = {.x = DISPLAY_WIDTH/2, .y = (DISPLAY_HEIGHT - 6),
-                 .vx = 3, .vy = -10, .speed=1};
-    normalize_ball_v(&ball);
+    Ball ball = {.pos = {DISPLAY_WIDTH/2, (DISPLAY_HEIGHT - 6)},
+                 .v = {initial_ball_vx, initial_ball_vy}};
     BreakoutGamestate state;
     state.ball = ball;
     state.paddle_x = DISPLAY_WIDTH/2;
@@ -280,8 +260,8 @@ void run_breakout() {
                     get_block_status(i, state.prev_block_status)) {
                 display_block(i);
                 // increase ball speed for each block hit
-                state.ball.speed *= ball_speed_increase_factor;
-                normalize_ball_v(&state.ball);
+                state.ball.v.x *= ball_speed_increase_factor;
+                state.ball.v.y *= ball_speed_increase_factor;
                 points++;
                 set_led_from_points(points, 3 * num_blocks);
                 if (points % num_blocks == 0) {
@@ -289,10 +269,10 @@ void run_breakout() {
                     lcd_puts("next stage");
                     lcd_display();
                     wait_for_button();
-                    accum old_speed = state.ball.speed;
+                    AccVec old_v = state.ball.v;
                     state = init_gamestate();
-                    state.ball.speed = old_speed;
-                    normalize_ball_v(&state.ball);
+                    state.ball.v = old_v;
+                    while (state.ball.v.y > -2 ) {rotate_vec(&state.ball.v, 1);} 
                     lcd_clrscr();
                     draw_blocks(state.block_status);
                     lcd_display();

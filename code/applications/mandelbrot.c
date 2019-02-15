@@ -9,17 +9,13 @@
 
 #define init_scale 32 // pixels per unit
 
-typedef struct {
-     accum re, im;
-} Complexf;
-
 struct ScreenLoc {
-    Complexf center;
+    AccVec center;
     accum scale;
 };
 
 
-static bool point_in_set(Complexf point, uint8_t maxiter) {
+static bool point_in_set(AccVec point, uint8_t maxiter) {
     accum z_re = 0;
     accum z_im = 0;
     accum z_re_sq;
@@ -30,15 +26,15 @@ static bool point_in_set(Complexf point, uint8_t maxiter) {
         if (z_re_sq + z_im_sq > 4) {
             return false;
         }
-        z_im = 2 * z_re * z_im + point.im;
-        z_re = z_re_sq - z_im_sq + point.re;
+        z_im = 2 * z_re * z_im + point.y;
+        z_re = z_re_sq - z_im_sq + point.x;
     }
     return true;
 }
 
-static Complexf screen_to_coord(uint8_t x, uint8_t y, struct ScreenLoc *screen){
-    return (Complexf) {(x - (DISPLAY_WIDTH / 2)) / screen->scale + screen->center.re,
-                       (y - (DISPLAY_HEIGHT / 2)) / screen->scale + screen->center.im};
+static AccVec screen_to_coord(uint8_t x, uint8_t y, struct ScreenLoc *screen){
+    return (AccVec) {(x - (DISPLAY_WIDTH / 2)) / screen->scale + screen->center.x,
+                       (y - (DISPLAY_HEIGHT / 2)) / screen->scale + screen->center.y};
 }
 
 static uint8_t get_maxiter(struct ScreenLoc *screen) {
@@ -72,7 +68,7 @@ static void display_complete_mandelbrot(struct ScreenLoc *screen) {
 // There probably is some way to integrate these into vertical/horizontal
 // functions, but I'm too tired to figure it out...
 static void move_up(struct ScreenLoc *screen){
-    screen->center.im -= 16 / screen->scale;
+    screen->center.y -= 16 / screen->scale;
     for (uint8_t line = DISPLAY_HEIGHT / 8 - 1; line > 1; line--) {
         memcpy(displayBuffer[line], displayBuffer[line-2], DISPLAY_WIDTH);
     }
@@ -83,7 +79,7 @@ static void move_up(struct ScreenLoc *screen){
 }
 
 static void move_down(struct ScreenLoc *screen){
-    screen->center.im += 16 / screen->scale;
+    screen->center.y += 16 / screen->scale;
     for (uint8_t line = 0; line < DISPLAY_HEIGHT / 8 - 2; line++) {
         memcpy(displayBuffer[line], displayBuffer[line+2], DISPLAY_WIDTH);
     }
@@ -94,7 +90,7 @@ static void move_down(struct ScreenLoc *screen){
 }
 
 static void move_left(struct ScreenLoc *screen){
-    screen->center.re -= 32 / screen->scale;
+    screen->center.x -= 32 / screen->scale;
     for (uint8_t line = 0; line < DISPLAY_HEIGHT / 8; line++) {
         memmove(displayBuffer[line] + 32, displayBuffer[line], DISPLAY_WIDTH - 32);
         memset(displayBuffer[line], 0, 32);
@@ -106,7 +102,7 @@ static void move_left(struct ScreenLoc *screen){
 }
 
 static void move_right(struct ScreenLoc *screen){
-    screen->center.re += 32 / screen->scale;
+    screen->center.x += 32 / screen->scale;
     for (uint8_t line = 0; line < DISPLAY_HEIGHT / 8; line++) {
         memmove(displayBuffer[line], displayBuffer[line] + 32, DISPLAY_WIDTH - 32);
         memset(displayBuffer[line] + (DISPLAY_WIDTH - 32), 0, 32);

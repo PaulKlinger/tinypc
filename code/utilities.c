@@ -95,3 +95,19 @@ uint8_t ceilacc8(accum x) {
     uint8_t f = x; // floor
     return  x > f ? f + 1 : f;
 }
+
+void rotate_vec(AccVec *vec, int8_t angle) {
+    // Rotates vec in steps of 1 degree. Probably quite a lot of error because
+    // of accum precision but should be good enough.
+    // Rotating by 2 degree at a time would increase precision if I never
+    // need to rotate in finer steps
+    accum x_temp;
+    bool dir = angle > 0;
+    angle = dir ? angle : -angle;
+    for (; angle > 0; angle--) {
+        x_temp = vec->x;
+        vec->x = 0.999848K * vec->x - (dir ? 1 : -1) * 0.0174524K * vec->y;
+        vec->y = (dir ? 1 : -1) * 0.0174524K * x_temp + 0.999848K * vec->y;
+    }
+}
+
