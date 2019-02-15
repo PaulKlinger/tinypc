@@ -25,17 +25,5 @@
 
 void mcu_init(void)
 {
-	/* On AVR devices all peripherals are enable from power on reset, this
-	 * disables all peripherals to save power. Driver shall enable
-	 * peripheral if used */
 
-	/* Set all pins to low power mode */
-	for (uint8_t i = 0; i < 8; i++) {
-		*((uint8_t *)&PORTA + 0x10 + i) |= 1 << PORT_PULLUPEN_bp;
-	}
-	
-	for (uint8_t i = 0; i < 8; i++) {
-		*((uint8_t *)&PORTB + 0x10 + i) |= 1 << PORT_PULLUPEN_bp;
-	}
-	
 }
