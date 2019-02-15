@@ -55,7 +55,6 @@ static struct {
     uint8_t x;
     uint8_t y;
 } cursorPosition;
-static uint8_t charMode = NORMALSIZE;
 #if defined GRAPHICMODE
 #include <stdlib.h>
 uint8_t displayBuffer[DISPLAY_HEIGHT/8][DISPLAY_WIDTH];
@@ -192,160 +191,18 @@ void lcd_set_contrast(uint8_t contrast){
     lcd_command(commandSequence, sizeof(commandSequence));
 }
 void lcd_putc(char c){
-    switch (c) {
-        case '\b':
-            // backspace
-            lcd_gotoxy(cursorPosition.x-charMode, cursorPosition.y);
-            lcd_putc(' ');
-            lcd_gotoxy(cursorPosition.x-charMode, cursorPosition.y);
-            break;
-        case '\t':
-            // tab
-            if( (cursorPosition.x+charMode*4) < (DISPLAY_WIDTH/ sizeof(FONT[0])-charMode*4) ){
-                lcd_gotoxy(cursorPosition.x+charMode*4, cursorPosition.y);
-            }else{
-                lcd_gotoxy(DISPLAY_WIDTH/ sizeof(FONT[0]), cursorPosition.y);
-            }
-            break;
-        case '\n':
-            // linefeed
-            if(cursorPosition.y < (DISPLAY_HEIGHT/8-1)){
-                lcd_gotoxy(cursorPosition.x, cursorPosition.y+charMode);
-            }
-            break;
-        case '\r':
-            // carrige return
-            lcd_gotoxy(0, cursorPosition.y);
-            break;
-        default:
             // char doesn't fit in line
-            if( (cursorPosition.x >= DISPLAY_WIDTH-sizeof(FONT[0])) || (c < ' ') ) break;
+            if( (cursorPosition.x >= DISPLAY_WIDTH-sizeof(FONT[0])) || (c < ' ') ) return;
             // mapping char
             c -= ' ';
-//            if (c >= pgm_read_byte(&special_char[0][1]) ) {
-//                char temp = c;
-//                c = 0xff;
-//                for (uint8_t i=0; pgm_read_byte(&special_char[i][1]) != 0xff; i++) {
-//                    if ( pgm_read_byte(&special_char[i][0])-' ' == temp ) {
-//                        c = pgm_read_byte(&special_char[i][1]);
-//                        break;
-//                    }
-//                }
-//                if ( c == 0xff ) break;
-//            }
-            // print char at display
-#ifdef GRAPHICMODE
-            if (charMode == DOUBLESIZE) {
-                uint16_t doubleChar[sizeof(FONT[0])];
-                uint8_t dChar;
-                
-                for (uint8_t i=0; i < sizeof(FONT[0]); i++) {
-                    doubleChar[i] = 0;
-                    dChar = pgm_read_byte(&(FONT[(uint8_t)c][i]));
-                    for (uint8_t j=0; j<8; j++) {
-                        if ((dChar & (1 << j))) {
-                            doubleChar[i] |= (1 << (j*2));
-                            doubleChar[i] |= (1 << ((j*2)+1));
-                        }
-                    }
-                }
-                for (uint8_t i = 0; i < sizeof(FONT[0]); i++)
-                {
-                    // load bit-pattern from flash
-                    displayBuffer[cursorPosition.y+1][cursorPosition.x+(2*i)] = doubleChar[i] >> 8;
-                    displayBuffer[cursorPosition.y+1][cursorPosition.x+(2*i)+1] = doubleChar[i] >> 8;
-                    displayBuffer[cursorPosition.y][cursorPosition.x+(2*i)] = doubleChar[i] & 0xff;
-                    displayBuffer[cursorPosition.y][cursorPosition.x+(2*i)+1] = doubleChar[i] & 0xff;
-                }
-                cursorPosition.x += sizeof(FONT[0])*2;
-            } else {
-                for (uint8_t i = 0; i < sizeof(FONT[0]); i++)
-                {
-                    // load bit-pattern from flash
-                    displayBuffer[cursorPosition.y][cursorPosition.x+i] =pgm_read_byte(&(FONT[(uint8_t)c][i]));
-                }
-                cursorPosition.x += sizeof(FONT[0]);
-            }
-#elif defined TEXTMODE
-            if (charMode == DOUBLESIZE) {
-                uint16_t doubleChar[sizeof(FONT[0])];
-                uint8_t dChar;
-                
-                for (uint8_t i=0; i < sizeof(FONT[0]); i++) {
-                    doubleChar[i] = 0;
-                    dChar = pgm_read_byte(&(FONT[(uint8_t)c][i]));
-                    for (uint8_t j=0; j<8; j++) {
-                        if ((dChar & (1 << j))) {
-                            doubleChar[i] |= (1 << (j*2));
-                            doubleChar[i] |= (1 << ((j*2)+1));
-                        }
-                    }
-                }
-                //i2c_start(LCD_I2C_ADR << 1);
-                TWI_start(LCD_I2C_ADR);
-                i2c_byte(0x40);
-                for (uint8_t i = 0; i < sizeof(FONT[0]); i++)
-                {
-                    // print font to ram, print 6 columns
-                    i2c_byte(doubleChar[i] & 0xff);
-                    i2c_byte(doubleChar[i] & 0xff);
-                }
-                TWI_STOP();
-                
-#if defined SSD1306
-                uint8_t commandSequence[] = {0xb0+cursorPosition.y+1,
-                    0x21,
-                    cursorPosition.x,
-                    0x7f};
-#elif defined SH1106
-                uint8_t commandSequence[] = {0xb0+cursorPosition.y+1,
-                    0x21,
-                    0x00+((2+cursorPosition.x) & (0x0f)),
-                    0x10+( ((2+cursorPosition.x) & (0xf0)) >> 4 ),
-                    0x7f};
-#endif
-                lcd_command(commandSequence, sizeof(commandSequence));
-                
-                //i2c_start(LCD_I2C_ADR << 1);
-                TWI_start(LCD_I2C_ADR);
-                i2c_byte(0x40);
-                for (uint8_t j = 0; j < sizeof(FONT[0]); j++)
-                {
-                    // print font to ram, print 6 columns
-                    i2c_byte(doubleChar[j] >> 8);
-                    i2c_byte(doubleChar[j] >> 8);
-                }
-                //i2c_stop();
-                TWI_STOP();
-                
-                commandSequence[0] = 0xb0+cursorPosition.y;
-#if defined SSD1306
-                commandSequence[2] = cursorPosition.x+(2*sizeof(FONT[0]));
-#elif defined SH1106
-                commandSequence[2] = 0x00+((2+cursorPosition.x+(2*sizeof(FONT[0]))) & (0x0f));
-                commandSequence[3] = 0x10+( ((2+cursorPosition.x+(2*sizeof(FONT[0]))) & (0xf0)) >> 4 );
-#endif
-                lcd_command(commandSequence, sizeof(commandSequence));
-                cursorPosition.x += sizeof(FONT[0])*2;
-            } else {
-                TWI_start(LCD_I2C_ADR);
-                i2c_byte(0x40);
-                for (uint8_t i = 0; i < sizeof(FONT[0]); i++)
-                {
-                    // print font to ram, print 6 columns
-                    i2c_byte(pgm_read_byte(&(FONT[(uint8_t)c][i])));
-                }
-                TWI_STOP();
-                cursorPosition.x += sizeof(FONT[0]);
-            }
-#endif
-            break;
-    }
-    
+        for (uint8_t i = 0; i < sizeof(FONT[0]); i++)
+        {
+            // load bit-pattern from flash
+            displayBuffer[cursorPosition.y][cursorPosition.x+i] =pgm_read_byte(&(FONT[(uint8_t)c][i]));
+        }
+        cursorPosition.x += sizeof(FONT[0]);
 }
-void lcd_charMode(uint8_t mode){
-    charMode = mode;
-}
+
 void lcd_puts(const char* s){
     while (*s) {
         lcd_putc(*s++);
@@ -361,7 +218,6 @@ void lcd_puts_p(const char* progmem_s){
 #pragma mark -
 #pragma mark GRAPHIC FUNCTIONS
 void lcd_drawPixel(uint8_t x, uint8_t y, uint8_t color){
-    if( x > DISPLAY_WIDTH-1 || y > (DISPLAY_HEIGHT-1)) return; // out of Display
     if( color == WHITE){
         displayBuffer[(y / (DISPLAY_HEIGHT/8))][x] |= (1 << (y % (DISPLAY_HEIGHT/8)));
     } else {
@@ -369,10 +225,6 @@ void lcd_drawPixel(uint8_t x, uint8_t y, uint8_t color){
     }
 }
 void lcd_drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t color){
-    if( x1 > DISPLAY_WIDTH-1 ||
-       x2 > DISPLAY_WIDTH-1 ||
-       y1 > DISPLAY_HEIGHT-1 ||
-       y2 > DISPLAY_HEIGHT-1) return;
     int dx =  abs(x2-x1), sx = x1<x2 ? 1 : -1;
     int dy = -abs(y2-y1), sy = y1<y2 ? 1 : -1;
     int err = dx+dy, e2; /* error value e_xy */
@@ -453,6 +305,8 @@ void lcd_fillTriangle(int16_t x1, int8_t y1, int16_t x2, int8_t y2,
                       int16_t x3, int8_t y3, uint8_t color) {
     // Negative and too large coords are allowed, only the visible part will
     // be drawn
+    
+    // calc bounds for increased performance (todo: is there a better way?)
     int16_t xmin = (x1 < x2 ? (x1 < x3 ? x1 : x3) : (x2 < x3 ? x2 : x3 ));
     if (xmin < 0) xmin=0;
     int16_t xmax = (x1 > x2 ? (x1 > x3 ? x1 : x3) : (x2 > x3 ? x2 : x3 ));
