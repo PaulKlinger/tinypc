@@ -111,3 +111,7 @@ void rotate_vec(AccVec *vec, int8_t angle) {
     }
 }
 
+AccVec add(AccVec a, AccVec b) {
+    return (AccVec) {a.x + b.x, a.y + b.y};
+}
+

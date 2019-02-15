@@ -19,6 +19,9 @@ extern "C" {
     typedef enum Direction {UP, RIGHT, DOWN, LEFT} Direction;
     
     typedef struct {accum x, y;} AccVec;
+    typedef struct {uint8_t x, y;} u8Vec;
+    
+    AccVec add(AccVec a, AccVec b);
 
     volatile Direction last_joystick_direction;
     volatile bool joystick_pressed;
