@@ -18,21 +18,20 @@ struct ScreenLoc {
     accum scale;
 };
 
-static inline Complexf csquare(Complexf z) {
-    return (Complexf) {z.re * z.re - z.im * z.im, 2 * z.re * z.im};
-}
 
-static inline Complexf cadd(Complexf a, Complexf b) {
-    return (Complexf) {a.re + b.re, a.im + b.im};
-}
-
-static bool point_in_set(Complexf point) {
-    Complexf z = {0, 0};
-    for (uint8_t i = 0; i < 20; i++){
-        z = cadd(csquare(z), point);
-        if (abs(z.re) > 2 || abs(z.im) > 2) {
+static bool point_in_set(Complexf point, uint8_t maxiter) {
+    accum z_re = 0;
+    accum z_im = 0;
+    accum z_re_sq;
+    accum z_im_sq;
+    for (uint8_t i = 0; i < maxiter; i++){
+        z_re_sq = z_re * z_re;
+        z_im_sq = z_im * z_im;
+        if (z_re_sq + z_im_sq > 4) {
             return false;
         }
+        z_im = 2 * z_re * z_im + point.im;
+        z_re = z_re_sq - z_im_sq + point.re;
     }
     return true;
 }
@@ -42,10 +41,16 @@ static Complexf screen_to_coord(uint8_t x, uint8_t y, struct ScreenLoc *screen){
                        (y - (DISPLAY_HEIGHT / 2)) / screen->scale + screen->center.im};
 }
 
+static uint8_t get_maxiter(struct ScreenLoc *screen) {
+    if (screen->scale <= init_scale * 4) return 20;
+    if (screen->scale <= init_scale * 8) return 30;
+    return 40;
+}
+
 static void display_mandelbrot_block(struct ScreenLoc *screen, uint8_t x, uint8_t xmax, uint8_t line) {
     for (; x <= xmax; x++) {
         for (uint8_t dy=0; dy < 8; dy++) {
-            if (point_in_set(screen_to_coord(x, line * 8 + dy, screen))) {
+            if (point_in_set(screen_to_coord(x, line * 8 + dy, screen), get_maxiter(screen))) {
                 lcd_drawPixel(x, line * 8 + dy, 1);
             }
         }
@@ -91,7 +96,7 @@ static void move_down(struct ScreenLoc *screen){
 static void move_left(struct ScreenLoc *screen){
     screen->center.re -= 32 / screen->scale;
     for (uint8_t line = 0; line < DISPLAY_HEIGHT / 8; line++) {
-        memmove(displayBuffer[line] + 31, displayBuffer[line], DISPLAY_WIDTH - 32);
+        memmove(displayBuffer[line] + 32, displayBuffer[line], DISPLAY_WIDTH - 32);
         memset(displayBuffer[line], 0, 32);
     }
     lcd_display();
