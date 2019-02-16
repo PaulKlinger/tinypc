@@ -67,13 +67,15 @@ static void draw_terrain(struct Terrain *terrain) {
     lcd_drawLine(terrain->p2.x, terrain->p2.y, terrain->p3.x, terrain->p3.y, 1);
     lcd_drawLine(terrain->p3.x, terrain->p3.y, DISPLAY_WIDTH - 1 - landing_pad_width, terrain->landing_y, 1);
     lcd_drawLine(DISPLAY_WIDTH - 1 - landing_pad_width, terrain->landing_y, DISPLAY_WIDTH - 1, terrain->landing_y, 1);
+    lcd_drawLine(DISPLAY_WIDTH - 1 - landing_pad_width, terrain->landing_y+1, DISPLAY_WIDTH - 1, terrain->landing_y+1, 1);
 }
 
 static accum  __attribute__ ((noinline)) line_height_at_x(u8Vec line_p1, u8Vec line_p2, accum x) {
-    return ((accum) line_p2.y - line_p1.y) / (line_p2.x - line_p1.x) * (x - line_p1.x) + line_p1.y;
+    // add 2 for some buffer (the displayed triangles don't reach to the points)
+    return 2 + ((accum) line_p2.y - line_p1.y) / (line_p2.x - line_p1.x) * (x - line_p1.x) + line_p1.y;
 }
 static bool point_terrain_collision(AccVec p, struct Terrain *terrain) {
-    if (p.x <= landing_pad_width && p.y > DISPLAY_HEIGHT - 1 ) return true;
+    if (p.x <= landing_pad_width && p.y > 1 + DISPLAY_HEIGHT ) return true;
     if (p.x > landing_pad_width && p.x <= terrain->p1.x &&
         p.y > line_height_at_x((u8Vec){landing_pad_width, DISPLAY_HEIGHT - 1}, terrain->p1, p.x)) return true;
     if (p.x > terrain->p1.x && p.x <= terrain->p2.x &&
@@ -82,7 +84,7 @@ static bool point_terrain_collision(AccVec p, struct Terrain *terrain) {
         p.y > line_height_at_x(terrain->p2, terrain->p3, p.x)) return true;
     if (p.x > terrain->p3.x && p.x <= DISPLAY_WIDTH - 1 - landing_pad_width &&
         p.y > line_height_at_x(terrain->p3, (u8Vec){DISPLAY_WIDTH - 1 - landing_pad_width, terrain->landing_y}, p.x)) return true;
-    if (p.x > DISPLAY_WIDTH - 1 - landing_pad_width && p.y > terrain->landing_y ) return true;
+    if (p.x > DISPLAY_WIDTH - 1 - landing_pad_width && p.y > 2 + terrain->landing_y ) return true;
     return false;
 }
 
@@ -104,7 +106,7 @@ static struct LanderGamestate new_stage() {
                                   .t1p1 = {0, -10}, .t1p2 = {5, 5},
                                   .t1p3 = {-5, 5}, .t2p3 = {0, -1}},
         .terrain = (struct Terrain){.p1 = p1, .p2 = p2, .p3 = p3,
-                                    .landing_y = randrange(20, DISPLAY_HEIGHT - 1)
+                                    .landing_y = randrange(20, DISPLAY_HEIGHT - 2)
                                   }
     };
 }
@@ -112,7 +114,7 @@ static struct LanderGamestate new_stage() {
 static bool lander_landed(struct LanderGamestate *s) {
     if (s->lander.pos.x >= DISPLAY_WIDTH - 1 - landing_pad_width / 2 - 5
         && s->lander.pos.x <= DISPLAY_WIDTH - 1 - landing_pad_width / 2 + 5
-        && s->lander.pos.y > s->terrain.landing_y - 6
+        && s->lander.pos.y > s->terrain.landing_y - 5
         && s->lander.dir.y < -0.97K /* something like 10-15° tilt*/
         && absfx(s->lander.v.x) < 0.1K && absfx(s->lander.v.y) < 0.1K ) return true;
     return false;
