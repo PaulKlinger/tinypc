@@ -16,6 +16,7 @@
 #include "lcd.h"
 
 #include "utilities.h"
+#include "strings.h"
 #include "applications/snake.h"
 #include "applications/gol.h"
 #include "applications/breakout.h"
@@ -26,7 +27,7 @@
 void show_launch_screen() {
     set_led(0,255,0);
     lcd_gotoxy(7,0);
-    lcd_puts("~TinyPC~");
+    lcd_puts_p(string_tinypc);
     lcd_gotoxy(3,3);
     lcd_puts("(press to start)");
     lcd_gotoxy(6,7);
@@ -50,13 +51,15 @@ typedef struct {
 
 void display_menu(Menu *menu) {
     lcd_clear_buffer();
-    for (uint8_t line=0; line < menu->length; line++) {
-        lcd_gotoxy(0,line);
-        if (line == menu->selected_index) {
-            lcd_puts("* ");
+    lcd_gotoxy(7,0);
+    lcd_puts_p(string_tinypc);
+    for (uint8_t i=0; i < menu->length; i++) {
+        lcd_gotoxy(0,i + 1);
+        if (i == menu->selected_index) {
+            lcd_puts("> ");
         }
-        lcd_gotoxy(2,line);
-        lcd_puts(menu->entries[line].name);
+        lcd_gotoxy(2,i + 1);
+        lcd_puts(menu->entries[i].name);
     }
     lcd_display();
 }

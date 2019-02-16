@@ -17,6 +17,7 @@ static const char string_next_stage[] PROGMEM = "next stage";
 static const char string_press_to_return[] PROGMEM = "(press to return)";
 static const char string_game_over[] PROGMEM = "GAME OVER";
 static const char string_points[] PROGMEM = " points";
+static const char string_tinypc[] PROGMEM = "~TinyPC~";
 #ifdef	__cplusplus
 }
 #endif
