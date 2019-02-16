@@ -12,6 +12,7 @@
 struct ScreenLoc {
     AccVec center;
     accum scale;
+    uint16_t filled_blocks;
 };
 
 
@@ -43,6 +44,10 @@ static uint8_t get_maxiter(struct ScreenLoc *screen) {
     return 40;
 }
 
+static void set_led_for_screen(struct ScreenLoc *screen) {
+    set_led_from_points(screen->filled_blocks, DISPLAY_WIDTH * DISPLAY_HEIGHT / 8 / 8);
+}
+
 static void display_mandelbrot_block(struct ScreenLoc *screen, uint8_t x, uint8_t xmax, uint8_t line) {
     for (; x <= xmax; x++) {
         for (uint8_t dy=0; dy < 8; dy++) {
@@ -52,6 +57,8 @@ static void display_mandelbrot_block(struct ScreenLoc *screen, uint8_t x, uint8_
         }
         if ((x+1)%8 == 0) {
             lcd_display_block(x-7, line, 8);
+            screen->filled_blocks++;
+            set_led_for_screen(screen);
         }
     }
     
@@ -59,6 +66,8 @@ static void display_mandelbrot_block(struct ScreenLoc *screen, uint8_t x, uint8_
 
 static void display_complete_mandelbrot(struct ScreenLoc *screen) {
     lcd_clrscr();
+    screen->filled_blocks = 0;
+    set_led_for_screen(screen);
     for (uint8_t line=0; line<DISPLAY_HEIGHT / 8; line++){
             display_mandelbrot_block(screen, 0, DISPLAY_WIDTH - 1, line);
     }
@@ -69,6 +78,8 @@ static void display_complete_mandelbrot(struct ScreenLoc *screen) {
 // functions, but I'm too tired to figure it out...
 static void move_up(struct ScreenLoc *screen){
     screen->center.y -= 16 / screen->scale;
+    screen->filled_blocks -= 2 * DISPLAY_WIDTH / 8;
+    set_led_for_screen(screen);
     for (uint8_t line = DISPLAY_HEIGHT / 8 - 1; line > 1; line--) {
         memcpy(displayBuffer[line], displayBuffer[line-2], DISPLAY_WIDTH);
     }
@@ -80,6 +91,8 @@ static void move_up(struct ScreenLoc *screen){
 
 static void move_down(struct ScreenLoc *screen){
     screen->center.y += 16 / screen->scale;
+    screen->filled_blocks -= 2 * DISPLAY_WIDTH / 8;
+    set_led_for_screen(screen);
     for (uint8_t line = 0; line < DISPLAY_HEIGHT / 8 - 2; line++) {
         memcpy(displayBuffer[line], displayBuffer[line+2], DISPLAY_WIDTH);
     }
@@ -91,6 +104,8 @@ static void move_down(struct ScreenLoc *screen){
 
 static void move_left(struct ScreenLoc *screen){
     screen->center.x -= 32 / screen->scale;
+    screen->filled_blocks -= 4 * DISPLAY_HEIGHT / 8;
+    set_led_for_screen(screen);
     for (uint8_t line = 0; line < DISPLAY_HEIGHT / 8; line++) {
         memmove(displayBuffer[line] + 32, displayBuffer[line], DISPLAY_WIDTH - 32);
         memset(displayBuffer[line], 0, 32);
@@ -103,6 +118,8 @@ static void move_left(struct ScreenLoc *screen){
 
 static void move_right(struct ScreenLoc *screen){
     screen->center.x += 32 / screen->scale;
+    screen->filled_blocks -= 4 * DISPLAY_HEIGHT / 8;
+    set_led_for_screen(screen);
     for (uint8_t line = 0; line < DISPLAY_HEIGHT / 8; line++) {
         memmove(displayBuffer[line], displayBuffer[line] + 32, DISPLAY_WIDTH - 32);
         memset(displayBuffer[line] + (DISPLAY_WIDTH - 32), 0, 32);
@@ -118,7 +135,8 @@ void run_mandelbrot(void) {
     lcd_clear_buffer();
     struct ScreenLoc screen = {.center = {0,
                                           0},
-                               .scale = init_scale};
+                               .scale = init_scale,
+                               .filled_blocks = 0};
     
     while (button_pressed);
     display_complete_mandelbrot(&screen);

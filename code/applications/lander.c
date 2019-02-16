@@ -121,6 +121,7 @@ static bool lander_landed(struct LanderGamestate *s) {
 void run_lander(){
     
     uint8_t points = 0;
+    set_led_from_points(points, 4);
     while (true) {
         struct LanderGamestate state = new_stage();
          lcd_clear_buffer();
@@ -159,6 +160,7 @@ void run_lander(){
                 lcd_gotoxy(4, 0);
                 lcd_puts_p(string_next_stage);
                 lcd_display();
+                set_led_from_points(points, 4);
                 wait_for_button();
                 break;
             } else if (lander_terrain_collision(&state)) {
