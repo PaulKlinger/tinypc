@@ -66,10 +66,10 @@ void show_menu() {
         .length=5, .selected_index=0,
         .entries={
             {"Snake", &run_snake},
-            {"Game of Life", &run_gol},
-            {"Mandelbrot", &run_mandelbrot},
             {"Breakout", &run_breakout},
-            {"Lander", &run_lander}
+            {"Lander", &run_lander},
+            {"Game of Life", &run_gol},
+            {"Mandelbrot", &run_mandelbrot}
         }
     };
     display_menu(&menu);
