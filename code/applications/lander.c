@@ -3,6 +3,8 @@
 #include <util/delay.h>
 #include "../lcd.h"
 #include "../utilities.h"
+#include "../strings.h"
+#include <stdfix.h>
 
 
 #define grav_accell 0.005K
@@ -18,6 +20,11 @@ struct Lander {
 struct Terrain {
     u8Vec p1, p2, p3;
     uint8_t landing_y;
+};
+
+struct LanderGamestate {
+    struct Lander lander;
+    struct Terrain terrain;
 };
 
 
@@ -79,61 +86,97 @@ static bool point_terrain_collision(AccVec p, struct Terrain *terrain) {
     return false;
 }
 
-static bool lander_terrain_collision(struct Lander *lander, struct Terrain *terrain) {
-    if (lander->pos.x < -14 || lander->pos.x >= DISPLAY_WIDTH + 14 ||
-        lander->pos.y <= - 14 || lander-> pos.y >= DISPLAY_HEIGHT ) return true;
-    return (point_terrain_collision(add(lander->t1p1, lander->pos), terrain) ||
-            point_terrain_collision(add(lander->t1p2, lander->pos), terrain) ||
-            point_terrain_collision(add(lander->t1p3, lander->pos), terrain));
+static bool lander_terrain_collision(struct LanderGamestate *s) {
+    if (s->lander.pos.x < -14 || s->lander.pos.x >= DISPLAY_WIDTH + 14 ||
+        s->lander.pos.y <= - 14 || s->lander.pos.y >= DISPLAY_HEIGHT ) return true;
+    return (point_terrain_collision(add(s->lander.t1p1, s->lander.pos), &s->terrain) ||
+            point_terrain_collision(add(s->lander.t1p2, s->lander.pos), &s->terrain) ||
+            point_terrain_collision(add(s->lander.t1p3, s->lander.pos), &s->terrain));
+}
+
+static struct LanderGamestate new_stage() {
+    u8Vec p1 = {randrange(landing_pad_width+4, 44), randrange(20, DISPLAY_HEIGHT - 1)};
+    u8Vec p2 = {randrange(p1.x, 74), randrange(20, DISPLAY_HEIGHT - 1)};
+    u8Vec p3 = {randrange(p2.x, 104), randrange(20, DISPLAY_HEIGHT - 1)};
+    return (struct LanderGamestate) {
+        .lander = (struct Lander){.pos = {7, DISPLAY_HEIGHT - 1 - 5},
+                                  .v = {0, 0}, .dir = {0, -1},
+                                  .t1p1 = {0, -10}, .t1p2 = {5, 5},
+                                  .t1p3 = {-5, 5}, .t2p3 = {0, -1}},
+        .terrain = (struct Terrain){.p1 = p1, .p2 = p2, .p3 = p3,
+                                    .landing_y = randrange(20, DISPLAY_HEIGHT - 1)
+                                  }
+    };
+}
+
+static bool lander_landed(struct LanderGamestate *s) {
+    if (s->lander.pos.x >= DISPLAY_WIDTH - 1 - landing_pad_width / 2 - 5
+        && s->lander.pos.x <= DISPLAY_WIDTH - 1 - landing_pad_width / 2 + 5
+        && s->lander.pos.y > s->terrain.landing_y - 6
+        && s->lander.dir.y < -0.97K /* something like 10-15° tilt*/
+        && absfx(s->lander.v.x) < 0.1K && absfx(s->lander.v.y) < 0.1K ) return true;
+    return false;
 }
 
 void run_lander(){
-    struct Lander lander = {.pos = {7, DISPLAY_HEIGHT - 1 - 5},
-                            .v = {0, 0}, .dir = {0, -1},
-                            .t1p1 = {0, -10}, .t1p2 = {5, 5}, .t1p3 = {-5, 5},
-                            .t2p3 = {0, -1}};
     
-    struct Terrain terrain = {.p1 = {20, 50}, .p2 = {70, 20}, .p3 = {100, 40},
-                              .landing_y = 30};
-    lcd_clear_buffer();
-    draw_lander(&lander);
-    draw_terrain(&terrain);
-    lcd_display();
-    while (button_pressed);
-    while (!button_pressed && !joystick_pressed); 
-    while (!button_pressed) {
-        lcd_clear_buffer();
-        lander.pos.x += lander.v.x;
-        lander.pos.y += lander.v.y;
-        lander.v.y += grav_accell;
-        lander.thrust_on = false;
-        if (joystick_pressed) {
-            switch (last_joystick_direction) {
-                case LEFT:
-                    rotate_lander(&lander, -4);
-                    break;
-                case RIGHT:
-                    rotate_lander(&lander, 4);
-                    break;
-                case UP:
-                    lander.v.x += lander.dir.x * thrust_accell;
-                    lander.v.y += lander.dir.y * thrust_accell;
-                    lander.thrust_on = true;
-                    break;
-                case DOWN: // to get rid of warning, no code generated
-                    break;
-            }
-        }
-        draw_lander(&lander);
-        draw_terrain(&terrain);
-        if (lander_terrain_collision(&lander, &terrain)) {
-            lcd_gotoxy(3, 0);
-            lcd_puts("crashed!");
-            lcd_display();
-            wait_for_button();
-            return;
-        }
+    uint8_t points = 0;
+    while (true) {
+        struct LanderGamestate state = new_stage();
+         lcd_clear_buffer();
+        draw_lander(&(state.lander));
+        draw_terrain(&(state.terrain));
         lcd_display();
-        _delay_ms(10);
+        while (button_pressed);
+        while (!button_pressed && !joystick_pressed); 
+        while (!button_pressed) {
+            lcd_clear_buffer();
+            state.lander.pos.x += state.lander.v.x;
+            state.lander.pos.y += state.lander.v.y;
+            state.lander.v.y += grav_accell;
+            state.lander.thrust_on = false;
+            if (joystick_pressed) {
+                switch (last_joystick_direction) {
+                    case LEFT:
+                        rotate_lander(&(state.lander), -4);
+                        break;
+                    case RIGHT:
+                        rotate_lander(&(state.lander), 4);
+                        break;
+                    case UP:
+                        state.lander.v.x += state.lander.dir.x * thrust_accell;
+                        state.lander.v.y += state.lander.dir.y * thrust_accell;
+                        state.lander.thrust_on = true;
+                        break;
+                    case DOWN: // to get rid of warning, no code generated
+                        break;
+                }
+            }
+            draw_lander(&(state.lander));
+            draw_terrain(&(state.terrain));
+            if (lander_landed(&state)) {
+                points++;
+                lcd_gotoxy(4, 0);
+                lcd_puts_p(string_next_stage);
+                lcd_display();
+                wait_for_button();
+                break;
+            } else if (lander_terrain_collision(&state)) {
+                lcd_gotoxy(3, 0);
+                lcd_puts("crashed!");
+                lcd_gotoxy(3,1);
+                lcd_puts_p(string_game_over);
+                char points_str[3];
+                itoa(points, points_str, 10);
+                lcd_gotoxy(3,2);
+                lcd_puts(points_str);
+                lcd_puts_p(string_points);
+                lcd_display();
+                wait_for_button();
+                return;
+            }
+            lcd_display();
+            _delay_ms(16);
+        }
     }
 }

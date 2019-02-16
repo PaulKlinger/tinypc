@@ -225,6 +225,10 @@ void lcd_drawPixel(uint8_t x, uint8_t y, uint8_t color){
     }
 }
 void lcd_drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t color){
+    if(x1 > DISPLAY_WIDTH-1 ||
+       x2 > DISPLAY_WIDTH-1 ||
+       y1 > DISPLAY_HEIGHT-1 ||
+       y2 > DISPLAY_HEIGHT-1) return;
     int dx =  abs(x2-x1), sx = x1<x2 ? 1 : -1;
     int dy = -abs(y2-y1), sy = y1<y2 ? 1 : -1;
     int err = dx+dy, e2; /* error value e_xy */
