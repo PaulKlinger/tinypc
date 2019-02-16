@@ -2,6 +2,7 @@
 
 #include "light_ws2812.h"
 #include "lcd.h"
+#include "strings.h"
 
 void set_led(uint8_t r, uint8_t g, uint8_t b) {
     struct cRGB led[1];
@@ -66,14 +67,14 @@ void wait_for_button() {
 void show_game_over_screen(uint8_t points) {
     lcd_clear_buffer();
     lcd_gotoxy(6,2);
-    lcd_puts("GAME OVER!\r\n");
+    lcd_puts_p(string_game_over);
     char points_str[3];
     itoa(points, points_str, 10);
     lcd_gotoxy(6,3);
     lcd_puts(points_str);
-    lcd_puts(" points\r\n\r\n");
+    lcd_puts_p(string_points);
     lcd_gotoxy(3,5);
-    lcd_puts("(press to return)");
+    lcd_puts_p(string_press_to_return);
     lcd_display();
     wait_for_button();
 }
@@ -115,3 +116,8 @@ AccVec add(AccVec a, AccVec b) {
     return (AccVec) {a.x + b.x, a.y + b.y};
 }
 
+uint8_t randrange(uint8_t min, uint8_t max) {
+    uint8_t ret = 0;
+    while (ret < min || ret > max) ret = rand();
+    return ret;
+}

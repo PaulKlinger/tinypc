@@ -4,6 +4,7 @@
 #include <string.h>
 #include "../lcd.h"
 #include "../utilities.h"
+#include "../strings.h"
 #include <stdfix.h>
 
 #define num_blocks 24
@@ -266,7 +267,7 @@ void run_breakout() {
                 set_led_from_points(points, 3 * num_blocks);
                 if (points % num_blocks == 0) {
                     lcd_gotoxy(6, DISPLAY_HEIGHT/8 - 3);
-                    lcd_puts("next stage");
+                    lcd_puts_p(string_next_stage);
                     lcd_display();
                     wait_for_button();
                     AccVec old_v = state.ball.v;

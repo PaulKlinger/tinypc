@@ -50,6 +50,7 @@
       <itemPath>light_ws2812.h</itemPath>
       <itemPath>ws2812_config.h</itemPath>
       <itemPath>utilities.h</itemPath>
+      <itemPath>strings.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

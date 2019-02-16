@@ -75,7 +75,6 @@ static void update_board(uint8_t board[height][byte_width]) {
 }
 
 void run_gol() {
-    srand((unsigned int) RTC.CNT);
     uint8_t board[height][byte_width];
     for (uint8_t y=0; y<height;y++){
         for (uint8_t x=0; x<byte_width;x++){

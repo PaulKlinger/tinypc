@@ -42,6 +42,8 @@ extern "C" {
     uint8_t ceilacc8(accum x);
     
     void rotate_vec(AccVec *vec, int8_t angle);
+    
+    uint8_t randrange(uint8_t min, uint8_t max);
 
 
 #ifdef	__cplusplus

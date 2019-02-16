@@ -100,5 +100,6 @@ int main(void) {
     SYSTEM_Initialize();
     lcd_init(LCD_DISP_ON);
     show_launch_screen();
+    srand((unsigned int) RTC.CNT);
     show_menu();
 }
