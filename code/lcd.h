@@ -65,6 +65,9 @@ extern "C" {
     
     /* TODO: define displaycontroller */
 #define SSD1306 // SH1106       // or SSD1306, check datasheet of your display
+    // There's a version of the display with a black PCB that uses a slightly
+    // different controller which needs different commands to set the row address
+#define BLACKBOARD 
     /* TODO: define displaymode */
 #define GRAPHICMODE                // TEXTMODE for only text to display,
     // GRAPHICMODE for text and graphic

@@ -135,7 +135,15 @@ void lcd_goto_xpix_y(uint8_t x, uint8_t y){
     cursorPosition.x=x;
     cursorPosition.y=y;
 #if defined SSD1306
+#if defined BLACKBOARD
+    // The black board uses a different controller which actually follows
+    // the SSD1306 datasheet: The commands 0xb0 to 0xb7 are not valid in
+    // horizontal addressing mode.
+    // So we have to use the longer 0x22 command instead.
+    uint8_t commandSequence[] = {0x22, y, 0x07, 0x21, x, 0x7f};
+#else
     uint8_t commandSequence[] = {0xb0+y, 0x21, x, 0x7f};
+#endif
 #elif defined SH1106
     uint8_t commandSequence[] = {0xb0+y, 0x21, 0x00+((2+x) & (0x0f)), 0x10+( ((2+x) & (0xf0)) >> 4 ), 0x7f};
 #endif
