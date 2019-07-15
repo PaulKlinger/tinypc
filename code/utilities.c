@@ -4,11 +4,16 @@
 #include "lcd.h"
 #include "strings.h"
 
+
+// Amount to divide led brightness by
+// (For the tiny laptop the led is directly visible and needs to be a lot dimmer)
+#define LED_DIM_FACTOR 30
+
 void set_led(uint8_t r, uint8_t g, uint8_t b) {
     struct cRGB led[1];
-    led[0].r=r;
-    led[0].g=g;
-    led[0].b=b;
+    led[0].r=r / LED_DIM_FACTOR;
+    led[0].g=g / LED_DIM_FACTOR;
+    led[0].b=b / LED_DIM_FACTOR;
     ws2812_setleds(led,1);
 }
 
