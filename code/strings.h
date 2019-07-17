@@ -12,12 +12,19 @@
 extern "C" {
 #endif
 #include <avr/pgmspace.h>
+#include "config.h"
     
 static const char string_next_stage[] PROGMEM = "next stage";
 static const char string_press_to_return[] PROGMEM = "(press to return)";
 static const char string_game_over[] PROGMEM = "GAME OVER";
 static const char string_points[] PROGMEM = " points";
-static const char string_tinypc[] PROGMEM = "~TinyPC~";
+#ifdef THINKTINY
+    static const char string_title[] PROGMEM = "~ThinkTiny~";
+    #define TITLE_OFFSET 34
+#else
+    static const char string_title[] PROGMEM = "~TinyPC~";
+    #define TITLE_OFFSET 7*6
+#endif
 #ifdef	__cplusplus
 }
 #endif

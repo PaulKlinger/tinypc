@@ -7,7 +7,12 @@
 
 // Amount to divide led brightness by
 // (For the tiny laptop the led is directly visible and needs to be a lot dimmer)
+
+#ifdef THINKTINY
 #define LED_DIM_FACTOR 30
+#else
+#define LED_DIM_FACTOR 1
+#endif
 
 void set_led(uint8_t r, uint8_t g, uint8_t b) {
     struct cRGB led[1];

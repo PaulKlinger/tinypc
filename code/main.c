@@ -13,6 +13,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include "config.h"
+
 #include "lcd.h"
 
 #include "utilities.h"
@@ -26,8 +28,8 @@
 
 void show_launch_screen() {
     set_led(0,255,0);
-    lcd_gotoxy(7,0);
-    lcd_puts_p(string_tinypc);
+    lcd_goto_xpix_y(TITLE_OFFSET,0);
+    lcd_puts_p(string_title);
     lcd_gotoxy(3,3);
     lcd_puts("(press to start)");
     lcd_gotoxy(6,7);
@@ -51,8 +53,8 @@ typedef struct {
 
 void display_menu(Menu *menu) {
     lcd_clear_buffer();
-    lcd_gotoxy(7,0);
-    lcd_puts_p(string_tinypc);
+    lcd_goto_xpix_y(TITLE_OFFSET,0);
+    lcd_puts_p(string_title);
     for (uint8_t i=0; i < menu->length; i++) {
         lcd_gotoxy(0,i + 1);
         if (i == menu->selected_index) {
