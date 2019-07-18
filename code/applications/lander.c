@@ -132,7 +132,7 @@ void run_lander(){
         lcd_display();
         while (button_pressed);
         while (!button_pressed && !joystick_pressed); 
-        while (!button_pressed) {
+        while (true) {
             lcd_clear_buffer();
             state.lander.pos.x += state.lander.v.x;
             state.lander.pos.y += state.lander.v.y;
