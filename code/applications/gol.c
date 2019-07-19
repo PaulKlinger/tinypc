@@ -9,17 +9,7 @@
 #define width 64
 #define byte_width 8
 
-static bool get_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
-    return board[y][x / 8] & (1 << (x % 8));
-}
 
-static bool set_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
-    return board[y][x / 8] |= (1 << (x % 8));
-}
-
-static bool unset_cell(uint8_t board[height][byte_width], uint8_t x, uint8_t y) {
-    return board[y][x / 8] &= ~(1 << (x % 8));
-}
 
 static bool get_cell_from_buffer(uint8_t x, uint8_t y) {
     return lcd_check_buffer(x*2, y*2);
@@ -29,12 +19,12 @@ static void draw_cell(uint8_t x, uint8_t y) {
     lcd_fillRect(x*2, y*2, x*2+1, y*2+1, 1);
 }
 
-static void display_board(uint8_t board[height][byte_width]) {
+static void display_board(BitMatrix board) {
     lcd_clear_buffer();
     uint16_t live_cells = 0;
     for (uint8_t y=0; y<height;y++){
         for (uint8_t x=0; x<width;x++){
-            if (get_cell(board, x, y)){
+            if (bitmatrix_get(board, x, y)){
                 draw_cell(x,y);
                 live_cells++;
             }
@@ -44,7 +34,7 @@ static void display_board(uint8_t board[height][byte_width]) {
     set_led_from_points(live_cells, height * width / 2);
 }
 
-static void update_board(uint8_t board[height][byte_width]) {
+static void update_board(BitMatrix board) {
     uint8_t neighbors;
     
     // TODO: This section is actually performance critical
@@ -66,20 +56,19 @@ static void update_board(uint8_t board[height][byte_width]) {
                 }
             }
             if (neighbors > 3 || neighbors < 2) {
-                unset_cell(board, x, y);
+                bitmatrix_unset(board, x, y);
             } else if (neighbors == 3) {
-                set_cell(board, x, y);
+                bitmatrix_set(board, x, y);
             }
         };
     };
 }
 
 void run_gol() {
-    uint8_t board[height][byte_width];
-    for (uint8_t y=0; y<height;y++){
-        for (uint8_t x=0; x<byte_width;x++){
-            board[y][x] = rand();
-        };
+    static uint8_t data[byte_width*height];
+    BitMatrix board = {byte_width, data};
+    for (uint16_t i=0; i<height * byte_width;i++){
+            board.data[i] = rand();
     };
     bool wait_for_release = button_pressed;
     while (1){

@@ -131,3 +131,16 @@ uint8_t randrange(uint8_t min, uint8_t max) {
     while (ret < min || ret > max) ret = rand();
     return ret;
 }
+
+
+bool bitmatrix_get(BitMatrix matrix, uint8_t x, uint8_t y) {
+    return matrix.data[y * matrix.byte_width + x / 8] & (1 << (x % 8));
+}
+
+void bitmatrix_set(BitMatrix matrix, uint8_t x, uint8_t y) {
+    matrix.data[y * matrix.byte_width + x / 8] |= (1 << (x % 8));
+}
+
+void bitmatrix_unset(BitMatrix matrix, uint8_t x, uint8_t y) {
+    matrix.data[y * matrix.byte_width + x / 8] &= ~(1 << (x % 8));
+}

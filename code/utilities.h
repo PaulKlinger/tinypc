@@ -22,6 +22,16 @@ extern "C" {
     typedef struct {uint8_t x, y;} u8Vec;
     
     AccVec add(AccVec a, AccVec b);
+    
+    typedef struct {
+        uint8_t byte_width;
+        uint8_t *data;
+    } BitMatrix;
+    bool bitmatrix_get(BitMatrix matrix, uint8_t x, uint8_t y);
+
+    void bitmatrix_set(BitMatrix matrix, uint8_t x, uint8_t y);
+
+    void bitmatrix_unset(BitMatrix matrix, uint8_t x, uint8_t y);
 
     volatile Direction last_joystick_direction;
     volatile bool joystick_pressed;
