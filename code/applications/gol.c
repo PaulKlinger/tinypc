@@ -70,14 +70,11 @@ void run_gol() {
     for (uint16_t i=0; i<height * byte_width;i++){
             board.data[i] = rand();
     };
-    bool wait_for_release = button_pressed;
+    while (button_pressed);
     while (1){
-        if (!button_pressed){
-            wait_for_release = false;
-        }
         display_board(board);
         update_board(board);
-        if (button_pressed && ! wait_for_release) {
+        if (button_pressed) {
             return;
         }
     }
