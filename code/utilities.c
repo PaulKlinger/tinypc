@@ -127,7 +127,7 @@ AccVec add(AccVec a, AccVec b) {
 }
 
 uint8_t randrange(uint8_t min, uint8_t max) {
-    uint8_t ret = 0;
+    uint8_t ret = rand();
     while (ret < min || ret > max) ret = rand();
     return ret;
 }
