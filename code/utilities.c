@@ -74,12 +74,12 @@ void wait_for_button() {
     while (!button_pressed);
 }
 
-void show_game_over_screen(uint8_t points) {
+void show_game_over_screen(uint16_t points) {
     lcd_clear_buffer();
     lcd_gotoxy(6,2);
     lcd_puts_p(string_game_over);
-    char points_str[3];
-    itoa(points, points_str, 10);
+    char points_str[5];
+    ltoa(points, points_str, 10);
     lcd_gotoxy(6,3);
     lcd_puts(points_str);
     lcd_puts_p(string_points);

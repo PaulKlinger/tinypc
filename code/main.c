@@ -24,6 +24,7 @@
 #include "applications/breakout.h"
 #include "applications/lander.h"
 #include "applications/mandelbrot.h"
+#include "applications/tetris.h"
 
 
 void show_launch_screen() {
@@ -71,7 +72,8 @@ void show_menu() {
         .length=5, .selected_index=0,
         .entries={
             {"Snake", &run_snake},
-            {"Breakout", &run_breakout},
+            //{"Breakout", &run_breakout},
+            {"Tetris", &run_tetris},
             {"Lander", &run_lander},
             {"Game of Life", &run_gol},
             {"Mandelbrot", &run_mandelbrot}
