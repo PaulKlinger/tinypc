@@ -39,6 +39,8 @@ struct TetrisGamestate {
     uint8_t current_piece_x;
     uint8_t current_piece_y;
     Direction current_piece_orientation;
+    enum PieceType next_piece_type;
+    Direction next_piece_orientation;
     // shows whether to draw in black or white and whether a collision
     // occurred. Somewhat weird to put this here but this makes
     // apply_to_piece_blocks easier.
@@ -104,10 +106,12 @@ void apply_to_piece_blocks(void (*f)(uint8_t, uint8_t, struct TetrisGamestate*),
 }
 
 void new_piece(struct TetrisGamestate *state) {
-    state->current_piece_type = rand() % NUM_PIECES;
-    state->current_piece_orientation = rand() % 4;
+    state->current_piece_type = state->next_piece_type;
+    state->current_piece_orientation = state->next_piece_orientation;
+    state->next_piece_type = rand() % NUM_PIECES;
+    state->next_piece_orientation = rand() % 4;
     state->current_piece_y = 254;
-    state->current_piece_x = BOARD_WIDTH/2;
+    state->current_piece_x = BOARD_WIDTH/2 - 1;
     state->piece_moving = true;
 }
 
@@ -234,6 +238,26 @@ void draw_score(uint16_t score) {
     lcd_puts(points_str);
 }
 
+
+void draw_block_no_bounds(uint8_t x, uint8_t y, struct TetrisGamestate *state) {
+    lcd_fillRect(X_OFFSET + x * BLOCK_DIM, Y_OFFSET + y * BLOCK_DIM,
+                 X_OFFSET + (x + 1) * BLOCK_DIM - 1, Y_OFFSET + (y + 1) * BLOCK_DIM - 1,
+            state->flag);
+    
+}
+
+void draw_next_piece(struct TetrisGamestate *state) {
+    lcd_fillRect(X_OFFSET + BOARD_WIDTH * BLOCK_DIM +  BLOCK_DIM, Y_OFFSET + 2* BLOCK_DIM,
+            X_OFFSET + BOARD_WIDTH * BLOCK_DIM + 10 * BLOCK_DIM, 8 + 7 * BLOCK_DIM, 0);
+    struct TetrisGamestate tempstate;
+    tempstate.current_piece_orientation = state->next_piece_orientation;
+    tempstate.current_piece_type = state->next_piece_type;
+    tempstate.current_piece_x = BOARD_WIDTH + 4;
+    tempstate.current_piece_y = 4;
+    tempstate.flag = 1;
+    apply_to_piece_blocks(&draw_block_no_bounds, &tempstate);
+}
+
 void run_tetris(void) {
     struct TetrisGamestate state;
     state.points = 0;
@@ -245,9 +269,12 @@ void run_tetris(void) {
     uint8_t counter = 0;
     uint8_t joystick_pressed_counter = 0;
     
+    // run new_piece twice to fill next_piece
+    new_piece(&state);
     while (true) {
         draw_score(state.points);
         new_piece(&state);
+        draw_next_piece(&state);
         while (state.piece_moving) {
             if (joystick_pressed) {
                 joystick_pressed_counter++;
@@ -258,12 +285,12 @@ void run_tetris(void) {
                         }
                         break;
                     case LEFT:
-                        if (joystick_pressed_counter % 2 == 1) {
+                        if (joystick_pressed_counter % 3 == 1) {
                             move_piece_x(&state, -1);
                         }
                         break;
                     case RIGHT:
-                        if (joystick_pressed_counter % 2 == 1 ) {
+                        if (joystick_pressed_counter % 3 == 1 ) {
                             move_piece_x(&state, 1);
                         }
                         break;
@@ -275,7 +302,7 @@ void run_tetris(void) {
                 joystick_pressed_counter = 0;
             }
             lcd_display();
-            counter = (counter + 1) % (30 - (27 / (500 - MIN(state.points, 499))));
+            counter = (counter + 1) % (30 - 27 * MIN(state.points, 500) / 500);
             if (counter == 0 && state.piece_moving) {
                 move_piece_down_and_collide(&state);
             }
