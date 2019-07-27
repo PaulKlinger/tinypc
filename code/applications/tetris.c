@@ -63,11 +63,13 @@ void draw_block(uint8_t x, uint8_t y, struct TetrisGamestate *state) {
 }
 
 void collide_block(uint8_t x, uint8_t y, struct TetrisGamestate *state) {
-    if (y > 255 - 4) {
-        // don't show collision for blocks that enter the play area
+    // we need to check for side wall collision even if block is outside the play area
+    // otherwise it can be moved into an illegal position before it is fully inside
+    if (x >= BOARD_WIDTH ) { // don't need to check other direction due to wraparound
+        state->flag = 1;
         return;
     }
-    if (y >= BOARD_HEIGHT || x >= BOARD_WIDTH  // don't need to check other direction due to wraparound
+    if ((y >= BOARD_HEIGHT && y < 255 - 4) // don't show collision for blocks that enter the play area 
             || check_block(x, y)) {
         state->flag = 1;
     }
