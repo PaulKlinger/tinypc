@@ -275,6 +275,7 @@ void run_tetris(void) {
     new_piece(&state);
     while (true) {
         draw_score(state.points);
+        set_led_from_points(state.points, 500);
         new_piece(&state);
         draw_next_piece(&state);
         while (state.piece_moving) {
