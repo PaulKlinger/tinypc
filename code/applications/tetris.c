@@ -83,6 +83,10 @@ void collide_block_top(uint8_t x, uint8_t y, struct TetrisGamestate *state) {
 
 void apply_to_piece_blocks(void (*f)(uint8_t, uint8_t, struct TetrisGamestate*),
         struct TetrisGamestate *state) {
+    /* applies the given function to every block of the current piece
+       this is used both to draw the piece by filling these blocks
+       and to check for collisions
+    */
     uint8_t x = state->current_piece_x;
     uint8_t y = state->current_piece_y;
     for (uint8_t p_x=0; p_x < 4; p_x++){
@@ -245,7 +249,6 @@ void draw_block_no_bounds(uint8_t x, uint8_t y, struct TetrisGamestate *state) {
     lcd_fillRect(X_OFFSET + x * BLOCK_DIM, Y_OFFSET + y * BLOCK_DIM,
                  X_OFFSET + (x + 1) * BLOCK_DIM - 1, Y_OFFSET + (y + 1) * BLOCK_DIM - 1,
             state->flag);
-    
 }
 
 void draw_next_piece(struct TetrisGamestate *state) {
@@ -305,6 +308,8 @@ void run_tetris(void) {
                 joystick_pressed_counter = 0;
             }
             lcd_display();
+            // increase speed as score increases
+            // from 300ms/move to 30ms/move
             counter = (counter + 1) % (30 - 27 * MIN(state.points, 500) / 500);
             if (counter == 0 && state.piece_moving) {
                 move_piece_down_and_collide(&state);
