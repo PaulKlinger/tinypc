@@ -157,12 +157,11 @@ void move_piece_down_and_collide(struct TetrisGamestate *state) {
     state->current_piece_y++;
     apply_to_piece_blocks(&collide_block, state);
     if (state->flag) {
-        // collision! draw piece in previous location and set piece_moving to false
+        // collision! move back to previous location and stop it from moving further
         state->current_piece_y--;
-        apply_to_piece_blocks(&draw_block, state); // (state->flag is 1)
         state->piece_moving = false;
     }
-    // otherwise draw it in the new location
+    // draw the piece in the new (or old) location
     state->flag = 1;
     apply_to_piece_blocks(&draw_block, state);
 }
