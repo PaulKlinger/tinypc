@@ -56,7 +56,7 @@ extern "C" {
     
     void rotate_vec(AccVec *vec, int8_t angle);
     
-    uint8_t randrange(uint8_t min, uint8_t max);
+    uint8_t randint(uint8_t min, uint8_t max);
 
 
 #ifdef	__cplusplus

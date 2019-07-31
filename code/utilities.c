@@ -126,7 +126,7 @@ AccVec add(AccVec a, AccVec b) {
     return (AccVec) {a.x + b.x, a.y + b.y};
 }
 
-uint8_t randrange(uint8_t min, uint8_t max) {
+uint8_t randint(uint8_t min, uint8_t max) {
     uint8_t ret = rand();
     while (ret < min || ret > max) ret = rand();
     return ret;

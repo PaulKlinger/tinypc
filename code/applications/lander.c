@@ -97,16 +97,16 @@ static bool lander_terrain_collision(struct LanderGamestate *s) {
 }
 
 static struct LanderGamestate new_stage() {
-    u8Vec p1 = {randrange(landing_pad_width+4, 44), randrange(20, DISPLAY_HEIGHT - 1)};
-    u8Vec p2 = {randrange(p1.x, 74), randrange(20, DISPLAY_HEIGHT - 1)};
-    u8Vec p3 = {randrange(p2.x, 104), randrange(20, DISPLAY_HEIGHT - 1)};
+    u8Vec p1 = {randint(landing_pad_width+4, 44), randint(20, DISPLAY_HEIGHT - 1)};
+    u8Vec p2 = {randint(p1.x, 74), randint(20, DISPLAY_HEIGHT - 1)};
+    u8Vec p3 = {randint(p2.x, 104), randint(20, DISPLAY_HEIGHT - 1)};
     return (struct LanderGamestate) {
         .lander = (struct Lander){.pos = {7, DISPLAY_HEIGHT - 1 - 5},
                                   .v = {0, 0}, .dir = {0, -1},
                                   .t1p1 = {0, -10}, .t1p2 = {5, 5},
                                   .t1p3 = {-5, 5}, .t2p3 = {0, -1}},
         .terrain = (struct Terrain){.p1 = p1, .p2 = p2, .p3 = p3,
-                                    .landing_y = randrange(20, DISPLAY_HEIGHT - 2)
+                                    .landing_y = randint(20, DISPLAY_HEIGHT - 2)
                                   }
     };
 }
