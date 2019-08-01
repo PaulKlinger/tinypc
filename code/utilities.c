@@ -114,7 +114,7 @@ void rotate_vec(AccVec *vec, int8_t angle) {
     // need to rotate in finer steps
     accum x_temp;
     bool dir = angle > 0;
-    angle = dir ? angle : -angle;
+    angle = abs(angle);
     for (; angle > 0; angle--) {
         x_temp = vec->x;
         vec->x = 0.999848K * vec->x - (dir ? 1 : -1) * 0.0174524K * vec->y;

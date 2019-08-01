@@ -366,7 +366,6 @@ void lcd_clear_buffer() {
 }
 
 uint8_t lcd_check_buffer(uint8_t x, uint8_t y) {
-    if( x > DISPLAY_WIDTH-1 || y > (DISPLAY_HEIGHT-1)) return 0; // out of Display
     return displayBuffer[(y / (DISPLAY_HEIGHT/8))][x] & (1 << (y % (DISPLAY_HEIGHT/8)));
 }
 

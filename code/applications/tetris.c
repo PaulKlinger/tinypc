@@ -227,13 +227,9 @@ void check_and_handle_full_lines(struct TetrisGamestate *state) {
 }
 
 void draw_game_area() {
-    lcd_drawLine(X_OFFSET - 1, Y_OFFSET - 1,
-        X_OFFSET  + BLOCK_DIM * BOARD_WIDTH, Y_OFFSET - 1, 1);
-    lcd_drawLine(X_OFFSET - 1, Y_OFFSET - 1, X_OFFSET - 1, Y_OFFSET + BLOCK_DIM * BOARD_HEIGHT, 1);
-    lcd_drawLine(X_OFFSET  + BLOCK_DIM * BOARD_WIDTH, Y_OFFSET - 1,
-        X_OFFSET  + BLOCK_DIM * BOARD_WIDTH, BLOCK_DIM * BOARD_HEIGHT + Y_OFFSET, 1);
-    lcd_drawLine(X_OFFSET - 1, Y_OFFSET + BLOCK_DIM * BOARD_HEIGHT,
-        X_OFFSET  + BLOCK_DIM * BOARD_WIDTH, Y_OFFSET + BLOCK_DIM * BOARD_HEIGHT, 1);
+    lcd_drawRect(X_OFFSET - 1, Y_OFFSET - 1,
+            X_OFFSET  + BLOCK_DIM * BOARD_WIDTH,
+            Y_OFFSET + BLOCK_DIM * BOARD_HEIGHT, 1);
 }
 
 void draw_score(uint16_t score) {
