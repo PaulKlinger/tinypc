@@ -7,7 +7,7 @@
 
 #define GRID_X 16
 #define GRID_Y 10
-#define X_OFFSET 15
+#define X_OFFSET 20
 #define Y_OFFSET 2
 
 #define CELL_SIZE 6
@@ -17,14 +17,16 @@
 enum MinesGamePhase {
     m_FIRSTMOVE,
     m_GAME,
-    m_BOOM
+    m_END
 };
 
 struct MinesGameState {
     uint8_t cursor_x, cursor_y;
     BitMatrix mines;
     BitMatrix revealed;
+    uint16_t n_revealed;
     BitMatrix flagged;
+    uint16_t n_flagged;
     enum MinesGamePhase game_phase;
 };
 
@@ -59,9 +61,10 @@ static inline uint8_t y_cell(uint8_t cell_y) {
 static void draw_digit(uint8_t digit, uint8_t cell_x, uint8_t cell_y) {
     uint8_t x = 2 + x_cell(cell_x);
     uint8_t y = 2 + y_cell(cell_y);
+    
     for (uint8_t dy=0;dy<3;dy++) {
         for (uint8_t dx=0; dx<3; dx++) {
-            volatile uint8_t bit_index = digit * 9 + dy * 3 + dx;
+            uint8_t bit_index = digit * 9 + dy * 3 + dx;
             lcd_drawPixel(x+dx, y+dy, !!(digit_font[bit_index / 8] & (1 << (7 - bit_index % 8))));
         }
     }
@@ -73,7 +76,7 @@ static void draw_hidden_cell(uint8_t cell_x, uint8_t cell_y) {
 }
 
 static void draw_mine(uint8_t cell_x, uint8_t cell_y) {
-    // draw a cross for mines (flags)
+    // draw a cross for mines and flags
     for (uint8_t i=0; i<5; i++) {
         lcd_drawPixel(x_cell(cell_x) + 1 + i,
                 y_cell(cell_y) + 1 + i, 1);
@@ -129,16 +132,23 @@ static void init_mines(struct MinesGameState *state) {
     }
 }
 
+static void draw_remaining_mine_count(struct MinesGameState *state) {
+    char mine_count_str[4];
+    itoa(NMINES - state->n_flagged, mine_count_str, 10);
+    lcd_gotoxy(0,1);
+    lcd_puts(mine_count_str);
+}
+
 static void show_game_state(struct MinesGameState *state) {
     lcd_clear_buffer();
     draw_grid();
     for (uint8_t cell_y=0; cell_y < GRID_Y; cell_y++){
         for (uint8_t cell_x=0; cell_x < GRID_X; cell_x++){
             if (bitmatrix_get(state->flagged, cell_x, cell_y)
-                    || (state->game_phase == m_BOOM
+                    || (state->game_phase == m_END
                         && bitmatrix_get(state->mines, cell_x, cell_y))) {   
                 draw_mine(cell_x, cell_y);
-            } else if (state->game_phase != m_BOOM && !bitmatrix_get(state->revealed, cell_x, cell_y)) {
+            } else if (state->game_phase != m_END && !bitmatrix_get(state->revealed, cell_x, cell_y)) {
                 draw_hidden_cell(cell_x, cell_y);
             } else {
                 draw_digit(mines_count(state, cell_x, cell_y), cell_x, cell_y);
@@ -146,6 +156,7 @@ static void show_game_state(struct MinesGameState *state) {
         }
     }
     draw_cursor(state);
+    draw_remaining_mine_count(state);
     lcd_display();
 }
 
@@ -159,6 +170,8 @@ static void reveal_cell(struct MinesGameState *state, uint8_t cell0_x, uint8_t c
     
     // flood fill to reveal adjacent cells of zero mine-neighbor cells
     // need to do this non-recursively as stack overflows otherwise
+    // (Would be a lot faster if it used a list of locations instead of
+    //  to_reveal BitMatrix, but not sure I could manage that with less code.)
     while (n_to_reveal > 0) {
         for (uint8_t cell_y=0; cell_y < GRID_Y; cell_y++){
             for (uint8_t cell_x=0; cell_x < GRID_X; cell_x++) {
@@ -166,6 +179,7 @@ static void reveal_cell(struct MinesGameState *state, uint8_t cell0_x, uint8_t c
                     bitmatrix_unset(to_reveal, cell_x, cell_y);
                     n_to_reveal--;
                     bitmatrix_set(state->revealed, cell_x, cell_y);
+                    state->n_revealed++;
                     if (mines_count(state, cell_x, cell_y) == 0) {
                         for (int8_t dy=-1; dy <= 1; dy++) {
                             for (int8_t dx=-1; dx <= 1; dx++){
@@ -203,12 +217,13 @@ void run_mines(void) {
     uint8_t flagged_data[(GRID_X / 8) * GRID_Y] = {0};
     BitMatrix flagged = {.byte_width = GRID_X / 8, .data = flagged_data};
     
-    struct MinesGameState state = {.cursor_x=0, .cursor_y=0,
-        .mines=mines, .revealed=revealed, .flagged=flagged, .game_phase=m_FIRSTMOVE};
+    struct MinesGameState state = {
+        .mines=mines, .revealed=revealed, .flagged=flagged,
+        .game_phase=m_FIRSTMOVE};
     
     while (button_pressed);
     
-    while (state.game_phase != m_BOOM) {        
+    while (state.game_phase != m_END) {        
         if (joystick_pressed) {
             while (joystick_pressed);
             switch (last_joystick_direction) {
@@ -234,27 +249,39 @@ void run_mines(void) {
             if (count > 50) {
                 if (bitmatrix_get(state.flagged, state.cursor_x, state.cursor_y)){
                     bitmatrix_unset(state.flagged, state.cursor_x, state.cursor_y);
+                    state.n_flagged--;
                 } else {
                     bitmatrix_set(state.flagged, state.cursor_x, state.cursor_y);
+                    state.n_flagged++;
                 }
-            } else {
+            } else if (!bitmatrix_get(state.flagged, state.cursor_x, state.cursor_y)) {
+                // Don't reveal flagged cells, this is most likely a misclick.
                 if (bitmatrix_get(state.mines, state.cursor_x, state.cursor_y)) {
                     boom(&state);
-                    state.game_phase = m_BOOM;
+                    state.game_phase = m_END;
                 } else {
                     if (state.game_phase == m_FIRSTMOVE) {
                         init_mines(&state);
                         state.game_phase = m_GAME;
                     }
                     reveal_cell(&state, state.cursor_x, state.cursor_y);
+                    if (state.n_revealed == GRID_X * GRID_Y - NMINES) {
+                        lcd_clear_buffer();
+                        lcd_gotoxy(3, 3);
+                        lcd_puts("You won!");
+                        lcd_display();
+                        while(!button_pressed);
+                        state.game_phase = m_END;
+                    }
                 }
             }
             
         }
         
         show_game_state(&state);
+        set_led_from_points(state.n_flagged, NMINES);
     }
     
     // keep showing board until button press so player can see their mistake
-    while (!button_pressed);
+    wait_for_button();
 }
