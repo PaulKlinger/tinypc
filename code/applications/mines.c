@@ -117,18 +117,18 @@ __attribute__ ((noinline)) static uint8_t mines_count(struct MinesGameState *sta
 
 static void init_mines(struct MinesGameState *state) {
     for (uint8_t i=0; i<NMINES; i++) {
-        while (true) {
-            uint8_t cell_x = randint(0, GRID_X - 1);
-            uint8_t cell_y = randint(0, GRID_Y - 1);
-            
-            // Do not set the same mine twice and do not set a mine at the 
-            // cursor location.
-            if (!bitmatrix_get(state->mines, cell_x, cell_y) 
-                    && (abs((int16_t) cell_x - state->cursor_x) > 1 || abs((int16_t) cell_y - state->cursor_y) > 1)) {
-                bitmatrix_set(state->mines, cell_x, cell_y);
-                break;
-            }
-        }
+        uint8_t cell_x, cell_y;
+        
+        // Search for a place to put a mine:
+        // not on an existing mine and not around or under the cursor
+        // (so the player has some chance not to get stuck at the start)
+        do {
+            cell_x = randint(0, GRID_X - 1);
+            cell_y = randint(0, GRID_Y - 1);
+        } while (bitmatrix_get(state->mines, cell_x, cell_y) 
+                    || (abs((int16_t) cell_x - state->cursor_x) <= 1 
+                        && abs((int16_t) cell_y - state->cursor_y) <= 1));
+        bitmatrix_set(state->mines, cell_x, cell_y);
     }
 }
 
@@ -246,7 +246,7 @@ void run_mines(void) {
                 count++;
                 _delay_ms(10);
             };
-            if (count > 50) {
+            if (count > 50 && !bitmatrix_get(state.revealed, state.cursor_x, state.cursor_y)) {
                 if (bitmatrix_get(state.flagged, state.cursor_x, state.cursor_y)){
                     bitmatrix_unset(state.flagged, state.cursor_x, state.cursor_y);
                     state.n_flagged--;

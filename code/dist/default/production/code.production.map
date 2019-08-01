@@ -624,7 +624,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x3f74
+.text           0x00000000     0x3f70
  *(.vectors)
  .vectors       0x00000000       0x7c E:/Program Files (x86)/Microchip/MPLABX/v5.20/packs/Microchip/ATtiny_DFP/2.0.10/gcc/dev/attiny1614/avrxmega3/crtattiny1614.o
                 0x00000000                __vector_default
@@ -812,231 +812,231 @@ END GROUP
  .text.reveal_cell
                 0x0000229c      0x1c4 build/default/production/applications/mines.o
  .text.run_mines
-                0x00002460      0x4f2 build/default/production/applications/mines.o
+                0x00002460      0x4ee build/default/production/applications/mines.o
                 0x00002460                run_mines
  .text.PIN_MANAGER_Initialize
-                0x00002952       0x24 build/default/production/mcc_generated_files/src/pin_manager.o
-                0x00002952                PIN_MANAGER_Initialize
+                0x0000294e       0x24 build/default/production/mcc_generated_files/src/pin_manager.o
+                0x0000294e                PIN_MANAGER_Initialize
  .text.CPUINT_init
-                0x00002976        0x6 build/default/production/mcc_generated_files/src/cpuint.o
-                0x00002976                CPUINT_init
+                0x00002972        0x6 build/default/production/mcc_generated_files/src/cpuint.o
+                0x00002972                CPUINT_init
  .text.WDT_init
-                0x0000297c        0x4 build/default/production/mcc_generated_files/src/wdt.o
-                0x0000297c                WDT_init
+                0x00002978        0x4 build/default/production/mcc_generated_files/src/wdt.o
+                0x00002978                WDT_init
  .text.protected_write_io
-                0x00002980        0x8 build/default/production/mcc_generated_files/src/protected_io.o
-                0x00002980                protected_write_io
+                0x0000297c        0x8 build/default/production/mcc_generated_files/src/protected_io.o
+                0x0000297c                protected_write_io
  .text.CLKCTRL_init
-                0x00002988       0x10 build/default/production/mcc_generated_files/src/clkctrl.o
-                0x00002988                CLKCTRL_init
+                0x00002984       0x10 build/default/production/mcc_generated_files/src/clkctrl.o
+                0x00002984                CLKCTRL_init
  .text.mcu_init
-                0x00002998        0x2 build/default/production/mcc_generated_files/src/system.o
-                0x00002998                mcu_init
+                0x00002994        0x2 build/default/production/mcc_generated_files/src/system.o
+                0x00002994                mcu_init
  .text.SLPCTRL_init
-                0x0000299a        0x4 build/default/production/mcc_generated_files/src/slpctrl.o
-                0x0000299a                SLPCTRL_init
+                0x00002996        0x4 build/default/production/mcc_generated_files/src/slpctrl.o
+                0x00002996                SLPCTRL_init
  .text.BOD_init
-                0x0000299e       0x10 build/default/production/mcc_generated_files/src/bod.o
-                0x0000299e                BOD_init
+                0x0000299a       0x10 build/default/production/mcc_generated_files/src/bod.o
+                0x0000299a                BOD_init
  .text.__vector_2
-                0x000029ae       0x1e build/default/production/mcc_generated_files/src/bod.o
-                0x000029ae                __vector_2
+                0x000029aa       0x1e build/default/production/mcc_generated_files/src/bod.o
+                0x000029aa                __vector_2
  .text.RTC_0_init
-                0x000029cc       0x24 build/default/production/mcc_generated_files/src/rtc.o
-                0x000029cc                RTC_0_init
+                0x000029c8       0x24 build/default/production/mcc_generated_files/src/rtc.o
+                0x000029c8                RTC_0_init
  .text.SYSTEM_Initialize
-                0x000029f0       0x20 build/default/production/mcc_generated_files/mcc.o
-                0x000029f0                SYSTEM_Initialize
+                0x000029ec       0x20 build/default/production/mcc_generated_files/mcc.o
+                0x000029ec                SYSTEM_Initialize
  .text.TWI_WRITE.part.1
-                0x00002a10       0x18 build/default/production/lcd.o
+                0x00002a0c       0x18 build/default/production/lcd.o
  .text.TWI_start
-                0x00002a28       0x46 build/default/production/lcd.o
-                0x00002a28                TWI_start
+                0x00002a24       0x46 build/default/production/lcd.o
+                0x00002a24                TWI_start
  .text.lcd_command
-                0x00002a6e       0x7e build/default/production/lcd.o
-                0x00002a6e                lcd_command
+                0x00002a6a       0x7e build/default/production/lcd.o
+                0x00002a6a                lcd_command
  .text.lcd_goto_xpix_y.part.2
-                0x00002aec       0x40 build/default/production/lcd.o
+                0x00002ae8       0x40 build/default/production/lcd.o
  .text.lcd_data
-                0x00002b2c       0x78 build/default/production/lcd.o
-                0x00002b2c                lcd_data
+                0x00002b28       0x78 build/default/production/lcd.o
+                0x00002b28                lcd_data
  .text.lcd_gotoxy
-                0x00002ba4       0x16 build/default/production/lcd.o
-                0x00002ba4                lcd_gotoxy
+                0x00002ba0       0x16 build/default/production/lcd.o
+                0x00002ba0                lcd_gotoxy
  .text.lcd_goto_xpix_y
-                0x00002bba        0xe build/default/production/lcd.o
-                0x00002bba                lcd_goto_xpix_y
+                0x00002bb6        0xe build/default/production/lcd.o
+                0x00002bb6                lcd_goto_xpix_y
  .text.lcd_puts
-                0x00002bc8       0x58 build/default/production/lcd.o
-                0x00002bc8                lcd_puts
+                0x00002bc4       0x58 build/default/production/lcd.o
+                0x00002bc4                lcd_puts
  .text.lcd_puts_p
-                0x00002c20       0x5a build/default/production/lcd.o
-                0x00002c20                lcd_puts_p
+                0x00002c1c       0x5a build/default/production/lcd.o
+                0x00002c1c                lcd_puts_p
  .text.lcd_drawPixel
-                0x00002c7a       0x3c build/default/production/lcd.o
-                0x00002c7a                lcd_drawPixel
+                0x00002c76       0x3c build/default/production/lcd.o
+                0x00002c76                lcd_drawPixel
  .text.lcd_drawLine
-                0x00002cb6       0xea build/default/production/lcd.o
-                0x00002cb6                lcd_drawLine
+                0x00002cb2       0xea build/default/production/lcd.o
+                0x00002cb2                lcd_drawLine
  .text.lcd_drawRect
-                0x00002da0       0x4c build/default/production/lcd.o
-                0x00002da0                lcd_drawRect
+                0x00002d9c       0x4c build/default/production/lcd.o
+                0x00002d9c                lcd_drawRect
  .text.lcd_fillRect
-                0x00002dec       0x54 build/default/production/lcd.o
-                0x00002dec                lcd_fillRect
+                0x00002de8       0x54 build/default/production/lcd.o
+                0x00002de8                lcd_fillRect
  .text.lcd_fillCircleSimple
-                0x00002e40      0x106 build/default/production/lcd.o
-                0x00002e40                lcd_fillCircleSimple
+                0x00002e3c      0x106 build/default/production/lcd.o
+                0x00002e3c                lcd_fillCircleSimple
  .text.lcd_fillTriangle
-                0x00002f46      0x2d6 build/default/production/lcd.o
-                0x00002f46                lcd_fillTriangle
+                0x00002f42      0x2d6 build/default/production/lcd.o
+                0x00002f42                lcd_fillTriangle
  .text.lcd_display
-                0x0000321c       0x14 build/default/production/lcd.o
-                0x0000321c                lcd_display
+                0x00003218       0x14 build/default/production/lcd.o
+                0x00003218                lcd_display
  .text.lcd_clrscr
-                0x00003230       0x28 build/default/production/lcd.o
-                0x00003230                lcd_clrscr
+                0x0000322c       0x28 build/default/production/lcd.o
+                0x0000322c                lcd_clrscr
  .text.lcd_init
-                0x00003258       0x6e build/default/production/lcd.o
-                0x00003258                lcd_init
+                0x00003254       0x6e build/default/production/lcd.o
+                0x00003254                lcd_init
  .text.lcd_clear_buffer
-                0x000032c6       0x1e build/default/production/lcd.o
-                0x000032c6                lcd_clear_buffer
+                0x000032c2       0x1e build/default/production/lcd.o
+                0x000032c2                lcd_clear_buffer
  .text.lcd_check_buffer
-                0x000032e4       0x2e build/default/production/lcd.o
-                0x000032e4                lcd_check_buffer
+                0x000032e0       0x2e build/default/production/lcd.o
+                0x000032e0                lcd_check_buffer
  .text.lcd_display_block
-                0x00003312       0x62 build/default/production/lcd.o
-                0x00003312                lcd_display_block
+                0x0000330e       0x62 build/default/production/lcd.o
+                0x0000330e                lcd_display_block
  .text.ws2812_setleds
-                0x00003374       0x60 build/default/production/light_ws2812.o
-                0x00003374                ws2812_setleds
- .text.set_led  0x000033d4       0x4a build/default/production/utilities.o
-                0x000033d4                set_led
+                0x00003370       0x60 build/default/production/light_ws2812.o
+                0x00003370                ws2812_setleds
+ .text.set_led  0x000033d0       0x4a build/default/production/utilities.o
+                0x000033d0                set_led
  .text.display_4x4_block
-                0x0000341e        0xc build/default/production/utilities.o
-                0x0000341e                display_4x4_block
+                0x0000341a        0xc build/default/production/utilities.o
+                0x0000341a                display_4x4_block
  .text.__vector_7
-                0x0000342a       0xc8 build/default/production/utilities.o
-                0x0000342a                __vector_7
+                0x00003426       0xc8 build/default/production/utilities.o
+                0x00003426                __vector_7
  .text.wait_for_button
-                0x000034f2       0x12 build/default/production/utilities.o
-                0x000034f2                wait_for_button
+                0x000034ee       0x12 build/default/production/utilities.o
+                0x000034ee                wait_for_button
  .text.show_game_over_screen
-                0x00003504       0x86 build/default/production/utilities.o
-                0x00003504                show_game_over_screen
+                0x00003500       0x86 build/default/production/utilities.o
+                0x00003500                show_game_over_screen
  .text.set_led_from_points
-                0x0000358a      0x102 build/default/production/utilities.o
-                0x0000358a                set_led_from_points
+                0x00003586      0x102 build/default/production/utilities.o
+                0x00003586                set_led_from_points
  .text.rotate_vec
-                0x0000368c      0x14a build/default/production/utilities.o
-                0x0000368c                rotate_vec
- .text.add      0x000037d6       0xac build/default/production/utilities.o
-                0x000037d6                add
- .text.randint  0x00003882       0x20 build/default/production/utilities.o
-                0x00003882                randint
+                0x00003688      0x14a build/default/production/utilities.o
+                0x00003688                rotate_vec
+ .text.add      0x000037d2       0xac build/default/production/utilities.o
+                0x000037d2                add
+ .text.randint  0x0000387e       0x20 build/default/production/utilities.o
+                0x0000387e                randint
  .text.bitmatrix_get
-                0x000038a2       0x3c build/default/production/utilities.o
-                0x000038a2                bitmatrix_get
+                0x0000389e       0x3c build/default/production/utilities.o
+                0x0000389e                bitmatrix_get
  .text.bitmatrix_set
-                0x000038de       0x32 build/default/production/utilities.o
-                0x000038de                bitmatrix_set
+                0x000038da       0x32 build/default/production/utilities.o
+                0x000038da                bitmatrix_set
  .text.bitmatrix_unset
-                0x00003910       0x34 build/default/production/utilities.o
-                0x00003910                bitmatrix_unset
+                0x0000390c       0x34 build/default/production/utilities.o
+                0x0000390c                bitmatrix_unset
  .text.show_launch_screen
-                0x00003944       0x42 build/default/production/main.o
-                0x00003944                show_launch_screen
+                0x00003940       0x42 build/default/production/main.o
+                0x00003940                show_launch_screen
  .text.display_menu
-                0x00003986       0x7a build/default/production/main.o
-                0x00003986                display_menu
+                0x00003982       0x7a build/default/production/main.o
+                0x00003982                display_menu
  .text.show_menu
-                0x00003a00      0x12a build/default/production/main.o
-                0x00003a00                show_menu
+                0x000039fc      0x12a build/default/production/main.o
+                0x000039fc                show_menu
  .text.startup.main
-                0x00003b2a       0x1e build/default/production/main.o
-                0x00003b2a                main
+                0x00003b26       0x1e build/default/production/main.o
+                0x00003b26                main
  .text.libgcc.div
-                0x00003b48       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_udivmodqi4.o)
-                0x00003b48                __udivmodqi4
+                0x00003b44       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_udivmodqi4.o)
+                0x00003b44                __udivmodqi4
  .text.libgcc.div
-                0x00003b60       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_udivmodhi4.o)
-                0x00003b60                __udivmodhi4
+                0x00003b5c       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_udivmodhi4.o)
+                0x00003b5c                __udivmodhi4
  .text.libgcc.div
-                0x00003b88       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_divmodhi4.o)
-                0x00003b88                _div
-                0x00003b88                __divmodhi4
+                0x00003b84       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_divmodhi4.o)
+                0x00003b84                _div
+                0x00003b84                __divmodhi4
  .text.libgcc.mul
-                0x00003bb0       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_umulhisi3.o)
-                0x00003bb0                __umulhisi3
+                0x00003bac       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_umulhisi3.o)
+                0x00003bac                __umulhisi3
  .text.libgcc.fixed
-                0x00003bce       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_mulsa3.o)
-                0x00003bce                __mulsa3
+                0x00003bca       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_mulsa3.o)
+                0x00003bca                __mulsa3
  .text.libgcc.fixed
-                0x00003bfa       0x7c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_mulusa3.o)
-                0x00003bfa                __mulusa3
-                0x00003bfc                __mulusa3_round
+                0x00003bf6       0x7c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_mulusa3.o)
+                0x00003bf6                __mulusa3
+                0x00003bf8                __mulusa3_round
  .text.libgcc.fixed
-                0x00003c76       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_divsa3.o)
-                0x00003c76                __divsa3
+                0x00003c72       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_divsa3.o)
+                0x00003c72                __divsa3
  .text.libgcc.fixed
-                0x00003cb2       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_udivusa3.o)
-                0x00003cb2                __udivusa3
+                0x00003cae       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_udivusa3.o)
+                0x00003cae                __udivusa3
  .text.libgcc.fixed
-                0x00003cf6        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_ssabs_4.o)
-                0x00003cf6                __ssabs_4
+                0x00003cf2        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_ssabs_4.o)
+                0x00003cf2                __ssabs_4
  .text.libgcc.div
-                0x00003cfe       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_negsi2.o)
-                0x00003cfe                __negsi2
+                0x00003cfa       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_negsi2.o)
+                0x00003cfa                __negsi2
  .text.libgcc.fixed
-                0x00003d0e       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_ssneg_4.o)
-                0x00003d0e                __ssneg_4
+                0x00003d0a       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_ssneg_4.o)
+                0x00003d0a                __ssneg_4
  .text.avr-libc
-                0x00003d1e       0xb8 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(rand.o)
-                0x00003db0                rand_r
-                0x00003db6                rand
-                0x00003dc0                srand
+                0x00003d1a       0xb8 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(rand.o)
+                0x00003dac                rand_r
+                0x00003db2                rand
+                0x00003dbc                srand
  .text.avr-libc
-                0x00003dd6       0x24 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(memmove.o)
-                0x00003dd6                memmove
+                0x00003dd2       0x24 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(memmove.o)
+                0x00003dd2                memmove
  .text.avr-libc
-                0x00003dfa       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(itoa_ncheck.o)
-                0x00003dfa                __itoa_ncheck
+                0x00003df6       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(itoa_ncheck.o)
+                0x00003df6                __itoa_ncheck
  .text.avr-libc
-                0x00003e10       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(ltoa_ncheck.o)
-                0x00003e10                __ltoa_ncheck
+                0x00003e0c       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(ltoa_ncheck.o)
+                0x00003e0c                __ltoa_ncheck
  .text.avr-libc
-                0x00003e2e       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(ultoa_ncheck.o)
-                0x00003e2e                __ultoa_ncheck
-                0x00003e30                __ultoa_common
+                0x00003e2a       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(ultoa_ncheck.o)
+                0x00003e2a                __ultoa_ncheck
+                0x00003e2c                __ultoa_common
  .text.avr-libc
-                0x00003e72       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(utoa_ncheck.o)
-                0x00003e72                __utoa_ncheck
-                0x00003e74                __utoa_common
+                0x00003e6e       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(utoa_ncheck.o)
+                0x00003e6e                __utoa_ncheck
+                0x00003e70                __utoa_common
  .text.avr-libc
-                0x00003ea6       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(memcpy.o)
-                0x00003ea6                memcpy
+                0x00003ea2       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(memcpy.o)
+                0x00003ea2                memcpy
  .text.avr-libc
-                0x00003eb8       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(strrev.o)
-                0x00003eb8                strrev
+                0x00003eb4       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(strrev.o)
+                0x00003eb4                strrev
  .text.libgcc.div
-                0x00003ed8       0x2e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_divmodsi4.o)
-                0x00003ed8                __divmodsi4
+                0x00003ed4       0x2e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_divmodsi4.o)
+                0x00003ed4                __divmodsi4
  .text.libgcc.mul
-                0x00003f06       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_muluhisi3.o)
-                0x00003f06                __muluhisi3
+                0x00003f02       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_muluhisi3.o)
+                0x00003f02                __muluhisi3
  .text.libgcc.mul
-                0x00003f1c       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_mulshisi3.o)
-                0x00003f1c                __mulshisi3
-                0x00003f22                __mulohisi3
+                0x00003f18       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_mulshisi3.o)
+                0x00003f18                __mulshisi3
+                0x00003f1e                __mulohisi3
  .text.libgcc.div
-                0x00003f2c       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_udivmodsi4.o)
-                0x00003f2c                __udivmodsi4
-                0x00003f70                . = ALIGN (0x2)
+                0x00003f28       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_udivmodsi4.o)
+                0x00003f28                __udivmodsi4
+                0x00003f6c                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00003f70        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_exit.o)
-                0x00003f70                _exit
-                0x00003f70                exit
+ .fini9         0x00003f6c        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_exit.o)
+                0x00003f6c                _exit
+                0x00003f6c                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1055,26 +1055,26 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00003f70        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_exit.o)
+ .fini0         0x00003f6c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_exit.o)
  *(.fini0)
-                0x00003f74                _etext = .
+                0x00003f70                _etext = .
 
-.rodata         0x0000bf74       0x7b load address 0x00003f74
+.rodata         0x0000bf70       0x7b load address 0x00003f70
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x0000bf74        0x9 build/default/production/applications/lander.o
+                0x0000bf70        0x9 build/default/production/applications/lander.o
  .rodata.block_shapes
-                0x0000bf7d        0x7 build/default/production/applications/tetris.o
+                0x0000bf79        0x7 build/default/production/applications/tetris.o
  .rodata.str1.1
-                0x0000bf84        0x9 build/default/production/applications/mines.o
+                0x0000bf80        0x9 build/default/production/applications/mines.o
  .rodata.digit_font
-                0x0000bf8d        0xc build/default/production/applications/mines.o
+                0x0000bf89        0xc build/default/production/applications/mines.o
  .rodata.str1.1
-                0x0000bf99       0x56 build/default/production/main.o
+                0x0000bf95       0x56 build/default/production/main.o
  *(.gnu.linkonce.r*)
 
-.data           0x00802000        0x4 load address 0x00003fef
+.data           0x00802000        0x4 load address 0x00003feb
                 0x00802000                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00802000        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega3\libc.a(rand.o)
@@ -1103,8 +1103,8 @@ END GROUP
                 0x0080210a                button_pressed
                 0x0080210b                displayBuffer
                 0x0080250b                PROVIDE (__bss_end, .)
-                0x00003fef                __data_load_start = LOADADDR (.data)
-                0x00003ff3                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00003feb                __data_load_start = LOADADDR (.data)
+                0x00003fef                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0080250b        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
