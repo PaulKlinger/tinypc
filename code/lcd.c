@@ -152,11 +152,8 @@ void lcd_goto_xpix_y(uint8_t x, uint8_t y){
 
 void lcd_clrscr(void){
 #ifdef GRAPHICMODE
-    for (uint8_t i = 0; i < DISPLAY_HEIGHT/8; i++){
-        memset(displayBuffer[i], 0x00, sizeof(displayBuffer[i]));
-        lcd_gotoxy(0,i);
-        lcd_data(displayBuffer[i], sizeof(displayBuffer[i]));
-    }
+    lcd_clear_buffer();
+    lcd_display();
 #elif defined TEXTMODE
     uint8_t displayBuffer[DISPLAY_WIDTH];
     memset(displayBuffer, 0x00, sizeof(displayBuffer));
@@ -199,8 +196,6 @@ void lcd_set_contrast(uint8_t contrast){
     lcd_command(commandSequence, sizeof(commandSequence));
 }
 void lcd_putc(char c){
-            // char doesn't fit in line
-            if( (cursorPosition.x >= DISPLAY_WIDTH-sizeof(FONT[0])) || (c < ' ') ) return;
             // mapping char
             c -= ' ';
         for (uint8_t i = 0; i < sizeof(FONT[0]); i++)
@@ -250,24 +245,12 @@ void lcd_drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t color)
     }
 }
 void lcd_drawRect(uint8_t px1, uint8_t py1, uint8_t px2, uint8_t py2, uint8_t color){
-    if( px1 > DISPLAY_WIDTH-1 ||
-       px2 > DISPLAY_WIDTH-1 ||
-       py1 > DISPLAY_HEIGHT-1 ||
-       py2 > DISPLAY_HEIGHT-1) return;
     lcd_drawLine(px1, py1, px2, py1, color);
     lcd_drawLine(px2, py1, px2, py2, color);
     lcd_drawLine(px2, py2, px1, py2, color);
     lcd_drawLine(px1, py2, px1, py1, color);
 }
 void lcd_fillRect(uint8_t px1, uint8_t py1, uint8_t px2, uint8_t py2, uint8_t color){
-    if( px1 > px2){
-        uint8_t temp = px1;
-        px1 = px2;
-        px2 = temp;
-        temp = py1;
-        py1 = py2;
-        py2 = temp;
-    }
     for (uint8_t i=0; i<=(py2-py1); i++){
         lcd_drawLine(px1, py1+i, px2, py1+i, color);
     }
