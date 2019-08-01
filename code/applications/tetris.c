@@ -179,6 +179,7 @@ void move_piece_x(struct TetrisGamestate *state, int8_t dx) {
     apply_to_piece_blocks(&draw_block, state);
 }
 
+__attribute__ ((optimize("s")))
 void check_and_handle_full_lines(struct TetrisGamestate *state) {
     uint8_t n_full_lines = 0;
     for (uint8_t y=0; y < BOARD_HEIGHT; y++) {
