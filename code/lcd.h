@@ -131,6 +131,7 @@ uint8_t displayBuffer[DISPLAY_HEIGHT/8][DISPLAY_WIDTH];
     void lcd_fillRect(uint8_t px1, uint8_t py1, uint8_t px2, uint8_t py2, uint8_t color);
     void lcd_drawCircle(uint8_t center_x, uint8_t center_y, uint8_t radius, uint8_t color);
     void lcd_fillCircle(uint8_t center_x, uint8_t center_y, uint8_t radius, uint8_t color);
+    void lcd_fillCircleSimple(uint8_t center_x, uint8_t center_y, int16_t radius, uint8_t color);
     void lcd_fillTriangle(int16_t x1, int8_t y1, int16_t x2, int8_t y2, int16_t x3, int8_t y3, uint8_t color);
     void lcd_drawBitmap(uint8_t x, uint8_t y, const uint8_t picture[], uint8_t width, uint8_t height, uint8_t color);
     void lcd_display(void);                // copy buffer to display RAM

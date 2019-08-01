@@ -313,6 +313,18 @@ void lcd_fillCircle(uint8_t center_x, uint8_t center_y, uint8_t radius, uint8_t 
         lcd_drawCircle(center_x, center_y, i, color);
     }
 }
+
+void lcd_fillCircleSimple(uint8_t center_x, uint8_t center_y, int16_t radius, uint8_t color) {
+    for (int16_t dx=-radius; dx <= radius; dx++) {
+        for (int16_t dy=-radius; dy <= radius; dy++) {
+            if (dx * dx + dy * dy < radius * radius) {
+                if (center_x + dx >= DISPLAY_WIDTH || center_x + dx < 0
+                    || center_y + dy >= DISPLAY_HEIGHT || center_y + dy < 0) continue;
+                lcd_drawPixel(center_x + dx, center_y + dy, color);
+            }
+        }
+    }
+}
 void lcd_fillTriangle(int16_t x1, int8_t y1, int16_t x2, int8_t y2,
                       int16_t x3, int8_t y3, uint8_t color) {
     // Negative and too large coords are allowed, only the visible part will

@@ -11,6 +11,7 @@
         <itemPath>applications/lander.h</itemPath>
         <itemPath>applications/mandelbrot.h</itemPath>
         <itemPath>applications/tetris.h</itemPath>
+        <itemPath>applications/mines.h</itemPath>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
@@ -68,6 +69,7 @@
         <itemPath>applications/lander.c</itemPath>
         <itemPath>applications/mandelbrot.c</itemPath>
         <itemPath>applications/tetris.c</itemPath>
+        <itemPath>applications/mines.c</itemPath>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
@@ -252,7 +254,7 @@
                   value="ToolFirmwareOption.UseLatest"/>
         <property key="communication.interface" value="updi"/>
         <property key="communication.speed" value="0.100"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="debugoptions.useswbreakpoints" value="true"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
         <property key="memories.configurationmemory" value="true"/>
