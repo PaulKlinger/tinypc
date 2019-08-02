@@ -144,9 +144,8 @@ static void show_game_state(struct MinesGameState *state) {
     draw_grid();
     for (uint8_t cell_y=0; cell_y < GRID_Y; cell_y++){
         for (uint8_t cell_x=0; cell_x < GRID_X; cell_x++){
-            if (bitmatrix_get(state->flagged, cell_x, cell_y)
-                    || (state->game_phase == m_END
-                        && bitmatrix_get(state->mines, cell_x, cell_y))) {   
+            if ((state->game_phase != m_END && bitmatrix_get(state->flagged, cell_x, cell_y))
+                 || (state->game_phase == m_END && bitmatrix_get(state->mines, cell_x, cell_y))) {   
                 draw_mine(cell_x, cell_y);
             } else if (state->game_phase != m_END && !bitmatrix_get(state->revealed, cell_x, cell_y)) {
                 draw_hidden_cell(cell_x, cell_y);
