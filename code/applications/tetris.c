@@ -305,8 +305,8 @@ void run_tetris(void) {
             }
             lcd_display();
             // increase speed as score increases
-            // from 200ms/move to 10ms/move (not counting processing delay)
-            counter = (counter + 1) % (20 - 19 * MIN(state.points, 400) / 400);
+            // from 200ms/move to 50ms/move (not counting processing delay)
+            counter = (counter + 1) % (20 - 15 * MIN(state.points, 400) / 400);
             if (counter == 0 && state.piece_moving) {
                 move_piece_down_and_collide(&state);
             }
