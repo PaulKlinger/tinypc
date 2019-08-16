@@ -29,7 +29,11 @@
 
 
 void show_launch_screen() {
+#ifdef THINKTINY
+    set_led(255,0,0);
+#else
     set_led(0,255,0);
+#endif
     lcd_goto_xpix_y(TITLE_OFFSET,0);
     lcd_puts_p(string_title);
     lcd_gotoxy(3,3);
