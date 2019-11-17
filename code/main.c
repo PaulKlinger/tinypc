@@ -111,6 +111,7 @@ void show_menu() {
 
 int main(void) {
     SYSTEM_Initialize();
+    _delay_ms(100); // make sure LCD power is stable before init
     lcd_init(LCD_DISP_ON);
     show_launch_screen();
     srand((unsigned int) RTC.CNT);

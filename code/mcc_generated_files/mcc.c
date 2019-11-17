@@ -30,7 +30,6 @@ void SYSTEM_Initialize(void)
 {
     mcu_init();
     PIN_MANAGER_Initialize();
-    SLPCTRL_init();
     BOD_init();
     WDT_init();
     CLKCTRL_init();

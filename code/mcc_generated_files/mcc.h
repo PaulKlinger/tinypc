@@ -32,7 +32,6 @@ extern "C" {
 #include "include/system.h"
 #include "include/pin_manager.h"
 #include "include/clkctrl.h"
-#include "include/slpctrl.h"
 #include "include/wdt.h"
 #include "include/cpuint.h"
 #include "include/rtc.h"
