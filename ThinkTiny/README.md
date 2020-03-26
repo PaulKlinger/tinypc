@@ -1,7 +1,7 @@
 # ThinkTiny — A miniature laptop
 
 
-[![](../thinktiny_video_link_image.jpg)](https://youtu.be/rgKiFqHrE0A "Project video")
+[![](../thinktiny_video_link_image.jpg)](https://youtu.be/0wcxMr_ZupM "Project video")
 
 ![internals](internals.jpg)
 
