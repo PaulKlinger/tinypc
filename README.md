@@ -1,6 +1,6 @@
 # TinyPC / ThinkTiny
 
-This repository contains the code, 3d models, and PCB files for my small gaming pc and small thinkpad. Both projects runs with same code.
+This repository contains the code, 3d models, and PCB files for my tiny gaming pc and tiny thinkpad. Both projects runs with same code.
 
 
 | | |
